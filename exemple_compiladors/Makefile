@@ -48,6 +48,9 @@ lex : $(SRC_LEX)
 clean :
 	rm -f *~ $(BIN) $(OBJ) $(YACC_OUT) $(LEX_OUT) $(OTHERS) $(EG_OUT)
 
-eg : all $(EG_IN)
+exemple : all eg clean
+	
+
+eg : $(EG_IN)
 	./$(BIN) $(EG_IN) $(EG_OUT)
 	cat $(EG_OUT)
