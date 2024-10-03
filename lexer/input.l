@@ -1,7 +1,5 @@
 %{
-	
-#include "helper_functions.h"
-
+	#include "helper_functions.h"
 %}
 
 %option yylineno
@@ -9,16 +7,21 @@
 %option noinput
 %option nounput
 
-DIGIT	[0-9]
-ID		[a-zA-Z][a-zA-Z0-9]+
+/* Definitions Section */
+ID				[a-zA-Z][a-zA-Z0-9]*
+DIGIT			[0-9]
+WHITESPACE		[ \t]+
 
 %%
 
-{ID}+	{ printf("This is an ID\n"); }
+{DIGIT}+		{ if (verbose) printf("Number: %s\n", yytext); }
+{ID}+			{ if (verbose) printf("Word: %s\n", yytext); }
+{WHITESPACE}	{}
+\n				{ if (verbose) printf("Newline detected.\n"); }
+":="			{ if (verbose) printf("Asignation detected\n"); }
 
-{DIGIT} { printf("This is a DIGIT\n"); }
+.				{ if (verbose) printf("What is this: %s\n", yytext); }
 
-.       { printf("What is this\n"); }
+<<EOF>>			{ return 0; }
 
 %%
-

@@ -2,35 +2,26 @@
 /* TODO : put here a cool header */
 /*								 */
 
-#include <unistd.h>
-#include <fcntl.h>
-
-void fd_putstr(int fd, char *str)
-{
-	if (str == NULL)
-	{
-		fd_putstr(2, "ERROR: str to print is NULL.\n");
-		return ;
-	}
-	while (*str)
-	{
-		write(fd, str, 1);
-		str++;
-	}
-}
+#include "helper_functions.h"
+char verbose;
 
 int	main(int argc, char **argv)
 {
+	verbose = 1;
 	if (argc < 2)
 	{
-		fd_putstr(2, "ERROR: input not correct.\n");
+		dprintf(2, "ERROR: input not correct.\n");
 		return (0);
 	}
-	int fd = open(argv[1], O_RDONLY, NULL);
-	if (fd < 0)
+	yyin = fopen(argv[1],"r");
+	if (yyin == NULL)
 	{
-		fd_putstr(2, "ERROR: input file could not be oppened.\n");
+		dprintf(2, "ERROR: input file could not be oppened.\n");
 		return (0);
 	}
-	fd_putstr(1, "Test\n");
+	dprintf(1, "Lexer started:\n");
+	yylex();
+	dprintf(1, "Lexer ended:\n");
+	fclose(yyin);
+	return (0);
 }

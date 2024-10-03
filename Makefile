@@ -8,9 +8,10 @@ INPUT_DIR = input
 INCLUDE = include
 LEXER_DIR = lexer
 
+# Source Files
 SRC_FILE = ${SRC_DIR}/main.c
 
-#
+# Flex
 LEX = flex
 SRC_LEX = ${LEXER_DIR}/input.l
 LEX_OUTPUT = lex.yy.c
@@ -22,16 +23,16 @@ EXE_INPUT = ${INPUT_DIR}/exe_input.txt
 
 #
 all: lex
-	@$(CC) $(CFLAGS) $(SRC_FILE) $(SRC_EXTRA) $(LEX_OUT) -I ${INCLUDE} -o $(BIN)
+	$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) -I $(INCLUDE) -o $(BIN)
 
-lex: $(SRC_LEX)
-	@$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
-	@mv ${LEX_OUTPUT} ${LEXER_DIR}
+lex:
+	$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
+	mv ${LEX_OUTPUT} ${LEXER_DIR}
 
 test_lex: all
-	@./$(BIN) $(EXE_INPUT)
+	./$(BIN) $(EXE_INPUT)
 
 clean:
-	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT}
+	rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT}
 
 re: clean all
