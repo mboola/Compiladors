@@ -11,7 +11,7 @@
 ID				[a-zA-Z][a-zA-Z0-9]*
 DIGIT			[0-9]+
 INTEGER			\-?{DIGIT}
-FLOAT			{INTEGER}\.{INTEGER}
+FLOAT			({INTEGER}\.{INTEGER})(e\-?{DIGIT})?
 WHITESPACE		[ \t]+
 
 %%

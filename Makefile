@@ -17,7 +17,7 @@ SRC_LEX = ${LEXER_DIR}/input.l
 LEX_OUTPUT = lex.yy.c
 
 #
-BIN = executable
+BIN = compiler_program
 EXE_INPUT = ${INPUT_DIR}/exe_input
 
 
