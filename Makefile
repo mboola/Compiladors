@@ -18,21 +18,20 @@ LEX_OUTPUT = lex.yy.c
 
 #
 BIN = executable
-EXE_INPUT = ${INPUT_DIR}/exe_input.txt
+EXE_INPUT = ${INPUT_DIR}/exe_input
 
 
 #
 all: lex
-	$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) -I $(INCLUDE) -o $(BIN)
+	@$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) -I $(INCLUDE) -o $(BIN)
+	@echo "Compilation completed!"
+	@echo "->Now you can execute with ./${BIN} [test_name]"
 
 lex:
-	$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
-	mv ${LEX_OUTPUT} ${LEXER_DIR}
-
-test_lex: all
-	./$(BIN) $(EXE_INPUT)
+	@$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
+	@mv ${LEX_OUTPUT} ${LEXER_DIR}
 
 clean:
-	rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT}
+	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT}
 
 re: clean all

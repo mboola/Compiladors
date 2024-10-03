@@ -9,13 +9,16 @@
 
 /* Definitions Section */
 ID				[a-zA-Z][a-zA-Z0-9]*
-DIGIT			[0-9]
+DIGIT			[0-9]+
+INTEGER			\-?{DIGIT}
+FLOAT			{INTEGER}\.{INTEGER}
 WHITESPACE		[ \t]+
 
 %%
 
-{DIGIT}+		{ if (verbose) printf("Number: %s\n", yytext); }
-{ID}+			{ if (verbose) printf("Word: %s\n", yytext); }
+{INTEGER}		{ if (verbose) printf("Integer: %s\n", yytext); }
+{FLOAT}			{ if (verbose) printf("Float: %s\n", yytext); }
+{ID}+			{ if (verbose) printf("ID: %s\n", yytext); }
 {WHITESPACE}	{}
 \n				{ if (verbose) printf("Newline detected.\n"); }
 ":="			{ if (verbose) printf("Asignation detected\n"); }
