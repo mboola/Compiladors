@@ -23,5 +23,15 @@ int	main(int argc, char **argv)
 	yylex();
 	dprintf(1, "Lexer ended:\n");
 	fclose(yyin);
+	yyout = fopen(argv[2],"r");
+	if (yyout == NULL)
+	{
+		dprintf(2, "ERROR: input file could not be oppened.\n");
+		return (0);
+	}
+	dprintf(1, "Parser started:\n");
+	yyparse();
+	dprintf(1, "Parser ended:\n");
+	fclose(yyout);
 	return (0);
 }

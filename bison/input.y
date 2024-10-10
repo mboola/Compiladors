@@ -2,18 +2,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-extern FILE *yyout;
-extern int yylineno;
-extern int yylex();
-/*extern void yyerror(char*);*/
+#include "helper_functions.h"
 
 %}
 
 %code requires {
   /* Les definicions que s'utilitzen al %union han d'estar aqui */
-  #include "exemple_dades.h"
-  #include "exemple_funcions.h"
+  #include "data_types.h"
 }
 
 %union{
