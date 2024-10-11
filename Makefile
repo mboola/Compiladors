@@ -5,7 +5,7 @@ YFLAGS = -v -d
 
 # 
 SRC_DIR = src
-INPUT_DIR = input
+INPUT_DIR = tests_input
 INCLUDE = include
 LEXER_DIR = lexer
 YACC_DIR = bison
@@ -26,8 +26,9 @@ YACC_OUTPUT_H = input.tab.h
 
 #
 BIN = compiler_program
-EXE_INPUT = ${INPUT_DIR}/exe_input
-EXE_OUTPUT = exe_output
+TEST = ${INPUT_DIR}/exe_input
+VERBOSE = 
+EXE_OUTPUT = result
 
 OTHER = input.output
 
@@ -35,16 +36,23 @@ OTHER = input.output
 all: lex yacc
 	@$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN)
 	@echo "Compilation completed!"
-	@echo "->Now you can execute with ./${BIN} [test_name] [exe_output]"
 
 lex:
 	@$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
 	@mv ${LEX_OUTPUT} ${LEXER_DIR}
 
 yacc:
-	$(YACC) $(YFLAGS) $(SRC_YACC) -H${YACC_OUTPUT_H} -o ${YACC_OUTPUT_C}
+	@$(YACC) $(YFLAGS) $(SRC_YACC) -H${YACC_OUTPUT_H} -o ${YACC_OUTPUT_C}
 	@mv ${YACC_OUTPUT_C} ${YACC_DIR}
 	@mv ${YACC_OUTPUT_H} ${YACC_DIR}
+
+test_lexer:
+	ARG1 = $(shell echo $$(($(VERBOSE) + 1)))
+	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
+
+test_parser:
+	ARG1 = $(shell echo $$(($(VERBOSE) + 2)))
+	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
 
 clean:
 	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${YACC_DIR}/${YACC_OUTPUT_H} ${OTHER}

@@ -11,7 +11,7 @@
 WHITESPACE		[ \t]+
 ID				[a-zA-Z][a-zA-Z0-9]*
 COMENTARI		"//".*|"#".*
-COMENTARI_MULT	"/\*"[^"\*/"]*"\*""/"
+COMENTARI_MULT	"/*"([^*]|\*+[^*/])*"*/"
 CADENA			"\""{ID}*"\""
 DIGIT			[0-9]+
 INTEGER			\-?{DIGIT}
