@@ -44,7 +44,7 @@ lex:
 yacc:
 	@$(YACC) $(YFLAGS) $(SRC_YACC) -H${YACC_OUTPUT_H} -o ${YACC_OUTPUT_C}
 	@mv ${YACC_OUTPUT_C} ${YACC_DIR}
-	@mv ${YACC_OUTPUT_H} ${YACC_DIR}
+	@mv ${YACC_OUTPUT_H} ${INCLUDE}
 
 test_lexer:
 	ARG1 = $(shell echo $$(($(VERBOSE) + 1)))
@@ -55,6 +55,6 @@ test_parser:
 	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
 
 clean:
-	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${YACC_DIR}/${YACC_OUTPUT_H} ${OTHER}
+	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${INCLUDE}/${YACC_OUTPUT_H} ${OTHER}
 
 re: clean all

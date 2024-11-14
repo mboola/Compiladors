@@ -1,7 +1,9 @@
 #ifndef DATA_TYPES_H
 # define DATA_TYPES_H
 
-#define STR_MAX_LENGTH 200
+# include <stdio.h>
+
+# define STR_MAX_LENGTH 200
 
 extern char	verbose;
 extern FILE	*yyin;
@@ -14,15 +16,28 @@ extern int yylineno;
 typedef enum {
 	UNKNOWN_TYPE = 1,
 	INT_TYPE,
-	FLOAT_TYPE
-}	data_type;
+	FLOAT_TYPE,
+	STRING_TYPE,
+	BOOLEAN_TYPE
+}	expression_type;
 
 
 typedef struct {
-	data_type val_type;
-	int val_int;
-	float val_float;
-}	value_info;
+	expression_type	type;
+	void			*value;
+}	t_expression;
+
+typedef struct {
+	char			*name;
+	expression_type	type;
+	void			*value;
+}	t_assignment;
+
+typedef struct {
+	char *lexema;
+	int length;
+	int line;
+}	id;
 
 
 #endif

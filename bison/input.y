@@ -11,38 +11,60 @@
   #include "data_types.h"
 }
 
+/* Definition of yylval */
 %union{
-    struct {
-        char *lexema;
-        int lenght;
-        int line;
-        value_info id_val;
-    } ident;
-    int enter;
+    int integer;
     float real;
-    value_info expr_val;
-    void *sense_valor;
+    id identifier;
+    char *string;
+    t_assignment assignment;
+    t_expression expression;
+    void *no_value;
 }
 
-%token <sense_valor> ASSIGN ENDLINE
-%token <enter> INTEGER
-%token <ident> ID
+%token <integer> INTEGER
+%token <real> FLOAT
+%token <identifier> ID
+%token <string> CADENA
+%token <expression> TRUE FALSE
+%token ASSIGN NEWLINE ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD LESEQ BIGEQ NOTEQ LESSER BIGGER EQUAL OPENPAR CLOSEDPAR
 
-%type <sense_valor> programa
-%type <expr_val> expressio
+%type <no_value> program
+%type <assignment> sentence assignment
+%type <expression> expression boolean_expression
 
-%start programa
+%start program
 
 %%
 
-programa : expressio {
-             fprintf(yyout, "programa -> expressio :\n  expressio = '%s'\n", value_info_to_str($1));
-           }
+program : program sentence | sentence
+{
+  //fprintf(yyout, "program -> expressio :\n  expressio = '%s'\n", expression_to_str($1));
+}
 
-expressio : ID ASSIGN INTEGER ENDLINE  {
-              fprintf(yyout, "ID: %s pren per valor: %d\n",$1.lexema, $3);
-              $$.val_type = INT_TYPE;
-              $$.val_int = $3;
-            }
+sentence : assignment
+
+assignment : ID ASSIGN expression
+{
+  $$.name = $1.lexema;
+  $$.value = $3.value;
+  fprintf(yyout, "Assignment: %s\n", assignment_to_str($$));
+}
+
+expression: boolean_expression NEWLINE | arithmetic_expression NEWLINE
+{
+  fprintf(yyout, "Expression: %s\n", expression_to_str($$));
+}
+
+boolean_expression :
+  TRUE
+  | FALSE
+  | arithmetic_expression BIGGER arithmetic_expression { fprintf(yyout, "Bigger.\n"); }
+  ;
+
+arithmetic_expression :
+  INTEGER
+  | arithmetic_expression ADDITION arithmetic_expression { fprintf(yyout, "Addition.\n"); }
+  ;
 
 %%
