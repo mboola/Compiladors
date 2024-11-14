@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 	lexer_file = argv[3];
 	parser_file = argv[4];
 
-	yyin = fopen(lexer_file,"r");
+	yyin = fopen(lexer_file, "r");
 	if (yyin == NULL)
 	{
 		dprintf(2, "ERROR: lexer input file could not be oppened.\n");
@@ -36,11 +36,11 @@ int	main(int argc, char **argv)
 	}
 	dprintf(1, "Lexer started:\n");
 	yylex();
-	dprintf(1, "Lexer ended:\n");
+	dprintf(1, "Lexer ended.\n");
 	fclose(yyin);
 
 	// If I'm only testing lexer we leave
-	if (execution_mode == '1' || execution_mode == '3')
+	if (execution_mode == '1')
 		return (0);
 
 	yyout = fopen(parser_file,"r");
@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 	}
 	dprintf(1, "Parser started:\n");
 	yyparse();
-	dprintf(1, "Parser ended:\n");
+	dprintf(1, "Parser ended.\n");
 	fclose(yyout);
 	return (0);
 }
