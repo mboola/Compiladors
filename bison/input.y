@@ -16,43 +16,24 @@
     float real;
     char boolean;
     char *string;
+    t_id id;
+    t_expression expression_type;
+    t_oprel oprel;
+    t_assignment assignment_type;
     void *no_value;
-    struct {
-      char *lexema;
-      int len;
-    } t_id;
-
-    value_info expr_val;
-    void *sense_valor;
-    struct {
-        char *lexema;
-        int lenght;
-        value_info id_val;
-    } t_ident;
-    struct {
-      char *name;
-      data_type type;
-    } t_assignment;
-    struct {
-      data_type type;
-      void *value;
-    } t_expression;
-    struct {
-      oprel_type type;
-    } t_op_rel;
 }
 
 %token <integer> INTEGER_TKN
 %token <real> FLOAT_TKN
-%token <boolean> TRUE FALSE
-%token <t_id> ID_TKN
 %token <string> STRING_TKN
+%token <boolean> TRUE FALSE
+%token <id> ID_TKN
 %token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD AND NOT OR
-%token <t_op_rel> OPREL
+%token <oprel> OPREL
 
-%type <no_value> program
-%type <t_expression> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3
-%type <t_assignment> assignment
+%type <no_value> program sentence
+%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3
+%type <assignment_type> assignment
 
 %start program
 
@@ -77,7 +58,7 @@ expression :
 arithmetic_expression : exp {printf("\tnew arithmetic_expression\n");}
 
 exp :
-  exp1 ADDITION exp
+  exp1 ADDITION exp { printf("new exp bc of addition\n"); }
   | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
   | exp1
 
