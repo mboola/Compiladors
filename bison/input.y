@@ -27,7 +27,6 @@
     struct {
         char *lexema;
         int lenght;
-        int line;
         value_info id_val;
     } t_ident;
     struct {
@@ -48,52 +47,54 @@
 %token <boolean> TRUE FALSE
 %token <t_id> ID_TKN
 %token <string> STRING_TKN
-%token <no_value> NEWLINE ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD AND NOT OR
+%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD AND NOT OR
 %token <t_op_rel> OPREL
 
 %type <no_value> program
-%type <t_expression> expression arithmetic_expression boolean_expression
+%type <t_expression> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3
 %type <t_assignment> assignment
 
 %start program
 
 %%
 
-program : program sentence | sentence
-{
-  //fprintf(yyout, "program -> expressio :\n  expressio = '%s'\n", expression_to_str($1));
-}
+program :
+  program sentence { printf("program is a collection of sentences\n"); }
+  | sentence {printf("program is a sentence\n");}
 
 sentence :
-  arithmetic_expression NEWLINE
-  | boolean_expression NEWLINE
-  | assignment
-{
-  fprintf(yyout, "Sentence.\n");
-}
+  arithmetic_expression NEWLINE_TKN { printf("new sentence with arithmetic_expression\n"); }
+  | boolean_expression NEWLINE_TKN { printf("new sentence with boolean_expression\n"); }
+  | assignment { printf("new sentence with assignment\n"); }
 
-assignment : ID_TKN ASSIGN expression NEWLINE
-{
-  fprintf(yyout, "Assignment.\n");
-}
+assignment : ID_TKN ASSIGN expression NEWLINE_TKN
+{ printf("assignment detected \n"); }
 
-expression : arithmetic_expression | boolean_expression
-{
-  fprintf(yyout, "expression.\n");
-}
+expression :
+  arithmetic_expression { printf("new expression with arithmetic_expression\n"); }
+  | boolean_expression { printf("new sentence with boolean_expression\n"); }
 
-exp : exp1 ADDITION exp | exp1 SUBSTRACTION exp | exp1
+arithmetic_expression : exp {printf("\tnew arithmetic_expression\n");}
 
-exp1 : exp2 MULTIPLICATION exp1 | exp2 DIVISION exp1 | exp2 MOD exp1 | exp2
+exp :
+  exp1 ADDITION exp
+  | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
+  | exp1
+
+exp1 :
+  exp2 MULTIPLICATION exp1
+  | exp2 DIVISION exp1
+  | exp2 MOD exp1
+  | exp2
 
 exp2 : exp3 POWER exp2 | exp3
 
-exp3 : OPENPAR exp CLOSEDPAR | INTEGER_TKN | FLOAT_TKN
-
-arithmetic_expression : exp
-{
-  fprintf(yyout, "arithmetic_expression.\n");
-}
+exp3 :
+  OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n");}
+  | INTEGER_TKN
+  | FLOAT_TKN
+  | ID_TKN
+  | STRING_TKN
 
 bexp : bexp1 OR bexp | bexp1
 

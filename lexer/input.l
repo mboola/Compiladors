@@ -13,6 +13,7 @@ WHITESPACE		[ \t]+
 ID				[a-zA-Z][a-zA-Z0-9]*
 COMENT			"//".*|"#".*
 COMENT_MULT		"/*"([^*]|\*+[^*/])*"*/"
+NEWLINE			"\n"
 STRING			"\""{ID}*"\""
 DIGIT			[0-9]+
 INTEGER			\-?{DIGIT}
@@ -52,11 +53,11 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	if (verbose) printf("ID: %s\n", yytext);
 	return ID_TKN;
 }
-{COMENT}	{
-	if (verbose) printf("COMENTARI: %s\n", yytext);
+{COMENT}{NEWLINE}	{
+	if (verbose) printf("COMENTARI: %s", yytext);
 }
-{COMENT_MULT} {
-	if (verbose) printf("COMENTARI_MULT: %s\n", yytext);
+{COMENT_MULT}{NEWLINE} {
+	if (verbose) printf("COMENTARI_MULT: %s", yytext);
 }
 {STRING}	{
 	if (verbose) printf("Cadena: %s\n", yytext);
@@ -64,20 +65,20 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {WHITESPACE} { /* Ignorem espais en blanc */ }
 
-\n		{
+{NEWLINE}	{
 	if (verbose) printf("Newline detected.\n");
-	return NEWLINE;
+	return NEWLINE_TKN;
 }
 ":="	{
-	if (verbose) printf("Assignation detected\n");
+	if (verbose) printf("Assignation detected.\n");
 	return ASSIGN;
 }
 "("		{
-	if (verbose) printf("Open parenthesis detected");
+	if (verbose) printf("Open parenthesis detected.\n");
 	return OPENPAR;
 }
 ")"		{
-	if (verbose) printf("Closed parenthesis detected");
+	if (verbose) printf("Closed parenthesis detected.\n");
 	return CLOSEDPAR;
 }
 "+"		{
