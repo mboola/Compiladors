@@ -18,17 +18,6 @@ typedef enum {
 	EQUAL
 }	oprel_type;
 
-typedef struct variable_s {
-	char *name;
-	union {
-		int ival;
-		float fval;
-		char *sval;
-		char bval;
-	}	value;
-	data_type type;
-}	variable;
-
 // Struct used to store the possible values
 // of an id.
 //	->lexema stores the 'name' of the variable

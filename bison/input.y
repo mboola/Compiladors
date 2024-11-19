@@ -12,9 +12,9 @@
 }
 
 %union{
-    int integer;
-    float real;
-    char boolean;
+    int *integer;
+    float *real;
+    char *boolean;
     char *string;
     t_id id;
     t_expression expression_type;
@@ -49,35 +49,50 @@ sentence :
   | assignment { if (verbose) printf("new sentence with assignment\n"); }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
-{ if (verbose) printf("assignment detected \n"); }
+{
+  if (verbose) printf("assignment detected \n");
+  if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
+    yyerror("Different type assignation.\n");
+  else
+    printf("Assignation in variable %s of value %d\n", $1.lexema, *(int *)($3.value));
+}
 
 expression :
-  arithmetic_expression { if (verbose) printf("new expression with arithmetic_expression\n"); }
+  arithmetic_expression
+  { if (verbose) printf("new expression with arithmetic_expression\n");
+    $$.type = $1.type;
+    $$.value = $1.value;
+  }
   | boolean_expression { if (verbose) printf("new sentence with boolean_expression\n"); }
 
-arithmetic_expression : exp {if (verbose) printf("\tnew arithmetic_expression\n");}
+arithmetic_expression : exp
+{ if (verbose) printf("\tnew arithmetic_expression\n");
+  $$.type = $1.type;
+  $$.value = $1.value;
+}
 
 exp :
   exp1 ADDITION exp { if (verbose) printf("new exp bc of addition\n"); }
   | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
   | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
   | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
-  | exp1
+  | exp1 {$$.type = $1.type; $$.value = $1.value;}
 
 exp1 :
   exp2 MULTIPLICATION exp1
   | exp2 DIVISION exp1
   | exp2 MOD exp1
-  | exp2
+  | exp2 {$$.type = $1.type; $$.value = $1.value;}
 
-exp2 : exp3 POWER exp2 | exp3
+exp2 : exp3 POWER exp2
+  | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :
   OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n");}
-  | INTEGER_TKN
-  | FLOAT_TKN
-  | ID_TKN
-  | STRING_TKN
+  | INTEGER_TKN { $$.type = INT_TYPE; $$.value = $1; }
+  | FLOAT_TKN {$$.type = FLOAT_TYPE; $$.value = $1;}
+  | ID_TKN {$$.type = $1.type; $$.value = $1.value;}
+  | STRING_TKN {$$.type = STRING_TYPE; $$.value = $1;}
 
 bexp : bexp1 OR bexp | bexp1
 
