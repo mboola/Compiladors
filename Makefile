@@ -9,6 +9,7 @@ INPUT_DIR = tests_input
 INCLUDE = include
 LEXER_DIR = lexer
 YACC_DIR = bison
+SYMTAB_DIR = symtab
 
 # Source Files
 SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c
@@ -24,6 +25,9 @@ SRC_YACC = ${YACC_DIR}/input.y
 YACC_OUTPUT_C = input.tab.c
 YACC_OUTPUT_H = input.tab.h
 
+# Symtab
+SYMTAB = ${SYMTAB_DIR}/symtab.c
+
 #
 BIN = compiler_program
 TEST = ${INPUT_DIR}/exe_input
@@ -33,9 +37,12 @@ EXE_OUTPUT = result
 OTHER = input.output
 
 #
-all: lex yacc
+all: symtab.o lex yacc
 	@$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN)
 	@echo "Compilation completed!"
+
+symtab.o: ${SYMTAB}
+	@${CC} ${CFLAGS} -c $< -I $(INCLUDE)
 
 lex:
 	@$(LEX) -o ${LEX_OUTPUT} $(SRC_LEX)
@@ -55,6 +62,6 @@ test_parser:
 	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
 
 clean:
-	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${INCLUDE}/${YACC_OUTPUT_H} ${OTHER}
+	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${INCLUDE}/${YACC_OUTPUT_H} symtab.o ${OTHER}
 
 re: clean all

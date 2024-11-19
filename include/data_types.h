@@ -1,21 +1,12 @@
 #ifndef DATA_TYPES_H
 # define DATA_TYPES_H
 
-#define STR_MAX_LENGTH 200
-
-extern char	verbose;
-extern FILE	*yyin;
-extern FILE	*yyout;
-extern int	yylex();
-extern int	yyparse();
-extern void	yyerror(char*);
-extern int yylineno;
-
 typedef enum {
 	UNKNOWN_TYPE,
 	INT_TYPE,
 	FLOAT_TYPE,
 	STRING_TYPE,
+	BOOLEAN_TYPE
 }	data_type;
 
 typedef enum {
@@ -27,11 +18,16 @@ typedef enum {
 	EQUAL
 }	oprel_type;
 
-typedef struct {
-	data_type val_type;
-	int val_int;
-	float val_float;
-}	value_info;
+typedef struct variable_s {
+	char *name;
+	union {
+		int ival;
+		float fval;
+		char *sval;
+		char bval;
+	}	value;
+	data_type type;
+}	variable;
 
 // Struct used to store the possible values
 // of an id.
@@ -62,7 +58,5 @@ typedef struct {
 	char *name;
 	data_type type;
 }	t_assignment;
-
-
 
 #endif

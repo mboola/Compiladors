@@ -1,6 +1,7 @@
 #include "helper_functions.h"
 #include <string.h>
 
+/*
 char	*value_info_to_str(value_info value)
 {
 	char buffer[STR_MAX_LENGTH];
@@ -27,7 +28,7 @@ char	*type_to_str(data_type val_type)
 	else
 		return strdup("Error: incorrect value for 'val_type'");
 }
-
+*/
 void	yyerror(char *explanation)
 {
 	fprintf(stderr, "Error: %s , in line %d\n", explanation, yylineno);

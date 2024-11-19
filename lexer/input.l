@@ -1,5 +1,6 @@
 %{
 	#include "helper_functions.h"
+	#include "symtab.h"
 	#include "input.tab.h"
 %}
 
@@ -23,18 +24,22 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 
 {INTEGER}	{
 	if (verbose) printf("Integer: %s\n", yytext);
+	yylval.integer = atoi(yytext);
 	return INTEGER_TKN;
 }
 {FLOAT}		{
 	if (verbose) printf("Float: %s\n", yytext);
+	yylval.real = atof(yytext);
 	return FLOAT_TKN;
 }
 "True"		{
 	if (verbose) printf("Boolean: %s\n", yytext);
+	yylval.boolean = 1;
 	return TRUE;
 }
 "False"		{
 	if (verbose) printf("Boolean: %s\n", yytext);
+	yylval.boolean = 0;
 	return FALSE;
 }
 "not"	{
@@ -51,6 +56,9 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {ID}		{
 	if (verbose) printf("ID: %s\n", yytext);
+	yylval.id.lexema = strdup(yytext);
+	yylval.id.type = UNKNOWN_TYPE;
+	yylval.id.value = NULL;
 	return ID_TKN;
 }
 {COMENT}{NEWLINE}	{
@@ -61,6 +69,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {STRING}	{
 	if (verbose) printf("Cadena: %s\n", yytext);
+	yylval.string = strdup(yytext);
 	return STRING_TKN;
 }
 {WHITESPACE} { /* Ignorem espais en blanc */ }
@@ -107,26 +116,32 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 "<="	{
 	if (verbose) printf("LESEQ detected\n");
+	yylval.oprel.type = LESEQ;
 	return OPREL;
 }
 ">="	{
 	if (verbose) printf("BIGEQ detected\n");
+	yylval.oprel.type = BIGEQ;
 	return OPREL;
 }
 "<>"	{
 	if (verbose) printf("NOTEQ detected\n");
+	yylval.oprel.type = NOTEQ;
 	return OPREL;
 }
 "<"		{
 	if (verbose) printf("LESSER detected\n");
+	yylval.oprel.type = LESSER;
 	return OPREL;
 }
 ">"		{
 	if (verbose) printf("BIGGER detected\n");
+	yylval.oprel.type = BIGGER;
 	return OPREL;
 }
 "="		{
 	if (verbose) printf("EQUAL detected\n");
+	yylval.oprel.type = EQUAL;
 	return OPREL;
 }
 

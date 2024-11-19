@@ -40,26 +40,28 @@
 %%
 
 program :
-  program sentence { printf("program is a collection of sentences\n"); }
-  | sentence {printf("program is a sentence\n");}
+  program sentence { if (verbose) printf("program is a collection of sentences\n"); }
+  | sentence { if (verbose) printf("program is a sentence\n");}
 
 sentence :
-  arithmetic_expression NEWLINE_TKN { printf("new sentence with arithmetic_expression\n"); }
-  | boolean_expression NEWLINE_TKN { printf("new sentence with boolean_expression\n"); }
-  | assignment { printf("new sentence with assignment\n"); }
+  arithmetic_expression NEWLINE_TKN { if (verbose) printf("new sentence with arithmetic_expression\n"); }
+  | boolean_expression NEWLINE_TKN { if (verbose) printf("new sentence with boolean_expression\n"); }
+  | assignment { if (verbose) printf("new sentence with assignment\n"); }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
-{ printf("assignment detected \n"); }
+{ if (verbose) printf("assignment detected \n"); }
 
 expression :
-  arithmetic_expression { printf("new expression with arithmetic_expression\n"); }
-  | boolean_expression { printf("new sentence with boolean_expression\n"); }
+  arithmetic_expression { if (verbose) printf("new expression with arithmetic_expression\n"); }
+  | boolean_expression { if (verbose) printf("new sentence with boolean_expression\n"); }
 
-arithmetic_expression : exp {printf("\tnew arithmetic_expression\n");}
+arithmetic_expression : exp {if (verbose) printf("\tnew arithmetic_expression\n");}
 
 exp :
-  exp1 ADDITION exp { printf("new exp bc of addition\n"); }
+  exp1 ADDITION exp { if (verbose) printf("new exp bc of addition\n"); }
   | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
+  | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
+  | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
   | exp1
 
 exp1 :
