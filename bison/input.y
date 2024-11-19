@@ -53,7 +53,18 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
   if (verbose) printf("assignment detected \n");
   if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
     yyerror("Different type assignation.\n");
-  else
+  if ($1.type == UNKNOWN_TYPE)
+  {
+    $1.type = $3.type;
+    $1.value = $3.value;
+  }
+  else if ($1.type == INT_TYPE)
+    printf("Assignation in variable %s of value %d\n", $1.lexema, *(int *)($3.value));
+  else if ($1.type == FLOAT_TYPE)
+    printf("Assignation in variable %s of value %f\n", $1.lexema, *(float *)($3.value));
+  else if ($1.type == STRING_TYPE)
+    printf("Assignation in variable %s of value %s\n", $1.lexema, (char *)$3.value);
+  else if ($1.type == BOOLEAN_TYPE)
     printf("Assignation in variable %s of value %d\n", $1.lexema, *(int *)($3.value));
 }
 
@@ -88,11 +99,11 @@ exp2 : exp3 POWER exp2
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :
-  OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n");}
-  | INTEGER_TKN { $$.type = INT_TYPE; $$.value = $1; }
-  | FLOAT_TKN {$$.type = FLOAT_TYPE; $$.value = $1;}
-  | ID_TKN {$$.type = $1.type; $$.value = $1.value;}
-  | STRING_TKN {$$.type = STRING_TYPE; $$.value = $1;}
+  OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n"); assign_expression(&($$), $2.type, $2.value); }
+  | INTEGER_TKN { assign_expression(&($$), INT_TYPE, $1); }
+  | FLOAT_TKN { assign_expression(&($$), FLOAT_TYPE, $1); }
+  | ID_TKN { assign_expression(&($$), $1.type, $1.value); }
+  | STRING_TKN { assign_expression(&($$), STRING_TYPE, $1); }
 
 bexp : bexp1 OR bexp | bexp1
 

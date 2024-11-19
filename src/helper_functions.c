@@ -29,6 +29,13 @@ char	*type_to_str(data_type val_type)
 		return strdup("Error: incorrect value for 'val_type'");
 }
 */
+
+void	assign_expression(t_expression *exp, int type, void *value)
+{
+	exp->type = type;
+	exp->value = value;
+}
+
 void	yyerror(char *explanation)
 {
 	fprintf(stderr, "Error: %s , in line %d\n", explanation, yylineno);

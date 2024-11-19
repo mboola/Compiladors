@@ -15,6 +15,7 @@ extern int yylineno;
 
 //char	*type_to_str(data_type val_type);
 //char	*value_info_to_str(value_info value);
+void	assign_expression(t_expression *exp, int type, void *value);
 void	yyerror(char *explanation);
 
 #endif
