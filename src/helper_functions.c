@@ -1,34 +1,101 @@
 #include "helper_functions.h"
 #include <string.h>
 
-/*
-char	*value_info_to_str(value_info value)
+void	initialize_id(t_id *id, char *yytext)
 {
-	char buffer[STR_MAX_LENGTH];
+	t_id	*id_to_search;
 
-	if (value.val_type == UNKNOWN_TYPE)
-		sprintf(buffer, "Unknown value type");
-	else if (value.val_type == INT_TYPE)
-		sprintf(buffer, "Integer: %d", value.val_int);
-	else if (value.val_type == FLOAT_TYPE)
-		sprintf(buffer, "Float: %f", value.val_float);
+	if (sym_lookup(yytext, &id_to_search) == SYMTAB_NOT_FOUND)
+	{
+		id->lexema = strdup(yytext);
+		id->type = UNKNOWN_TYPE;
+		id->value = NULL;
+		sym_add(id->lexema, &id);
+	}
 	else
-		sprintf(buffer, "Error: incorrect value for 'value.val_type'");
-	return strdup(buffer);
+	{
+		id->lexema = id_to_search->lexema;
+		id->type = id_to_search->type;
+		id->value = id_to_search->value;
+	}
 }
 
-char	*type_to_str(data_type val_type)
+void	get_id(t_id *id)
 {
-	if (val_type == UNKNOWN_TYPE)
-		return strdup("Unknown type");
-	else if (val_type == INT_TYPE)
-		return strdup("Integer");
-	else if (val_type == FLOAT_TYPE)
-		return strdup("Float");
+	t_id	*id_to_search;
+	if (sym_lookup(id->lexema, &id_to_search) == SYMTAB_NOT_FOUND)
+	{
+		// Something must have gone wrong, it should exist inside
+		printf("ERROR\n");
+		exit(0);
+	}
 	else
-		return strdup("Error: incorrect value for 'val_type'");
+	{
+		id->lexema = id_to_search->lexema;
+		id->type = id_to_search->type;
+		id->value = id_to_search->value;
+	}
 }
-*/
+
+void	update_id(t_id *id)
+{
+	t_id	*id_to_search;
+	printf("Searching %s\n", id->lexema);
+	if (sym_lookup(id->lexema, &id_to_search) == SYMTAB_NOT_FOUND)
+	{
+		// Something must have gone wrong, it should exist inside
+		printf("ERROR\n");
+		exit(0);
+	}
+	else
+	{
+		id_to_search->lexema = id->lexema;
+		id_to_search->type = id->type;
+		id_to_search->value = id->value;
+	}
+}
+
+void	print_id(t_id *id)
+{
+	printf("Printing id %s: ", id->lexema);
+	switch (id->type)
+	{
+		case UNKNOWN_TYPE:
+			printf("Unknown type.\n");
+			break;
+		case INT_TYPE:
+			printf("(Int type-> %d).\n", *(int *)id->value);
+			break;
+		case FLOAT_TYPE:
+			printf("(Float type-> %f).\n", *(float *)id->value);
+			break;
+		case STRING_TYPE:
+			printf("(String type-> %s).\n", (char *)id->value);
+			break;
+		case BOOLEAN_TYPE:
+			printf("(Bool type-> %d).\n", *(char *)id->value);
+			break;
+	}
+}
+
+void	addition(t_expression *result, t_expression first_exp, t_expression second_exp)
+{
+	switch (first_exp.type)
+	{
+		case INT_TYPE:
+			if (second_exp.type == INT_TYPE)
+			{
+				result->type = INT_TYPE;
+				*(int *)(result->value) = *(int *)first_exp.value + *(int *)second_exp.value;
+			}
+			break;
+		case UNKNOWN_TYPE:
+		case FLOAT_TYPE:
+		case STRING_TYPE:
+		case BOOLEAN_TYPE:
+			break;
+	}
+}
 
 void	assign_expression(t_expression *exp, int type, void *value)
 {

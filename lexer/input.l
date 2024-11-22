@@ -1,6 +1,5 @@
 %{
 	#include "helper_functions.h"
-	#include "symtab.h"
 	#include "input.tab.h"
 %}
 
@@ -68,9 +67,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {ID}		{
 	if (verbose) printf("ID: %s\n", yytext);
-	yylval.id.lexema = strdup(yytext);
-	yylval.id.type = UNKNOWN_TYPE;
-	yylval.id.value = NULL;
+	initialize_id(&yylval.id, yytext);
 	return ID_TKN;
 }
 {COMENT}{NEWLINE}	{

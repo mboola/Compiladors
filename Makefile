@@ -38,7 +38,7 @@ OTHER = input.output
 
 #
 all: symtab.o lex yacc
-	@$(CC) $(CFLAGS) $(SRC_FILE) $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN)
+	@$(CC) $(CFLAGS) $(SRC_FILE) symtab.o $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN)
 	@echo "Compilation completed!"
 
 symtab.o: ${SYMTAB}

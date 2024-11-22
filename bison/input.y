@@ -58,14 +58,8 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
     $1.type = $3.type;
     $1.value = $3.value;
   }
-  else if ($1.type == INT_TYPE)
-    printf("Assignation in variable %s of value %d\n", $1.lexema, *(int *)($3.value));
-  else if ($1.type == FLOAT_TYPE)
-    printf("Assignation in variable %s of value %f\n", $1.lexema, *(float *)($3.value));
-  else if ($1.type == STRING_TYPE)
-    printf("Assignation in variable %s of value %s\n", $1.lexema, (char *)$3.value);
-  else if ($1.type == BOOLEAN_TYPE)
-    printf("Assignation in variable %s of value %d\n", $1.lexema, *(int *)($3.value));
+  update_id(&$1);
+  print_id(&$1);
 }
 
 expression :
@@ -83,7 +77,7 @@ arithmetic_expression : exp
 }
 
 exp :
-  exp1 ADDITION exp { if (verbose) printf("new exp bc of addition\n"); }
+  exp1 ADDITION exp { if (verbose) printf("new exp bc of addition\n"); addition(&$$, $1, $3); }
   | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
   | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
   | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
@@ -102,7 +96,7 @@ exp3 :
   OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n"); assign_expression(&($$), $2.type, $2.value); }
   | INTEGER_TKN { assign_expression(&($$), INT_TYPE, $1); }
   | FLOAT_TKN { assign_expression(&($$), FLOAT_TYPE, $1); }
-  | ID_TKN { assign_expression(&($$), $1.type, $1.value); }
+  | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); print_id(&$1); }
   | STRING_TKN { assign_expression(&($$), STRING_TYPE, $1); }
 
 bexp : bexp1 OR bexp | bexp1

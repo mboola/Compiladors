@@ -1,2 +1,2 @@
-i := ("testing")
-i := "test2"
+i := 100
+i := i + 1
