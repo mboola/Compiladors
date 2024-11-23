@@ -51,13 +51,13 @@ sentence :
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
   if (verbose) printf("assignment detected \n");
-  if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
-    yyerror("Different type assignation.\n");
-  if ($1.type == UNKNOWN_TYPE)
+  if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
   {
     $1.type = $3.type;
     $1.value = $3.value;
   }
+  if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
+    yyerror("Different type assignation.\n");
   update_id(&$1);
   print_id(&$1);
 }
@@ -74,6 +74,7 @@ arithmetic_expression : exp
 { if (verbose) printf("\tnew arithmetic_expression\n");
   $$.type = $1.type;
   $$.value = $1.value;
+  print_expression(&$$);
 }
 
 exp :

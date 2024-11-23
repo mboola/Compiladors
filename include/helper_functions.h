@@ -26,4 +26,6 @@ void	update_id(t_id *id);
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	substraction(t_expression *result, t_expression first_exp, t_expression second_exp);
 
+void	print_expression(t_expression *exp);
+
 #endif
