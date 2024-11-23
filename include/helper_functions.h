@@ -1,7 +1,7 @@
 #ifndef HELPER_FUNCTIONS_H
 # define HELPER_FUNCTIONS_H
 
-# include "symtab.h"
+# include "data_types.h"
 # include <stdio.h>
 # include <stdlib.h>
 
@@ -27,10 +27,15 @@ void	get_id(t_id *id);
 void	print_id(t_id *id);
 void	update_id(t_id *id);
 
-void	addition(t_expression *result, t_expression first_exp, t_expression second_exp);
-void	substraction(t_expression *result, t_expression first_exp, t_expression second_exp);
-
 void	print_expression(t_expression exp);
 void	print_assignment(t_assignment assign);
+
+// Arithmetic operations
+void	addition(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	substraction(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	multiplication(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	division(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	modulation(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	power(t_expression *result, t_expression first_exp, t_expression second_exp);
 
 #endif

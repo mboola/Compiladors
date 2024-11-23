@@ -23,33 +23,25 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 
 {INTEGER}	{
 	if (lexer_verbose) printf("Integer: %s\n", yytext);
-	yylval.integer = malloc(sizeof(int));
-	if (yylval.integer == NULL)
-		yyerror("Malloc error");
+	yylval.integer = yymalloc(sizeof(int));
 	*(yylval.integer) = atoi(yytext);
 	return INTEGER_TKN;
 }
 {FLOAT}		{
 	if (lexer_verbose) printf("Float: %s\n", yytext);
-	yylval.real = malloc(sizeof(float));
-	if (yylval.real == NULL)
-		yyerror("Malloc error");
+	yylval.real = yymalloc(sizeof(float));
 	*(yylval.real) = atof(yytext);
 	return FLOAT_TKN;
 }
 "True"		{
 	if (lexer_verbose) printf("Boolean: %s\n", yytext);
-	yylval.boolean = malloc(sizeof(char));
-	if (yylval.boolean == NULL)
-		yyerror("Malloc error");
+	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 1;
 	return TRUE;
 }
 "False"		{
 	if (lexer_verbose) printf("Boolean: %s\n", yytext);
-	yylval.boolean = malloc(sizeof(char));
-	if (yylval.boolean == NULL)
-		yyerror("Malloc error");
+	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 0;
 	return FALSE;
 }

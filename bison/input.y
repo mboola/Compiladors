@@ -83,12 +83,12 @@ exp :
   | exp1 {$$.type = $1.type; $$.value = $1.value;}
 
 exp1 :
-  exp2 MULTIPLICATION exp1
-  | exp2 DIVISION exp1
-  | exp2 MOD exp1
+  exp2 MULTIPLICATION exp1 { multiplication(&$$, $1, $3); }
+  | exp2 DIVISION exp1 { division(&$$, $1, $3); }
+  | exp2 MOD exp1 { modulation(&$$, $1, $3); }
   | exp2 {$$.type = $1.type; $$.value = $1.value;}
 
-exp2 : exp3 POWER exp2
+exp2 : exp3 POWER exp2 { power(&$$, $1, $3); }
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :

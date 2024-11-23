@@ -1,5 +1,6 @@
 #include "helper_functions.h"
 #include <string.h>
+#include <math.h>
 
 static char	*strjoin(const char *str1, const char *str2)
 {
@@ -117,6 +118,178 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 			break;
 		case UNKNOWN_TYPE:
 			yyerror("Cannot substract: First operator has UNKNOWN_TYPE.");
+			break;
+	}
+}
+
+void	multiplication(t_expression *result, t_expression first_exp, t_expression second_exp)
+{
+	switch (first_exp.type)
+	{
+		case INT_TYPE:
+			if (second_exp.type == INT_TYPE)
+				*(int *)(result->value) = *(int *)first_exp.value * *(int *)second_exp.value;
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot multiplicate INT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot multiplicate INT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot multiplicate INT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == FLOAT_TYPE)
+				yyerror("Cannot multiplicate INT_TYPE with FLOAT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case FLOAT_TYPE:
+			if (second_exp.type == FLOAT_TYPE)
+				*(float *)(result->value) = *(float *)first_exp.value * *(float *)second_exp.value;
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot multiplicate FLOAT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot multiplicate FLOAT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot multiplicate FLOAT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == INT_TYPE)
+				yyerror("Cannot multiplicate FLOAT_TYPE with INT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot multiplicate: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot multiplicate: First operator has BOOLEAN_TYPE.");
+			break;
+		case UNKNOWN_TYPE:
+			yyerror("Cannot multiplicate: First operator has UNKNOWN_TYPE.");
+			break;
+	}
+}
+
+void	division(t_expression *result, t_expression first_exp, t_expression second_exp)
+{
+	switch (first_exp.type)
+	{
+		case INT_TYPE:
+			if (second_exp.type == INT_TYPE)
+				*(int *)(result->value) = *(int *)first_exp.value / *(int *)second_exp.value;
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot divide INT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot divide INT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == FLOAT_TYPE)
+				yyerror("Cannot divide INT_TYPE with FLOAT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case FLOAT_TYPE:
+			if (second_exp.type == FLOAT_TYPE)
+				*(float *)(result->value) = *(float *)first_exp.value / *(float *)second_exp.value;
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == INT_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with INT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot divide: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot divide: First operator has BOOLEAN_TYPE.");
+			break;
+		case UNKNOWN_TYPE:
+			yyerror("Cannot divide: First operator has UNKNOWN_TYPE.");
+			break;
+	}
+}
+
+void	modulation(t_expression *result, t_expression first_exp, t_expression second_exp)
+{
+	switch (first_exp.type)
+	{
+		case INT_TYPE:
+			if (second_exp.type == INT_TYPE)
+				*(int *)(result->value) = *(int *)first_exp.value % *(int *)second_exp.value;
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot modulate INT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot modulate INT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot modulate INT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == FLOAT_TYPE)
+				yyerror("Cannot modulate INT_TYPE with FLOAT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case FLOAT_TYPE:
+			yyerror("Cannot modulate: First operator has FLOAT_TYPE.");
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot modulate: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot modulate: First operator has BOOLEAN_TYPE.");
+			break;
+		case UNKNOWN_TYPE:
+			yyerror("Cannot modulate: First operator has UNKNOWN_TYPE.");
+			break;
+	}
+}
+
+static int	powi(int i, int j)
+{
+	int	result;
+
+	if (i < 0 || j < 0)
+		return 0;
+	result = i;
+	for (int k = 0; k < j; k++)
+	{
+		result = result * j;
+	}
+	return result;
+}
+
+void	power(t_expression *result, t_expression first_exp, t_expression second_exp)
+{
+	switch (first_exp.type)
+	{
+		case INT_TYPE:
+			if (second_exp.type == INT_TYPE)
+				*(int *)(result->value) = powi(*(int *)first_exp.value, *(int *)second_exp.value);
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot divide INT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot divide INT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == FLOAT_TYPE)
+				yyerror("Cannot divide INT_TYPE with FLOAT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case FLOAT_TYPE:
+			if (second_exp.type == FLOAT_TYPE)
+				*(float *)(result->value) = powf(*(float *)first_exp.value, *(float *)second_exp.value);
+			else if (second_exp.type == STRING_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with STRING_TYPE.");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with UNKNOWN_TYPE.");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
+			else if (second_exp.type == INT_TYPE)
+				yyerror("Cannot divide FLOAT_TYPE with INT_TYPE.");
+			result->type = second_exp.type;
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot divide: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot divide: First operator has BOOLEAN_TYPE.");
+			break;
+		case UNKNOWN_TYPE:
+			yyerror("Cannot divide: First operator has UNKNOWN_TYPE.");
 			break;
 	}
 }

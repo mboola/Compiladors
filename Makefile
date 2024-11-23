@@ -12,7 +12,8 @@ YACC_DIR = bison
 SYMTAB_DIR = symtab
 
 # Source Files
-SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c ${SRC_DIR}/arithmetic_operations.c
+SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c \
+			${SRC_DIR}/arithmetic_operations.c ${SRC_DIR}/id_functions.c
 
 # Flex
 LEX = flex
@@ -38,7 +39,7 @@ OTHER = input.output
 
 #
 all: symtab.o lex yacc
-	@$(CC) $(CFLAGS) $(SRC_FILE) symtab.o $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN)
+	@$(CC) $(CFLAGS) $(SRC_FILE) symtab.o $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN) -lm
 	@echo "Compilation completed!"
 
 symtab.o: ${SYMTAB}
