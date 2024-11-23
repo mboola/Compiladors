@@ -1,0 +1,9 @@
+// Initialize boolean value
+bool1 := True
+bool2 := True
+// Boolean expressions
+res := 1 < 2
+res := 2 < 1
+res := 2 > 1
+res := 1 > 1
+res := 1 <= 2

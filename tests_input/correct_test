@@ -1,9 +1,0 @@
-i := 100
-i := i + 1
-i := i + 2 + 3
-j := "test"
-j := i + "testing"
-k := i
-i + 1
-i + 2
-i := i

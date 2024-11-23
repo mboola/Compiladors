@@ -32,7 +32,7 @@
 %token <oprel> OPREL
 
 %type <no_value> program sentence
-%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3
+%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3
 %type <assignment_type> assignment
 
 %start program
@@ -62,18 +62,11 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 }
 
 expression :
-  arithmetic_expression
-  {
-    $$.type = $1.type;
-    $$.value = $1.value;
-  }
-  | boolean_expression { if (parser_verbose) printf("new sentence with boolean_expression\n"); }
+  arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
+  | boolean_expression { $$.type = $1.type; $$.value = $1.value; }
 
-arithmetic_expression : exp
-{
-  $$.type = $1.type;
-  $$.value = $1.value;
-}
+arithmetic_expression :
+  exp { $$.type = $1.type; $$.value = $1.value; }
 
 exp :
   exp1 ADDITION exp { addition(&$$, $1, $3); }
@@ -88,7 +81,8 @@ exp1 :
   | exp2 MOD exp1 { modulation(&$$, $1, $3); }
   | exp2 {$$.type = $1.type; $$.value = $1.value;}
 
-exp2 : exp3 POWER exp2 { power(&$$, $1, $3); }
+exp2 :
+  exp3 POWER exp2 { power(&$$, $1, $3); }
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :
@@ -98,15 +92,25 @@ exp3 :
   | STRING_TKN { $$.type = STRING_TYPE; $$.value = $1; }
   | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
 
-bexp : bexp1 OR bexp | bexp1
+bexp :
+  bexp1 OR bexp
+  | bexp1 { $$.type = $1.type; $$.value = $1.value; }
 
-bexp1 : bexp2 AND bexp1 | bexp2
+bexp1 :
+  bexp2 AND bexp1
+  | bexp2 { $$.type = $1.type; $$.value = $1.value; }
 
-bexp2 : bexp3 NOT bexp2 | bexp3
+bexp2 :
+  bexp3 NOT bexp2
+  | bexp3 { $$.type = $1.type; $$.value = $1.value; }
 
-bexp3 : arithmetic_expression OPREL arithmetic_expression | TRUE | FALSE
+bexp3 :
+  arithmetic_expression OPREL arithmetic_expression { compare(&$$, $1, $2, $3); }
+  | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
+  | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
 
-boolean_expression : bexp
+boolean_expression :
+  bexp
 {
   fprintf(yyout, "boolean_expression.\n");
 }

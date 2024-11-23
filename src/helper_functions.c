@@ -17,6 +17,12 @@ void	yyerror(char *explanation)
 	exit(0);
 }
 
+char	*str_convert(char *yytext)
+{
+	*(yytext + strlen(yytext) - 1) = '\0';
+	return strdup(++yytext);
+}
+
 void	assign_expression(t_expression *exp, int type, void *value)
 {
 	switch (type)

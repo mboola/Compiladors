@@ -22,6 +22,8 @@ void    *yymalloc(size_t size);
 void	assign_expression(t_expression *exp, int type, void *value);
 void	yyerror(char *explanation);
 
+char	*str_convert(char *yytext);
+
 void	initialize_id(t_id *id, char *yytext);
 void	get_id(t_id *id);
 void	print_id(t_id *id);
@@ -37,5 +39,8 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 void	division(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	modulation(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	power(t_expression *result, t_expression first_exp, t_expression second_exp);
+
+// Boolean operations
+void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp);
 
 #endif

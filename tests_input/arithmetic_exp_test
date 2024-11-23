@@ -1,0 +1,25 @@
+// Initialized values
+i := 100
+j := 50
+// Addition
+add1 := i + j
+// Substraction
+sub1 := i - j
+sub2 := j - i
+// Concatenation
+str1 := "hello"
+str2 := "world"
+helloworld := str1 + str2
+// Should not update
+i + i
+// Should update
+i := i + 1
+// Division and module
+div := i / j
+mod := i % j
+// Multiplication and power
+mul := i * j
+pow := i ** j
+// Mixed
+mix1 := i + j / 2
+mix2 := 2 ** 2

@@ -70,7 +70,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {STRING}	{
 	if (lexer_verbose) printf("Cadena: %s\n", yytext);
-	yylval.string = strdup(yytext);
+	yylval.string = str_convert(yytext);
 	return STRING_TKN;
 }
 {WHITESPACE} { /* Ignorem espais en blanc */ }

@@ -247,7 +247,7 @@ static int	powi(int i, int j)
 	result = i;
 	for (int k = 0; k < j; k++)
 	{
-		result = result * j;
+		result = result * i;
 	}
 	return result;
 }
