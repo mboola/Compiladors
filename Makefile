@@ -12,7 +12,7 @@ YACC_DIR = bison
 SYMTAB_DIR = symtab
 
 # Source Files
-SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c
+SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c ${SRC_DIR}/arithmetic_operations.c
 
 # Flex
 LEX = flex

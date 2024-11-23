@@ -15,6 +15,8 @@ extern int	yyparse();
 extern void	yyerror(char*);
 extern int yylineno;
 
+void    *yymalloc(size_t size);
+
 //char	*type_to_str(data_type val_type);
 //char	*value_info_to_str(value_info value);
 void	assign_expression(t_expression *exp, int type, void *value);

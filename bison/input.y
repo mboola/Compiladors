@@ -63,22 +63,21 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 
 expression :
   arithmetic_expression
-  { if (parser_verbose) printf("new expression with arithmetic_expression\n");
+  {
     $$.type = $1.type;
     $$.value = $1.value;
   }
   | boolean_expression { if (parser_verbose) printf("new sentence with boolean_expression\n"); }
 
 arithmetic_expression : exp
-{ if (parser_verbose) printf("\tnew arithmetic_expression\n");
+{
   $$.type = $1.type;
   $$.value = $1.value;
-  print_expression($$);
 }
 
 exp :
-  exp1 ADDITION exp { if (parser_verbose) printf("new exp bc of addition\n"); addition(&$$, $1, $3); }
-  | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
+  exp1 ADDITION exp { addition(&$$, $1, $3); }
+  | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
   | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
   | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
   | exp1 {$$.type = $1.type; $$.value = $1.value;}
@@ -93,11 +92,11 @@ exp2 : exp3 POWER exp2
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :
-  OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n"); assign_expression(&($$), $2.type, $2.value); }
-  | INTEGER_TKN { assign_expression(&($$), INT_TYPE, $1); }
-  | FLOAT_TKN { assign_expression(&($$), FLOAT_TYPE, $1); }
+  OPENPAR exp CLOSEDPAR { $$.type = $2.type; $$.value = $2.value; }
+  | INTEGER_TKN { $$.type = INT_TYPE; $$.value = $1; }
+  | FLOAT_TKN { $$.type = FLOAT_TYPE; $$.value = $1; }
+  | STRING_TKN { $$.type = STRING_TYPE; $$.value = $1; }
   | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
-  | STRING_TKN { assign_expression(&($$), STRING_TYPE, $1); }
 
 bexp : bexp1 OR bexp | bexp1
 
