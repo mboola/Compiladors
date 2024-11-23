@@ -27,6 +27,7 @@ void	initialize_id(t_id *id, char *yytext)
 void	get_id(t_id *id)
 {
 	t_id	*id_to_search;
+
 	if (sym_lookup(id->lexema, &id_to_search) == SYMTAB_NOT_FOUND)
 	{
 		// Something must have gone wrong, it should exist inside
@@ -44,7 +45,7 @@ void	get_id(t_id *id)
 void	update_id(t_id *id)
 {
 	t_id	*id_to_search;
-	printf("Searching %s\n", id->lexema);
+
 	if (sym_lookup(id->lexema, &id_to_search) == SYMTAB_NOT_FOUND)
 	{
 		// Something must have gone wrong, it should exist inside
@@ -82,28 +83,6 @@ void	print_id(t_id *id)
 	}
 }
 
-void	print_expression(t_expression *exp)
-{
-	switch (exp->type)
-	{
-		case UNKNOWN_TYPE:
-			printf("Unknown type.\n");
-			break;
-		case INT_TYPE:
-			printf("(Int type-> %d).\n", *(int *)exp->value);
-			break;
-		case FLOAT_TYPE:
-			printf("(Float type-> %f).\n", *(float *)exp->value);
-			break;
-		case STRING_TYPE:
-			printf("(String type-> %s).\n", (char *)exp->value);
-			break;
-		case BOOLEAN_TYPE:
-			printf("(Bool type-> %d).\n", *(char *)exp->value);
-			break;
-	}
-}
-
 static char	*strjoin(const char *str1, const char *str2)
 {
 	char *dst = malloc(strlen(str1) + strlen(str2) + 1);
@@ -117,8 +96,8 @@ static char	*strjoin(const char *str1, const char *str2)
 
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
-	print_expression(&first_exp);
-	print_expression(&second_exp);
+	print_expression(first_exp);
+	print_expression(second_exp);
 	switch (first_exp.type)
 	{
 		case INT_TYPE:
@@ -130,8 +109,12 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 				sprintf(str, "%d", *(int *)first_exp.value);
 				result->value = strjoin(strdup(str), (char *)second_exp.value);
 			}
-			else
-				yyerror("Operation type not supported.\n");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot add INT_TYPE with UNKNOWN_TYPE.\n");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot add INT_TYPE with BOOLEAN_TYPE.\n");
+			else if (second_exp.type == FLOAT_TYPE)
+				yyerror("Cannot add INT_TYPE with FLOAT_TYPE.\n");
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -143,8 +126,12 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 				sprintf(str, "%f", *(float *)first_exp.value);
 				result->value = strjoin(strdup(str), (char *)second_exp.value);
 			}
-			else
-				yyerror("Operation type not supported.\n");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot add FLOAT_TYPE with UNKNOWN_TYPE.\n");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot add FLOAT_TYPE with BOOLEAN_TYPE.\n");
+			else if (second_exp.type == INT_TYPE)
+				yyerror("Cannot add FLOAT_TYPE with INT_TYPE.\n");
 			result->type = second_exp.type;
 			break;
 		case STRING_TYPE: // Always concatenate
@@ -162,13 +149,17 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 				sprintf(str, "%f", *(float *)second_exp.value);
 				result->value = strjoin((char *)first_exp.value, strdup(str));
 			}
-			else
-				yyerror("Operation type not supported.\n");
+			else if (second_exp.type == UNKNOWN_TYPE)
+				yyerror("Cannot add STRING_TYPE with UNKNOWN_TYPE.\n");
+			else if (second_exp.type == BOOLEAN_TYPE)
+				yyerror("Cannot add STRING_TYPE with BOOLEAN_TYPE.\n");
 			result->type = STRING_TYPE;
 			break;
 		case BOOLEAN_TYPE:
+			yyerror("First operator has BOOLEAN_TYPE in addition.\n");
+			break;
 		case UNKNOWN_TYPE:
-			yyerror("Operation type not supported4.\n");
+			yyerror("First operator has UNKNOWN_TYPE in addition.\n");
 			break;
 	}
 }
@@ -177,6 +168,38 @@ void	assign_expression(t_expression *exp, int type, void *value)
 {
 	exp->type = type;
 	exp->value = value;
+}
+
+void	print_expression(t_expression exp)
+{
+	switch (exp.type)
+	{
+		case UNKNOWN_TYPE:
+			printf("Unknown type.\n");
+			break;
+		case INT_TYPE:
+			printf("(Int type-> %d).\n", *(int *)exp.value);
+			break;
+		case FLOAT_TYPE:
+			printf("(Float type-> %f).\n", *(float *)exp.value);
+			break;
+		case STRING_TYPE:
+			printf("(String type-> %s).\n", (char *)exp.value);
+			break;
+		case BOOLEAN_TYPE:
+			printf("(Bool type-> %d).\n", *(char *)exp.value);
+			break;
+	}
+}
+
+void	print_assignment(t_assignment assign)
+{
+	t_id *id_to_search;
+
+	if (sym_lookup(assign.name, &id_to_search) == SYMTAB_NOT_FOUND)
+		yyerror("Id not found when printing an assignation.");
+	else
+		print_id(id_to_search);
 }
 
 void	yyerror(char *explanation)

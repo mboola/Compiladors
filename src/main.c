@@ -3,7 +3,8 @@
 /*								 */
 
 #include "helper_functions.h"
-char verbose;
+char	lexer_verbose;
+char	parser_verbose;
 
 /*
  *	Recieves three arguments:
@@ -18,15 +19,16 @@ int	main(int argc, char **argv)
 	char	*input_file;
 	char	*output_file;
 
-	if (argc != 5)
+	if (argc != 6)
 	{
 		dprintf(2, "ERROR: number of arguments inputed not correct.\n");
 		return (0);
 	}
-	verbose = argv[1][0];
-	execution_mode = argv[2][0];
-	input_file = argv[3];
-	output_file = argv[4];
+	lexer_verbose = atoi(argv[1]);
+	parser_verbose = atoi(argv[2]);
+	execution_mode = atoi(argv[3]);
+	input_file = argv[4];
+	output_file = argv[5];
 
 	yyin = fopen(input_file, "r");
 	if (yyin == NULL)

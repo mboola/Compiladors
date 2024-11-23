@@ -5,7 +5,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-extern char	verbose;
+extern char	lexer_verbose;
+extern char	parser_verbose;
+
 extern FILE	*yyin;
 extern FILE	*yyout;
 extern int	yylex();
@@ -26,6 +28,7 @@ void	update_id(t_id *id);
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	substraction(t_expression *result, t_expression first_exp, t_expression second_exp);
 
-void	print_expression(t_expression *exp);
+void	print_expression(t_expression exp);
+void	print_assignment(t_assignment assign);
 
 #endif

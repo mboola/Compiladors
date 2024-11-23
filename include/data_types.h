@@ -45,7 +45,6 @@ typedef struct {
 // TODO : Im pretty sure it wont be used
 typedef struct {
 	char *name;
-	data_type type;
 }	t_assignment;
 
 #endif

@@ -40,17 +40,17 @@
 %%
 
 program :
-  program sentence { if (verbose) printf("program is a collection of sentences\n"); }
-  | sentence { if (verbose) printf("program is a sentence\n");}
+  program sentence
+  | sentence
 
 sentence :
-  arithmetic_expression NEWLINE_TKN { if (verbose) printf("new sentence with arithmetic_expression\n"); }
-  | boolean_expression NEWLINE_TKN { if (verbose) printf("new sentence with boolean_expression\n"); }
-  | assignment { if (verbose) printf("new sentence with assignment\n"); }
+  arithmetic_expression NEWLINE_TKN { print_expression($1); }
+  | boolean_expression NEWLINE_TKN { print_expression($1); }
+  | assignment { print_assignment($1); }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
-  if (verbose) printf("assignment detected \n");
+  if (parser_verbose) printf("assignment detected \n");
   if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
   {
     $1.type = $3.type;
@@ -59,26 +59,25 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
   if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
     yyerror("Different type assignation.\n");
   update_id(&$1);
-  print_id(&$1);
 }
 
 expression :
   arithmetic_expression
-  { if (verbose) printf("new expression with arithmetic_expression\n");
+  { if (parser_verbose) printf("new expression with arithmetic_expression\n");
     $$.type = $1.type;
     $$.value = $1.value;
   }
-  | boolean_expression { if (verbose) printf("new sentence with boolean_expression\n"); }
+  | boolean_expression { if (parser_verbose) printf("new sentence with boolean_expression\n"); }
 
 arithmetic_expression : exp
-{ if (verbose) printf("\tnew arithmetic_expression\n");
+{ if (parser_verbose) printf("\tnew arithmetic_expression\n");
   $$.type = $1.type;
   $$.value = $1.value;
-  print_expression(&$$);
+  print_expression($$);
 }
 
 exp :
-  exp1 ADDITION exp { if (verbose) printf("new exp bc of addition\n"); addition(&$$, $1, $3); }
+  exp1 ADDITION exp { if (parser_verbose) printf("new exp bc of addition\n"); addition(&$$, $1, $3); }
   | exp1 SUBSTRACTION exp { printf("new exp bc of substraction\n"); }
   | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
   | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
@@ -97,7 +96,7 @@ exp3 :
   OPENPAR exp CLOSEDPAR {printf("\t parenthesis used \n"); assign_expression(&($$), $2.type, $2.value); }
   | INTEGER_TKN { assign_expression(&($$), INT_TYPE, $1); }
   | FLOAT_TKN { assign_expression(&($$), FLOAT_TYPE, $1); }
-  | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); print_id(&$1); }
+  | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
   | STRING_TKN { assign_expression(&($$), STRING_TYPE, $1); }
 
 bexp : bexp1 OR bexp | bexp1
