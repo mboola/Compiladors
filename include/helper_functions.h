@@ -41,6 +41,9 @@ void	modulation(t_expression *result, t_expression first_exp, t_expression secon
 void	power(t_expression *result, t_expression first_exp, t_expression second_exp);
 
 // Boolean operations
+void	or(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	and(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	not(t_expression *result, t_expression exp);
 void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp);
 
 #endif

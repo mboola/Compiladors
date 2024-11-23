@@ -1,18 +1,32 @@
 #include "helper_functions.h"
 
-void	and()
+void	or(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
-
+	result->value = yymalloc(sizeof(char *));
+	if (*((char *)first_exp.value) == 1)
+		*((char *)result->value) = 1;
+	else if (*((char *)second_exp.value)  == 1)
+		*((char *)result->value) = 1;
+	else
+		*((char *)result->value) = 0;
 }
 
-void	or()
+void	and(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
-
+	result->value = yymalloc(sizeof(char *));
+	if (*(char *)first_exp.value == 0)
+		*((char *)result->value) = 0;
+	else if (*(char *)second_exp.value == 0)
+		*((char *)result->value) = 0;
+	else
+		*((char *)result->value) = 1;
 }
 
-void	not()
+void	not(t_expression *result, t_expression exp)
 {
-
+	result->type = exp.type;
+	result->value = yymalloc(sizeof(char *));
+	*((char *)result->value) = !*(char *)exp.value;
 }
 
 void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp)

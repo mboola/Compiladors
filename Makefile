@@ -1,7 +1,7 @@
 # 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
-YFLAGS = -v -d
+YFLAGS = -Wcounterexamples -v -d
 
 # 
 SRC_DIR = src

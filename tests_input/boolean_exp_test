@@ -1,9 +1,16 @@
 // Initialize boolean value
 bool1 := True
-bool2 := True
+bool2 := False
 // Boolean expressions
 res := 1 < 2
 res := 2 < 1
 res := 2 > 1
 res := 1 > 1
 res := 1 <= 2
+// ... other oprel tests here
+// and, or and not tests
+res := not bool1
+res := not bool2
+res := (1 + 2) < (2 + 4) and bool1
+res := 2 < 1 and 1 <> 1
+res := not True

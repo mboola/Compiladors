@@ -44,8 +44,7 @@ program :
   | sentence
 
 sentence :
-  arithmetic_expression NEWLINE_TKN { print_expression($1); }
-  | boolean_expression NEWLINE_TKN { print_expression($1); }
+  boolean_expression NEWLINE_TKN { print_expression($1); }
   | assignment { print_assignment($1); }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
@@ -62,8 +61,7 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 }
 
 expression :
-  arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
-  | boolean_expression { $$.type = $1.type; $$.value = $1.value; }
+  boolean_expression { $$.type = $1.type; $$.value = $1.value; }
 
 arithmetic_expression :
   exp { $$.type = $1.type; $$.value = $1.value; }
@@ -92,27 +90,25 @@ exp3 :
   | STRING_TKN { $$.type = STRING_TYPE; $$.value = $1; }
   | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
 
+boolean_expression :
+  bexp { $$.type = $1.type; $$.value = $1.value; }
+
 bexp :
-  bexp1 OR bexp
+  bexp1 OR bexp { or(&$$, $1, $3); }
   | bexp1 { $$.type = $1.type; $$.value = $1.value; }
 
 bexp1 :
-  bexp2 AND bexp1
+  bexp2 AND bexp1 { and(&$$, $1, $3); }
   | bexp2 { $$.type = $1.type; $$.value = $1.value; }
 
 bexp2 :
-  bexp3 NOT bexp2
+  NOT bexp3 { not(&$$, $2); }
   | bexp3 { $$.type = $1.type; $$.value = $1.value; }
 
 bexp3 :
   arithmetic_expression OPREL arithmetic_expression { compare(&$$, $1, $2, $3); }
   | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
   | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
-
-boolean_expression :
-  bexp
-{
-  fprintf(yyout, "boolean_expression.\n");
-}
+  | arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
 
 %%
