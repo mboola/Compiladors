@@ -44,6 +44,10 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 void	modulation(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	power(t_expression *result, t_expression first_exp, t_expression second_exp);
 
+void	sin_funct(t_expression *result, t_expression exp);
+void	cos_funct(t_expression *result, t_expression exp);
+void	tan_funct(t_expression *result, t_expression exp);
+
 // Boolean operations
 void	or(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	and(t_expression *result, t_expression first_exp, t_expression second_exp);

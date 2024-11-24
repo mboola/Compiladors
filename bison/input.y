@@ -88,6 +88,9 @@ exp1 :
 
 exp2 :
   exp3 POWER exp2 { power(&$$, $1, $3); }
+  | SIN exp3 { sin_funct(&$$, $2); }
+  | COS exp3 { cos_funct(&$$, $2); }
+  | TAN exp3 { tan_funct(&$$, $2); }
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :

@@ -293,3 +293,75 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 			break;
 	}
 }
+
+void	sin_funct(t_expression *result, t_expression exp)
+{
+	result->type = FLOAT_TYPE;
+	result->value = yymalloc(sizeof(float));
+	switch (exp.type)
+	{
+		case UNKNOWN_TYPE:
+			yyerror("Cannot operate: unitialized value.");
+			break;
+		case INT_TYPE:
+			*((float *)result->value) = sin(*((int *)exp.value));
+			break;
+		case FLOAT_TYPE:
+			*((float *)result->value) = sin(*((float *)exp.value));
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot divide: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot divide: First operator has BOOLEAN_TYPE.");
+			break;
+	}
+}
+
+void	cos_funct(t_expression *result, t_expression exp)
+{
+	result->type = FLOAT_TYPE;
+	result->value = yymalloc(sizeof(float));
+	switch (exp.type)
+	{
+		case UNKNOWN_TYPE:
+			yyerror("Cannot operate: unitialized value.");
+			break;
+		case INT_TYPE:
+			*((float *)result->value) = cos(*((int *)exp.value));
+			break;
+		case FLOAT_TYPE:
+			*((float *)result->value) = cos(*((float *)exp.value));
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot divide: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot divide: First operator has BOOLEAN_TYPE.");
+			break;
+	}
+}
+
+void	tan_funct(t_expression *result, t_expression exp)
+{
+	result->type = FLOAT_TYPE;
+	result->value = yymalloc(sizeof(float));
+	switch (exp.type)
+	{
+		case UNKNOWN_TYPE:
+			yyerror("Cannot operate: unitialized value.");
+			break;
+		case INT_TYPE:
+			*((float *)result->value) = tan(*((int *)exp.value));
+			break;
+		case FLOAT_TYPE:
+			*((float *)result->value) = tan(*((float *)exp.value));
+			break;
+		case STRING_TYPE:
+			yyerror("Cannot divide: First operator has STRING_TYPE.");
+			break;
+		case BOOLEAN_TYPE:
+			yyerror("Cannot divide: First operator has BOOLEAN_TYPE.");
+			break;
+	}
+}
