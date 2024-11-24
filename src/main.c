@@ -5,6 +5,7 @@
 #include "helper_functions.h"
 char	lexer_verbose;
 char	parser_verbose;
+representation_mode repmode;
 
 /*
  *	Recieves three arguments:
@@ -24,6 +25,7 @@ int	main(int argc, char **argv)
 		dprintf(2, "ERROR: number of arguments inputed not correct.\n");
 		return (0);
 	}
+	repmode = DEC_MODE;
 	lexer_verbose = atoi(argv[1]);
 	parser_verbose = atoi(argv[2]);
 	execution_mode = atoi(argv[3]);

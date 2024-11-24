@@ -1,0 +1,6 @@
+// Test to test the correct change of base
+i := 10
+HEX
+i := 10
+OCT
+i := 10

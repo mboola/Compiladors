@@ -18,6 +18,13 @@ typedef enum {
 	EQUAL
 }	oprel_type;
 
+typedef enum {
+	BIN_MODE,
+	OCT_MODE,
+	DEC_MODE,
+	HEX_MODE
+}	representation_mode;
+
 // Struct used to store the possible values
 // of an id.
 //	->lexema stores the 'name' of the variable

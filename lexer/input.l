@@ -57,6 +57,54 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	if (lexer_verbose) printf("OR detected\n");
 	return OR;
 }
+"sin"	{
+	if (lexer_verbose) printf("SIN detected\n");
+	return SIN;
+}
+"cos"	{
+	if (lexer_verbose) printf("COS detected\n");
+	return COS;
+}
+"tan"	{
+	if (lexer_verbose) printf("TAN detected\n");
+	return TAN;
+}
+"LEN"	{
+	if (lexer_verbose) printf("LEN detected\n");
+	return LEN;
+}
+"SUBSTR"	{
+	if (lexer_verbose) printf("SUBSTR detected\n");
+	return SUBSTR;
+}
+"PI"	{
+	if (lexer_verbose) printf("PI detected\n");
+	yylval.real = yymalloc(sizeof(float));
+	*(yylval.real) = PI_CONST;
+	return FLOAT_TKN;
+}
+"E"	{
+	if (lexer_verbose) printf("E detected\n");
+	yylval.real = yymalloc(sizeof(float));
+	*(yylval.real) = E_CONST;
+	return FLOAT_TKN;
+}
+"OCT"	{
+	if (lexer_verbose) printf("OCT detected\n");
+	return OCT;
+}
+"BIN"	{
+	if (lexer_verbose) printf("BIN detected\n");
+	return BIN;
+}
+"HEX"	{
+	if (lexer_verbose) printf("HEX detected\n");
+	return HEX;
+}
+"DEC"	{
+	if (lexer_verbose) printf("DEC detected\n");
+	return DEC;
+}
 {ID}		{
 	if (lexer_verbose) printf("ID: %s\n", yytext);
 	initialize_id(&yylval.id, yytext);

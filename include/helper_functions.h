@@ -5,8 +5,12 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+# define PI_CONST 3.14159265358979323846
+# define E_CONST 2.718281828459045
+
 extern char	lexer_verbose;
 extern char	parser_verbose;
+extern representation_mode repmode;
 
 extern FILE	*yyin;
 extern FILE	*yyout;

@@ -61,10 +61,38 @@ void	print_id(t_id *id)
 			printf("Unknown type.\n");
 			break;
 		case INT_TYPE:
-			printf("(Int type-> %d).\n", *(int *)id->value);
+			switch (repmode)
+			{
+				case BIN_MODE:
+					printf("(Int type-> %d).\n", *(int *)id->value);
+					break;
+				case OCT_MODE:
+					printf("(Int type-> %o).\n", *(int *)id->value);
+					break;
+				case DEC_MODE:
+					printf("(Int type-> %d).\n", *(int *)id->value);
+					break;
+				case HEX_MODE:
+					printf("(Int type-> %x).\n", *(int *)id->value);
+					break;
+			}
 			break;
 		case FLOAT_TYPE:
-			printf("(Float type-> %f).\n", *(float *)id->value);
+			switch (repmode)
+			{
+				case BIN_MODE:
+					printf("(Float type-> %f).\n", *(float *)id->value);
+					break;
+				case OCT_MODE:
+					printf("(Float type-> %f).\n", *(float *)id->value);
+					break;
+				case DEC_MODE:
+					printf("(Float type-> %f).\n", *(float *)id->value);
+					break;
+				case HEX_MODE:
+					printf("(Float type-> %f).\n", *(float *)id->value);
+					break;
+			}
 			break;
 		case STRING_TYPE:
 			printf("(String type-> %s).\n", (char *)id->value);

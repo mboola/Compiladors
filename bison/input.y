@@ -28,10 +28,10 @@
 %token <string> STRING_TKN
 %token <boolean> TRUE FALSE
 %token <id> ID_TKN
-%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD AND NOT OR
+%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC
 %token <oprel> OPREL
 
-%type <no_value> program sentence
+%type <no_value> program sentence rep_mode
 %type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3
 %type <assignment_type> assignment
 
@@ -46,6 +46,13 @@ program :
 sentence :
   boolean_expression NEWLINE_TKN { print_expression($1); }
   | assignment { print_assignment($1); }
+  | rep_mode NEWLINE_TKN
+
+rep_mode :
+  BIN { repmode = BIN_MODE; }
+  | OCT { repmode = OCT_MODE; }
+  | DEC { repmode = DEC_MODE; }
+  | HEX { repmode = HEX_MODE; }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
