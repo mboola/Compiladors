@@ -92,6 +92,7 @@ exp2 :
   | COS exp3 { cos_funct(&$$, $2); }
   | TAN exp3 { tan_funct(&$$, $2); }
   | LEN exp3 { my_strlen(&$$, $2); }
+  | SUBSTR exp3 exp3 exp3 { my_substr(&$$, $2, $3, $4); }
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
 exp3 :

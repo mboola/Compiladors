@@ -106,3 +106,62 @@ void	my_strlen(t_expression *result, t_expression exp)
 	result->value = yymalloc(sizeof(int));
 	*(int *)result->value = strlen((char *)exp.value);
 }
+
+static int	strlcpy(char *dst, const char *src, int dstsize)
+{
+	int	i;
+	int	size;
+
+	size = strlen(src);
+	if (dstsize == 0)
+		return (size);
+	i = 0;
+	while (*(src + i) != '\0' && i < dstsize - 1)
+	{
+		*(dst + i) = *(src + i);
+		i++;
+	}
+	*(dst + i) = '\0';
+	return (size);
+}
+
+
+static char	*substr(char const *s, int start, int len)
+{
+	char	*str;
+	int	s_len;
+	int	size;
+
+	if (s == NULL)
+		size = 1;
+	else
+	{
+		s_len = strlen(s);
+		if (start > s_len)
+			size = 1;
+		else if (len > s_len - start)
+			size = s_len - start + 1;
+		else
+			size = len + 1;
+	}
+	str = yymalloc(sizeof(char) * size);
+	if (str == NULL)
+		return (NULL);
+	if (start > s_len)
+		*str = '\0';
+	else
+		strlcpy(str, s + start, len);
+	return (str);
+}
+
+void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_expression exp3)
+{
+	if (exp1.type != STRING_TYPE)
+		yyerror("Cannot substr with the first operand type not equivalent to STRING_TYPE."); // TODO : change this
+	if (exp2.type != INT_TYPE)
+		yyerror("Cannot substr with the second operand type not equivalent to INT_TYPE."); // TODO : change this
+	if (exp3.type != INT_TYPE)
+		yyerror("Cannot substr with the third operand type not equivalent to INT_TYPE."); // TODO : change this
+	result->value = substr((char *)exp1.value, *(int *)exp2.value, (*(int *)exp3.value + 1));
+	result->type = STRING_TYPE;
+}

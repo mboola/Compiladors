@@ -55,5 +55,6 @@ void	not(t_expression *result, t_expression exp);
 void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp);
 
 void	my_strlen(t_expression *result, t_expression exp);
+void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_expression exp3);
 
 #endif
