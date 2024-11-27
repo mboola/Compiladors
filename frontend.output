@@ -1,0 +1,14 @@
+Lexer: ID: i
+Lexer: ASSIGN detected
+Lexer: Integer: 2
+Lexer: NEWLINE_TKN detected
+Lexer: REPEAT detected
+Lexer: ID: i
+Lexer: DO detected
+Lexer: NEWLINE_TKN detected
+Lexer: ID: j
+Lexer: ASSIGN detected
+Lexer: Cadena: "testing"
+Lexer: NEWLINE_TKN detected
+Lexer: DONE detected
+Lexer: NEWLINE_TKN detected

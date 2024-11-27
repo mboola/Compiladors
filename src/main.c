@@ -7,6 +7,9 @@ char	lexer_verbose;
 char	parser_verbose;
 representation_mode repmode;
 
+FILE	*yyfrontend_res;
+FILE	*yyc3a_output;
+
 /*
  *	Recieves three arguments:
  *	First: Verbose mode.
@@ -18,9 +21,10 @@ int	main(int argc, char **argv)
 {
 	char	execution_mode;
 	char	*input_file;
-	char	*output_file;
+	char	*frontend_result;
+	char	*c3a_output;
 
-	if (argc != 6)
+	if (argc != 7)
 	{
 		dprintf(2, "ERROR: number of arguments inputed not correct.\n");
 		return (0);
@@ -30,7 +34,11 @@ int	main(int argc, char **argv)
 	parser_verbose = atoi(argv[2]);
 	execution_mode = atoi(argv[3]);
 	input_file = argv[4];
-	output_file = argv[5];
+	frontend_result = argv[5];
+	c3a_output = argv[6];
+
+	n_register = -1;
+	n_line = 1;
 
 	yyin = fopen(input_file, "r");
 	if (yyin == NULL)
@@ -46,8 +54,9 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		yyout = fopen(output_file,"r");
-		if (yyout == NULL)
+		yyfrontend_res = fopen(frontend_result,"w");
+		yyc3a_output = fopen(c3a_output,"w");
+		if (yyfrontend_res == NULL)
 		{
 			dprintf(2, "ERROR: parser output file could not be oppened.\n");
 			return (0);
@@ -55,7 +64,8 @@ int	main(int argc, char **argv)
 		dprintf(1, "Parser started:\n");
 		yyparse();
 		dprintf(1, "Parser ended.\n");
-		fclose(yyout);
+		fclose(yyc3a_output);
+		fclose(yyfrontend_res);
 	}
 	fclose(yyin);
 	return (0);

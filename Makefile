@@ -14,7 +14,7 @@ SYMTAB_DIR = symtab
 # Source Files
 SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c \
 			${SRC_DIR}/arithmetic_operations.c ${SRC_DIR}/id_functions.c \
-			${SRC_DIR}/boolean_operations.c 
+			${SRC_DIR}/boolean_operations.c ${SRC_DIR}/instruction_converters.c
 
 # Flex
 LEX = flex

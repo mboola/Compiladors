@@ -54,26 +54,26 @@ void	update_id(t_id *id)
 
 void	print_id(t_id *id)
 {
-	printf("Printing id %s: ", id->lexema);
+	fprintf(yyfrontend_res, "Printing id %s: ", id->lexema);
 	switch (id->type)
 	{
 		case UNKNOWN_TYPE:
-			printf("Unknown type.\n");
+			printf("Unknown type.\n"); // TODO : whatehell
 			break;
 		case INT_TYPE:
 			switch (repmode)
 			{
 				case BIN_MODE:
-					printf("(Int type-> %d).\n", *(int *)id->value);
+					fprintf(yyfrontend_res, "(Int type-> %d).\n", *(int *)id->value);
 					break;
 				case OCT_MODE:
-					printf("(Int type-> %o).\n", *(int *)id->value);
+					fprintf(yyfrontend_res, "(Int type-> %o).\n", *(int *)id->value);
 					break;
 				case DEC_MODE:
-					printf("(Int type-> %d).\n", *(int *)id->value);
+					fprintf(yyfrontend_res, "(Int type-> %d).\n", *(int *)id->value);
 					break;
 				case HEX_MODE:
-					printf("(Int type-> %x).\n", *(int *)id->value);
+					fprintf(yyfrontend_res, "(Int type-> %x).\n", *(int *)id->value);
 					break;
 			}
 			break;
@@ -81,24 +81,24 @@ void	print_id(t_id *id)
 			switch (repmode)
 			{
 				case BIN_MODE:
-					printf("(Float type-> %f).\n", *(float *)id->value);
+					fprintf(yyfrontend_res, "(Float type-> %f).\n", *(float *)id->value);
 					break;
 				case OCT_MODE:
-					printf("(Float type-> %f).\n", *(float *)id->value);
+					fprintf(yyfrontend_res, "(Float type-> %f).\n", *(float *)id->value);
 					break;
 				case DEC_MODE:
-					printf("(Float type-> %f).\n", *(float *)id->value);
+					fprintf(yyfrontend_res, "(Float type-> %f).\n", *(float *)id->value);
 					break;
 				case HEX_MODE:
-					printf("(Float type-> %f).\n", *(float *)id->value);
+					fprintf(yyfrontend_res, "(Float type-> %f).\n", *(float *)id->value);
 					break;
 			}
 			break;
 		case STRING_TYPE:
-			printf("(String type-> %s).\n", (char *)id->value);
+			fprintf(yyfrontend_res, "(String type-> %s).\n", (char *)id->value);
 			break;
 		case BOOLEAN_TYPE:
-			printf("(Bool type-> %d).\n", *(char *)id->value);
+			fprintf(yyfrontend_res, "(Bool type-> %d).\n", *(char *)id->value);
 			break;
 	}
 }
@@ -110,5 +110,8 @@ void	print_assignment(t_assignment assign)
 	if (sym_lookup(assign.name, &id_to_search) == SYMTAB_NOT_FOUND)
 		yyerror("Id not found when printing an assignation.");
 	else
+	{
+		fprintf(yyfrontend_res, "Parser: Assignation detected. ");
 		print_id(id_to_search);
+	}
 }

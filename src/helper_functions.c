@@ -1,6 +1,11 @@
 #include "helper_functions.h"
 #include <string.h>
 
+#include <stdarg.h>
+
+int n_register;
+int n_line;
+
 void *yymalloc(size_t size)
 {
 	void *ptr;
@@ -125,7 +130,6 @@ static int	strlcpy(char *dst, const char *src, int dstsize)
 	return (size);
 }
 
-
 static char	*substr(char const *s, int start, int len)
 {
 	char	*str;
@@ -164,4 +168,15 @@ void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_exp
 		yyerror("Cannot substr with the third operand type not equivalent to INT_TYPE."); // TODO : change this
 	result->value = substr((char *)exp1.value, *(int *)exp2.value, (*(int *)exp3.value + 1));
 	result->type = STRING_TYPE;
+}
+
+void    print_lexer_output(const char *str, ...)
+{
+	va_list args;
+
+    va_start(args, str);
+	fprintf(yyfrontend_res, "Lexer: ");
+    vfprintf(yyfrontend_res, str, args);
+	fprintf(yyfrontend_res, "\n");
+    va_end(args);
 }

@@ -6,8 +6,9 @@
 #   P: parser verbose option
 #   file_name: name of the test to run
 
-result=tester_result.txt
+result=frontend.output
 compiler=compiler_program
+c3a_output=c3a.output
 
 lexer_verbose=0
 parser_verbose=0
@@ -47,7 +48,11 @@ if [ ! -f "$test_file" ]; then
 fi
 
 if [ ! -f "$result" ]; then
-    touch $result 
+    touch $result
+fi
+
+if [ ! -f "$c3a_output" ]; then
+    touch $c3a_output
 fi
 
 if [ ! -f "$compiler" ]; then
@@ -58,5 +63,5 @@ echo "Input file test:"
 cat ${test_file}
 echo ""
 
-./${compiler} ${lexer_verbose} ${parser_verbose} ${exe_only_lexer} ${test_file} ${result}
+./${compiler} ${lexer_verbose} ${parser_verbose} ${exe_only_lexer} ${test_file} ${result} ${c3a_output}
 make clean

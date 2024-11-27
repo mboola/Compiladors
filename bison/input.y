@@ -39,21 +39,20 @@
 
 %%
 
-program : sentence_list
+program : sentence_list { fprintf(yyc3a_output, "HALT\n"); }
 
 sentence_list :
-  sentence_list sentence
-  | sentence
-  | sentence_list iterative_sentence
-  | iterative_sentence
+  sentence_list sentence { n_register = -1; }
+  | sentence { n_register = -1; }
+  | sentence_list iterative_sentence { n_register = -1; }
+  | iterative_sentence { n_register = -1; }
 
 iterative_sentence :
   REPEAT arithmetic_expression DO NEWLINE_TKN sentence_list DONE NEWLINE_TKN
-  { printf("somehow it works\n"); }
 
 sentence :
-  boolean_expression NEWLINE_TKN { print_expression($1); }
-  | assignment { print_assignment($1); }
+  boolean_expression NEWLINE_TKN { if (parser_verbose) print_expression($1); }
+  | assignment { if (parser_verbose) print_assignment($1); }
   | rep_mode NEWLINE_TKN
 
 rep_mode :
@@ -64,7 +63,6 @@ rep_mode :
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
-  if (parser_verbose) printf("assignment detected \n");
   if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
   {
     $1.type = $3.type;
@@ -73,6 +71,7 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN
   if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
     yyerror("Different type assignation.\n");
   update_id(&$1);
+  convert_assignation($1, $3);
 }
 
 expression :

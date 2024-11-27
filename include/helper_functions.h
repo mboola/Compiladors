@@ -13,11 +13,16 @@ extern char	parser_verbose;
 extern representation_mode repmode;
 
 extern FILE	*yyin;
-extern FILE	*yyout;
+extern FILE	*yyfrontend_res;
+extern FILE	*yyc3a_output;
+
 extern int	yylex();
 extern int	yyparse();
 extern void	yyerror(char*);
 extern int yylineno;
+
+extern int n_register;
+extern int n_line;
 
 void    *yymalloc(size_t size);
 
@@ -56,5 +61,11 @@ void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expr
 
 void	my_strlen(t_expression *result, t_expression exp);
 void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_expression exp3);
+
+// Output parser
+void    print_lexer_output(const char *str, ...);
+
+// Instruction converters
+void    convert_assignation(t_id id, t_expression exp);
 
 #endif
