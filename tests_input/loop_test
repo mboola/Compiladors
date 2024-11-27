@@ -1,0 +1,4 @@
+i := 2
+repeat i do
+	j := "testing"	
+done

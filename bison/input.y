@@ -28,10 +28,10 @@
 %token <string> STRING_TKN
 %token <boolean> TRUE FALSE
 %token <id> ID_TKN
-%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC
+%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC REPEAT DONE DO
 %token <oprel> OPREL
 
-%type <no_value> program sentence rep_mode
+%type <no_value> program sentence rep_mode sentence_list iterative_sentence
 %type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3
 %type <assignment_type> assignment
 
@@ -39,9 +39,17 @@
 
 %%
 
-program :
-  program sentence
+program : sentence_list
+
+sentence_list :
+  sentence_list sentence
   | sentence
+  | sentence_list iterative_sentence
+  | iterative_sentence
+
+iterative_sentence :
+  REPEAT arithmetic_expression DO NEWLINE_TKN sentence_list DONE NEWLINE_TKN
+  { printf("somehow it works\n"); }
 
 sentence :
   boolean_expression NEWLINE_TKN { print_expression($1); }

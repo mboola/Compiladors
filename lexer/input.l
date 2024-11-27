@@ -77,6 +77,18 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	if (lexer_verbose) printf("SUBSTR detected\n");
 	return SUBSTR;
 }
+"repeat"	{
+	if (lexer_verbose) printf("REPEAT detected\n");
+	return REPEAT;
+}
+"do"		{
+	if (lexer_verbose) printf("DO detected\n");
+	return DO;
+}
+"done"		{
+	if (lexer_verbose) printf("DONE detected\n");
+	return DONE;
+}
 "PI"	{
 	if (lexer_verbose) printf("PI detected\n");
 	yylval.real = yymalloc(sizeof(float));
