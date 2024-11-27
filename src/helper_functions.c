@@ -97,3 +97,12 @@ void	print_expression(t_expression exp)
 			break;
 	}
 }
+
+void	my_strlen(t_expression *result, t_expression exp)
+{
+	if (exp.type != STRING_TYPE)
+		yyerror("Cannot strlen with a type not equivalent to STRING_TYPE."); // TODO : change this
+	result->type = INT_TYPE;
+	result->value = yymalloc(sizeof(int));
+	*(int *)result->value = strlen((char *)exp.value);
+}

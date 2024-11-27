@@ -1,0 +1,5 @@
+i := "testing"
+// result 7
+len := LEN i
+// result 5
+len2 := LEN "test2"
