@@ -30,7 +30,7 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot add INT_TYPE with BOOLEAN_TYPE.\n");
 			else if (second_exp.type == FLOAT_TYPE)
-				yyerror("Cannot add INT_TYPE with FLOAT_TYPE.\n");
+				*(float *)(result->value) = *(int *)first_exp.value + *(float *)second_exp.value;
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -41,14 +41,16 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 				char str[50];
 				sprintf(str, "%f", *(float *)first_exp.value);
 				result->value = strjoin(strdup(str), (char *)second_exp.value);
+				result->type = second_exp.type;
+				return ;
 			}
 			else if (second_exp.type == UNKNOWN_TYPE)
 				yyerror("Cannot add FLOAT_TYPE with UNKNOWN_TYPE.\n");
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot add FLOAT_TYPE with BOOLEAN_TYPE.\n");
 			else if (second_exp.type == INT_TYPE)
-				yyerror("Cannot add FLOAT_TYPE with INT_TYPE.\n");
-			result->type = second_exp.type;
+				*(float *)(result->value) = *(float *)first_exp.value + *(int *)second_exp.value;
+			result->type = first_exp.type;
 			break;
 		case STRING_TYPE: // Always concatenate
 			if (second_exp.type == STRING_TYPE)
@@ -94,7 +96,7 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot substract INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				yyerror("Cannot substract INT_TYPE with FLOAT_TYPE.");
+				*(float *)(result->value) = *(int *)first_exp.value - *(float *)second_exp.value;
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -107,8 +109,8 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot substract FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				yyerror("Cannot substract FLOAT_TYPE with INT_TYPE.");
-			result->type = second_exp.type;
+				*(float *)(result->value) = *(float *)first_exp.value - *(int *)second_exp.value;
+			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
 			yyerror("Cannot substract: First operator has STRING_TYPE.");
@@ -136,7 +138,7 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot multiplicate INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				yyerror("Cannot multiplicate INT_TYPE with FLOAT_TYPE.");
+				*(float *)(result->value) = *(int *)first_exp.value * *(float *)second_exp.value;
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -149,8 +151,8 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot multiplicate FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				yyerror("Cannot multiplicate FLOAT_TYPE with INT_TYPE.");
-			result->type = second_exp.type;
+				*(float *)(result->value) = *(float *)first_exp.value * *(int *)second_exp.value;
+			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
 			yyerror("Cannot multiplicate: First operator has STRING_TYPE.");
@@ -178,7 +180,7 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				yyerror("Cannot divide INT_TYPE with FLOAT_TYPE.");
+				*(int *)(result->value) = *(int *)first_exp.value / *(float *)second_exp.value;
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -191,8 +193,8 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				yyerror("Cannot divide FLOAT_TYPE with INT_TYPE.");
-			result->type = second_exp.type;
+				*(float *)(result->value) = *(float *)first_exp.value / *(int *)second_exp.value;
+			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
 			yyerror("Cannot divide: First operator has STRING_TYPE.");
@@ -260,26 +262,26 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 			if (second_exp.type == INT_TYPE)
 				*(int *)(result->value) = powi(*(int *)first_exp.value, *(int *)second_exp.value);
 			else if (second_exp.type == STRING_TYPE)
-				yyerror("Cannot divide INT_TYPE with STRING_TYPE.");
+				yyerror("Cannot pow INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
-				yyerror("Cannot divide INT_TYPE with UNKNOWN_TYPE.");
+				yyerror("Cannot pow INT_TYPE with UNKNOWN_TYPE.");
 			else if (second_exp.type == BOOLEAN_TYPE)
-				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
+				yyerror("Cannot pow INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				yyerror("Cannot divide INT_TYPE with FLOAT_TYPE.");
+				*(float *)(result->value) = powi(*(int *)first_exp.value, *(float *)second_exp.value);
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
 				*(float *)(result->value) = powf(*(float *)first_exp.value, *(float *)second_exp.value);
 			else if (second_exp.type == STRING_TYPE)
-				yyerror("Cannot divide FLOAT_TYPE with STRING_TYPE.");
+				yyerror("Cannot pow FLOAT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
-				yyerror("Cannot divide FLOAT_TYPE with UNKNOWN_TYPE.");
+				yyerror("Cannot pow FLOAT_TYPE with UNKNOWN_TYPE.");
 			else if (second_exp.type == BOOLEAN_TYPE)
-				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
+				yyerror("Cannot pow FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				yyerror("Cannot divide FLOAT_TYPE with INT_TYPE.");
+				*(float *)(result->value) = powf(*(float *)first_exp.value, *(float *)second_exp.value);
 			result->type = second_exp.type;
 			break;
 		case STRING_TYPE:
