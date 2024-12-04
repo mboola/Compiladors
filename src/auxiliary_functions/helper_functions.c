@@ -131,7 +131,7 @@ void	print_assignment(t_assignment assign)
 		print_id(id_to_search);
 }
 
-void	assign_expression(t_expression *exp, int type, void *value)
+void	assign_expression(t_expression *exp, int type, void *value, int reg, char *lexema)
 {
 	switch (type)
 	{
@@ -154,4 +154,6 @@ void	assign_expression(t_expression *exp, int type, void *value)
 			break;
 	}
 	exp->type = type;
+	exp->reg = reg;
+	exp->lexema = lexema;
 }

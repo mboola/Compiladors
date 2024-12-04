@@ -59,4 +59,81 @@ void	compile_assignation(t_id id, t_expression exp)
 	else
 		str = join_register(str, exp.reg);
 	add_instruction(str, -1);
+	current_reg = 1;
+}
+
+static char	*get_curr_reg()
+{
+	char	*str;
+
+	str = convert_int_to_str(current_reg);
+	str = strjoin("$t0", str);
+	current_reg++;
+	return (str);
+}
+
+static char	*get_reg(t_expression *exp)
+{
+	if (exp->reg == 0)
+	{
+		if (exp->lexema != NULL)
+			return (strdup(exp->lexema));
+		else
+		{
+			if (exp->type == INT_TYPE)
+				return (convert_int_to_str(*(int *)exp->value));
+			else
+				return (convert_float_to_str(*(float *)exp->value));
+		}
+	}
+	return (strjoin("$t0", convert_int_to_str(exp->reg)));
+}
+
+void	compile_int_to_float(t_expression *exp)
+{
+	char	*str;
+	int		reg;
+
+	reg = current_reg;
+	str = get_curr_reg();
+	str = strjoin(str, " := I2F ");
+	str = strjoin(str, get_reg(exp));
+	exp->reg = reg;
+	add_instruction(str, -1);
+}
+
+void	compile_arithmetic_expression(t_expression first_exp, t_expression second_exp, char *operation, t_expression *res)
+{
+	char	*str;
+	int		reg;
+
+	if (first_exp.type != second_exp.type)
+	{
+		if (first_exp.type == INT_TYPE)
+			compile_int_to_float(&first_exp);
+		else
+			compile_int_to_float(&second_exp);
+		reg = current_reg;
+		str = strjoin(get_curr_reg(), " := ");
+		str = strjoin(str, get_reg(&first_exp));
+		str = strjoin(str, " ");
+		str = strjoin(str, operation);
+		str = strjoin(str, "F ");
+		str = strjoin(str, get_reg(&second_exp));
+	}
+	else
+	{
+		reg = current_reg;
+		str = strjoin(get_curr_reg(), " := ");
+		str = strjoin(str, get_reg(&first_exp));
+		str = strjoin(str, " ");
+		str = strjoin(str, operation);
+		if (first_exp.type == INT_TYPE)
+			str = strjoin(str, "I ");
+		else
+			str = strjoin(str, "F ");
+		str = strjoin(str, get_reg(&second_exp));
+	}
+	add_instruction(str, -1);
+	res->reg = reg;
 }

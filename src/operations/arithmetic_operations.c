@@ -1,6 +1,7 @@
 #include "yyfunctions.h"
 #include "data_types.h"
 #include "str_functions.h"
+#include "compile_instructions.h"
 #include <math.h>
 
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp)
@@ -9,7 +10,10 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
-				*(int *)(result->value) = *(int *)first_exp.value + *(int *)second_exp.value;
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "ADD", result);
+				*(int *)(result->value) = (*(int *)first_exp.value) + (*(int *)second_exp.value);
+			}
 			else if (second_exp.type == STRING_TYPE)
 			{
 				char str[12];
@@ -21,12 +25,18 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot add INT_TYPE with BOOLEAN_TYPE.\n");
 			else if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "ADD", result);
 				*(float *)(result->value) = *(int *)first_exp.value + *(float *)second_exp.value;
+			}
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "ADD", result);
 				*(float *)(result->value) = *(float *)first_exp.value + *(float *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 			{
 				char str[50];
@@ -40,7 +50,10 @@ void	addition(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot add FLOAT_TYPE with BOOLEAN_TYPE.\n");
 			else if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "ADD", result);
 				*(float *)(result->value) = *(float *)first_exp.value + *(int *)second_exp.value;
+			}
 			result->type = first_exp.type;
 			break;
 		case STRING_TYPE: // Always concatenate
@@ -79,7 +92,10 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "SUB", result);
 				*(int *)(result->value) = *(int *)first_exp.value - *(int *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot substract INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -87,12 +103,18 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot substract INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "SUB", result);
 				*(float *)(result->value) = *(int *)first_exp.value - *(float *)second_exp.value;
+			}
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "SUB", result);
 				*(float *)(result->value) = *(float *)first_exp.value - *(float *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot substract FLOAT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -100,7 +122,10 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot substract FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "SUB", result);
 				*(float *)(result->value) = *(float *)first_exp.value - *(int *)second_exp.value;
+			}
 			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
@@ -121,7 +146,10 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "MUL", result);
 				*(int *)(result->value) = *(int *)first_exp.value * *(int *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot multiplicate INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -129,12 +157,18 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot multiplicate INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "MUL", result);
 				*(float *)(result->value) = *(int *)first_exp.value * *(float *)second_exp.value;
+			}
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "MUL", result);
 				*(float *)(result->value) = *(float *)first_exp.value * *(float *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot multiplicate FLOAT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -142,7 +176,10 @@ void	multiplication(t_expression *result, t_expression first_exp, t_expression s
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot multiplicate FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "MUL", result);
 				*(float *)(result->value) = *(float *)first_exp.value * *(int *)second_exp.value;
+			}
 			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
@@ -163,7 +200,10 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "DIV", result);
 				*(int *)(result->value) = *(int *)first_exp.value / *(int *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot divide INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -171,12 +211,18 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "DIV", result);
 				*(int *)(result->value) = *(int *)first_exp.value / *(float *)second_exp.value;
+			}
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "DIV", result);
 				*(float *)(result->value) = *(float *)first_exp.value / *(float *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot divide FLOAT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -184,7 +230,10 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "DIV", result);
 				*(float *)(result->value) = *(float *)first_exp.value / *(int *)second_exp.value;
+			}
 			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:
@@ -205,7 +254,10 @@ void	modulation(t_expression *result, t_expression first_exp, t_expression secon
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
+			{
+				compile_arithmetic_expression(first_exp, second_exp, "MOD", result);
 				*(int *)(result->value) = *(int *)first_exp.value % *(int *)second_exp.value;
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot modulate INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)

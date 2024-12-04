@@ -5,6 +5,7 @@
 t_list	*instructions;
 FILE	*c3a_output;
 int		line;
+int		current_reg;
 
 static void	clear_instruction(void *data)
 {
@@ -75,6 +76,7 @@ char	open_output_file(char *file)
 	c3a_output = fopen(file,"w");
 	instructions = NULL;
 	line = 1;
+	current_reg = 1;
 	return (c3a_output == NULL);
 }
 

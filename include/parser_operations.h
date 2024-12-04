@@ -27,6 +27,6 @@ void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_exp
 
 // Repeat operations
 void	handle_repeat_start(t_repeat *rep, t_expression exp);
-void	handle_repeat_loop(t_repeat *rep, t_repeat repstart);
+void	handle_repeat_loop(t_repeat repstart);
 
 #endif

@@ -37,10 +37,10 @@ extern int yylex();
 %token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC REPEAT DONE DO
 %token <oprel> OPREL
 
-%type <no_value> program sentence representation_mode sentence_list
+%type <no_value> program sentence representation_mode sentence_list repeat_end
 %type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3
 %type <assignment_type> assignment
-%type <repeat_type> repeat_start repeat_end
+%type <repeat_type> repeat_start
 
 %start program
 
@@ -61,7 +61,7 @@ repeat_start
 
 repeat_end
   : repeat_start sentence_list DONE NEWLINE_TKN {
-    handle_repeat_loop(&$$, $1);
+    handle_repeat_loop($1);
   }
 
 sentence :
@@ -75,56 +75,87 @@ representation_mode :
   | DEC { repmode = DEC_MODE; }
   | HEX { repmode = HEX_MODE; }
 
-assignment : ID_TKN ASSIGN expression NEWLINE_TKN
-{
-  if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
-  {
-    $1.type = $3.type;
-    $1.value = $3.value;
+assignment
+  : ID_TKN ASSIGN expression NEWLINE_TKN {
+    if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
+    {
+      $1.type = $3.type;
+      $1.value = $3.value;
+    }
+    if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
+      yyerror("Different type assignation.\n");
+    update_id(&$1);
+    compile_assignation($1, $3);
   }
-  if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
-    yyerror("Different type assignation.\n");
-  update_id(&$1);
-  compile_assignation($1, $3);
-}
 
-expression :
-  boolean_expression { $$.type = $1.type; $$.value = $1.value; }
+expression
+  : boolean_expression { $$.type = $1.type; $$.value = $1.value; }
 
-arithmetic_expression :
-  exp { $$.type = $1.type; $$.value = $1.value; }
+arithmetic_expression
+  : exp { 
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
-exp :
-  exp1 ADDITION exp { addition(&$$, $1, $3); }
+exp
+  : exp1 ADDITION exp {
+    addition(&$$, $1, $3);
+  }
   | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
   | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
   | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
-  | exp1 {$$.type = $1.type; $$.value = $1.value;}
+  | exp1 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
-exp1 :
-  exp2 MULTIPLICATION exp1 { multiplication(&$$, $1, $3); }
-  | exp2 DIVISION exp1 { division(&$$, $1, $3); }
-  | exp2 MOD exp1 { modulation(&$$, $1, $3); }
-  | exp2 {$$.type = $1.type; $$.value = $1.value;}
+exp1
+  : exp2 MULTIPLICATION exp1 {
+    multiplication(&$$, $1, $3);
+  }
+  | exp2 DIVISION exp1 {
+    division(&$$, $1, $3);
+  }
+  | exp2 MOD exp1 {
+    modulation(&$$, $1, $3);
+  }
+  | exp2 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 exp2 :
-  exp2 POWER exp3 { power(&$$, $1, $3); }
+  exp2 POWER exp3 {
+    power(&$$, $1, $3);
+  }
   | SIN exp3 { sin_funct(&$$, $2); }
   | COS exp3 { cos_funct(&$$, $2); }
   | TAN exp3 { tan_funct(&$$, $2); }
   | LEN exp3 { my_strlen(&$$, $2); }
   | SUBSTR exp3 exp3 exp3 { my_substr(&$$, $2, $3, $4); }
-  | exp3 {$$.type = $1.type; $$.value = $1.value; }
+  | exp3 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 exp3 :
-  OPENPAR exp CLOSEDPAR { $$.type = $2.type; $$.value = $2.value; }
-  | INTEGER_TKN { $$.type = INT_TYPE; $$.value = $1; }
-  | FLOAT_TKN { $$.type = FLOAT_TYPE; $$.value = $1; }
-  | STRING_TKN { $$.type = STRING_TYPE; $$.value = $1; }
-  | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
+  OPENPAR exp CLOSEDPAR {
+    assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
+  }
+  | INTEGER_TKN {
+    assign_expression(&($$), INT_TYPE, $1, 0, NULL);
+  }
+  | FLOAT_TKN {
+    assign_expression(&($$), FLOAT_TYPE, $1, 0, NULL);
+  }
+  | STRING_TKN {
+    assign_expression(&($$), STRING_TYPE, $1, 0, NULL);
+  }
+  | ID_TKN {
+    get_id(&$1);
+    assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
+  }
 
-boolean_expression :
-  bexp { $$.type = $1.type; $$.value = $1.value; }
+boolean_expression
+  : bexp {
+    $$.type = $1.type; $$.value = $1.value;
+  }
 
 bexp :
   bexp1 OR bexp { or(&$$, $1, $3); }

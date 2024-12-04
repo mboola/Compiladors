@@ -18,6 +18,8 @@ extern FILE *c3a_output;
 // Number of lines the compiled has. Used when printing instructions
 extern int line;
 
+extern int current_reg;
+
 // Prints all the instructions into c3a_output.
 void	print_all_instructions();
 void	add_instruction(char *instruction, int position);
@@ -26,7 +28,5 @@ char	open_output_file(char *file);
 void	close_output_file();
 
 void	end_compilation();
-
-
 
 #endif

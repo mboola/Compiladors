@@ -34,6 +34,7 @@ typedef struct {
 typedef struct {
 	data_type type;
 	void *value;
+	char *lexema;
 	int reg;
 }	t_expression;
 
