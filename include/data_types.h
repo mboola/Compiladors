@@ -18,13 +18,6 @@ typedef enum {
 	EQUAL
 }	oprel_type;
 
-typedef enum {
-	BIN_MODE,
-	OCT_MODE,
-	DEC_MODE,
-	HEX_MODE
-}	representation_mode;
-
 // Struct used to store the possible values
 // of an id.
 //	->lexema stores the 'name' of the variable
@@ -41,6 +34,7 @@ typedef struct {
 typedef struct {
 	data_type type;
 	void *value;
+	int reg;
 }	t_expression;
 
 // Struct that defines a relational operation
@@ -53,5 +47,10 @@ typedef struct {
 typedef struct {
 	char *name;
 }	t_assignment;
+
+typedef struct {
+	data_type type;
+	char *instruction;
+}	t_repeat;
 
 #endif

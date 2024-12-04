@@ -1,14 +1,16 @@
-Lexer: ID: i
-Lexer: ASSIGN detected
-Lexer: Integer: 2
-Lexer: NEWLINE_TKN detected
-Lexer: REPEAT detected
-Lexer: ID: i
-Lexer: DO detected
-Lexer: NEWLINE_TKN detected
-Lexer: ID: j
-Lexer: ASSIGN detected
-Lexer: Cadena: "testing"
-Lexer: NEWLINE_TKN detected
-Lexer: DONE detected
-Lexer: NEWLINE_TKN detected
+Printing id i: (Int type-> 100).
+Printing id j: (Int type-> 50).
+Printing id add1: (Int type-> 150).
+Printing id sub1: (Int type-> 50).
+Printing id sub2: (Int type-> -50).
+Printing id str1: (String type-> hello).
+Printing id str2: (String type-> world).
+Printing id helloworld: (String type-> helloworld).
+Printing expression: (Int type-> 200).
+Printing id i: (Int type-> 101).
+Printing id div: (Int type-> 2).
+Printing id mod: (Int type-> 1).
+Printing id mul: (Int type-> 5050).
+Printing id pow: (Int type-> -2147483648).
+Printing id mix1: (Int type-> 126).
+Printing id mix2: (Int type-> 4).

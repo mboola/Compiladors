@@ -1,16 +1,7 @@
-#include "helper_functions.h"
-#include <string.h>
+#include "yyfunctions.h"
+#include "data_types.h"
+#include "str_functions.h"
 #include <math.h>
-
-static char	*strjoin(const char *str1, const char *str2)
-{
-	char *dst;
-	
-	dst = yymalloc(strlen(str1) + strlen(str2) + 1);
-	strcpy(dst, str1);
-	strcat(dst, str2);
-	return dst;
-}
 
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
@@ -240,27 +231,13 @@ void	modulation(t_expression *result, t_expression first_exp, t_expression secon
 	}
 }
 
-static int	powi(int i, int j)
-{
-	int	result;
-
-	if (i < 0 || j < 0)
-		return 0;
-	result = i;
-	for (int k = 0; k < j; k++)
-	{
-		result = result * i;
-	}
-	return result;
-}
-
 void	power(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
 	switch (first_exp.type)
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
-				*(int *)(result->value) = powi(*(int *)first_exp.value, *(int *)second_exp.value);
+				*(int *)(result->value) = powf((float)*(int *)first_exp.value, (float)*(int *)second_exp.value);
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot pow INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -268,7 +245,7 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot pow INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				*(float *)(result->value) = powi(*(int *)first_exp.value, *(float *)second_exp.value);
+				*(float *)(result->value) = powf((float)*(int *)first_exp.value, *(float *)second_exp.value);
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:

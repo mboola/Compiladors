@@ -2,50 +2,46 @@
 /* TODO : put here a cool header */
 /*								 */
 
-#include "helper_functions.h"
-char	lexer_verbose;
-char	parser_verbose;
-representation_mode repmode;
+#include "compiler.h"
+#include "compiler_flags.h"
+#include "yyfunctions.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-FILE	*yyfrontend_res;
-FILE	*yyc3a_output;
+extern int	yylex();
+extern int	yyparse();
+extern FILE *yyin;
 
 /*
  *	Recieves three arguments:
- *	First: Verbose mode.
- *	Second: Mode of execution.
- *	Third: Input file.
- *	Fourth: Output file.
+ *	First: Lexer verbose mode.
+ *	Second: Parser verbose mode.
+ *	Third: Mode of execution: execute only lexer or parser and lexer.
+ *	Fourth: Input file.
+ *	Fifth: Output file.
+ *	Sixth: Compiled file.
  */
 int	main(int argc, char **argv)
 {
 	char	execution_mode;
 	char	*input_file;
-	char	*frontend_result;
-	char	*c3a_output;
+	char	*verbose_result;
+	char	*compiled_file;
 
 	if (argc != 7)
-	{
-		dprintf(2, "ERROR: number of arguments inputed not correct.\n");
-		return (0);
-	}
+		yyfatal_error("ERROR: number of arguments inputed not correct.\n");
+
 	repmode = DEC_MODE;
 	lexer_verbose = atoi(argv[1]);
 	parser_verbose = atoi(argv[2]);
 	execution_mode = atoi(argv[3]);
 	input_file = argv[4];
-	frontend_result = argv[5];
-	c3a_output = argv[6];
-
-	n_register = -1;
-	n_line = 1;
+	verbose_result = argv[5];
+	compiled_file = argv[6];
 
 	yyin = fopen(input_file, "r");
 	if (yyin == NULL)
-	{
-		dprintf(2, "ERROR: input file could not be oppened.\n");
-		return (0);
-	}
+		yyfatal_error("ERROR: input file could not be opened.\n");
 	if (execution_mode == '1')
 	{
 		dprintf(1, "Lexer started:\n");
@@ -54,18 +50,19 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		yyfrontend_res = fopen(frontend_result,"w");
-		yyc3a_output = fopen(c3a_output,"w");
-		if (yyfrontend_res == NULL)
+		output_verbose = fopen(verbose_result,"w");
+		if (output_verbose == NULL)
+			yyfatal_error("ERROR: verbose result could not be opened.\n");
+		if (open_output_file(compiled_file))
 		{
-			dprintf(2, "ERROR: parser output file could not be oppened.\n");
-			return (0);
+			fclose(output_verbose);
+			yyfatal_error("ERROR: result compilation file could not be opened.\n");
 		}
 		dprintf(1, "Parser started:\n");
 		yyparse();
 		dprintf(1, "Parser ended.\n");
-		fclose(yyc3a_output);
-		fclose(yyfrontend_res);
+		close_output_file();
+		fclose(output_verbose);
 	}
 	fclose(yyin);
 	return (0);

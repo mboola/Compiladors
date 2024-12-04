@@ -1,4 +1,5 @@
-#include "helper_functions.h"
+#include "yyfunctions.h"
+#include "data_types.h"
 
 void	or(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
