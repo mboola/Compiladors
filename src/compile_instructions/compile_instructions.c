@@ -40,10 +40,9 @@ static char *convert_value(data_type type, void *value)
 	return (convert_bool_to_str(*(int *)value));
 }
 
-static char	*join_register(char *str, int reg)
+static char	*get_register(int reg)
 {
-	str = strjoin(str, "$t");
-	return (strjoin(str, convert_int_to_str(reg)));
+	return (strjoin("$t", convert_int_to_str(reg)));
 }
 
 /*
@@ -57,9 +56,9 @@ void	compile_assignation(t_id id, t_expression exp)
 	if (exp.reg == 0)
 		str = strjoin(str, convert_value(exp.type, exp.value));
 	else
-		str = join_register(str, exp.reg);
+		str = strjoin(str, get_register(exp.reg));
 	add_instruction(str, -1);
-	current_reg = 1;
+	current_reg = 1 + 2 * regs_reserved;
 }
 
 static char	*get_curr_reg()

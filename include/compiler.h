@@ -19,6 +19,7 @@ extern FILE *c3a_output;
 extern int line;
 
 extern int current_reg;
+extern int regs_reserved;
 
 // Prints all the instructions into c3a_output.
 void	print_all_instructions();

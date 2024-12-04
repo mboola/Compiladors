@@ -1,16 +1,6 @@
-Printing id i: (Int type-> 100).
-Printing id j: (Int type-> 50).
-Printing id add1: (Int type-> 150).
-Printing id sub1: (Int type-> 50).
-Printing id sub2: (Int type-> -50).
-Printing id str1: (String type-> hello).
-Printing id str2: (String type-> world).
-Printing id helloworld: (String type-> helloworld).
-Printing expression: (Int type-> 200).
-Printing id i: (Int type-> 101).
-Printing id div: (Int type-> 2).
-Printing id mod: (Int type-> 1).
-Printing id mul: (Int type-> 5050).
-Printing id pow: (Int type-> -2147483648).
-Printing id mix1: (Int type-> 126).
-Printing id mix2: (Int type-> 4).
+Printing id i: (Int type-> 2).
+Printing id test: (Int type-> 103).
+Printing id a: (Float type-> 5.000000).
+Printing id j: (Int type-> 3).
+Printing id k: (Int type-> 7).
+Printing id b: (Int type-> 5).

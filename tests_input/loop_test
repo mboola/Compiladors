@@ -1,5 +1,10 @@
 i := 2
-repeat i do
-	j := "testing"	
-	j + 5
+test := 1 + i * 40 + (30) - (2 * i ** 2)
+a := 3.0 + i 
+repeat i - 1 do
+	j := 1 + i
+	repeat j - 1 do
+		k := 1 + 2 * 3
+	done		
+	b := 5
 done

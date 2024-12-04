@@ -51,7 +51,8 @@ typedef struct {
 
 typedef struct {
 	data_type type;
-	char *instruction;
+	char *update;
+	char *jump;
 }	t_repeat;
 
 #endif
