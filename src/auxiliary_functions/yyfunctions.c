@@ -28,7 +28,7 @@ void	*yymalloc(size_t size)
 
 void	yyerror(char *explanation)
 {
-	fprintf(stderr, "%s , in line %d\n", explanation, yylineno);
+	fprintf(stderr, "%s, in line %d.\n", explanation, yylineno);
 	exit(0);
 }
 

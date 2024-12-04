@@ -15,7 +15,7 @@ static void	clear_instruction(void *data)
 
 static void	print_line()
 {
-	fprintf(c3a_output, "%d: ", line);
+	fprintf(c3a_output, "%d:\t", line);
 	line++;
 }
 

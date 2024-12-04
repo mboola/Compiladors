@@ -64,10 +64,14 @@ repeat_end
     handle_repeat_loop($1);
   }
 
-sentence :
-  boolean_expression NEWLINE_TKN { if (parser_verbose) print_expression($1); }
+sentence
+  : boolean_expression NEWLINE_TKN {
+    if (parser_verbose) print_expression($1);
+    compile_expression($1);
+  }
   | assignment { if (parser_verbose) print_assignment($1); }
   | representation_mode NEWLINE_TKN
+  | NEWLINE_TKN
 
 representation_mode :
   BIN { repmode = BIN_MODE; }
@@ -154,25 +158,35 @@ exp3 :
 
 boolean_expression
   : bexp {
-    $$.type = $1.type; $$.value = $1.value;
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
-bexp :
-  bexp1 OR bexp { or(&$$, $1, $3); }
-  | bexp1 { $$.type = $1.type; $$.value = $1.value; }
+bexp
+  : bexp1 OR bexp {
+    or(&$$, $1, $3);
+  }
+  | bexp1 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 bexp1 :
   bexp2 AND bexp1 { and(&$$, $1, $3); }
-  | bexp2 { $$.type = $1.type; $$.value = $1.value; }
+  | bexp2 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 bexp2 :
   NOT bexp3 { not(&$$, $2); }
-  | bexp3 { $$.type = $1.type; $$.value = $1.value; }
+  | bexp3 {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 bexp3 :
   arithmetic_expression OPREL arithmetic_expression { compare(&$$, $1, $2, $3); }
   | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
   | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
-  | arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
+  | arithmetic_expression {
+    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  }
 
 %%

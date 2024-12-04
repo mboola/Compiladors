@@ -136,3 +136,22 @@ void	compile_arithmetic_expression(t_expression first_exp, t_expression second_e
 	add_instruction(str, -1);
 	res->reg = reg;
 }
+
+void	compile_expression(t_expression exp)
+{
+	char	*str;
+
+	if (exp.lexema == NULL)
+		yyparser_error("Statement with no effect");
+	str = strjoin("PARAM ", exp.lexema);
+	add_instruction(str, -1);
+	if (exp.type == INT_TYPE)
+		str = strdup("CALL PUTI, 1");
+	else if (exp.type == FLOAT_TYPE)
+		str = strdup("CALL PUTF, 1");
+	else if (exp.type == STRING_TYPE)
+		str = strdup("CALL PUTS, 1");
+	else if (exp.type == UNKNOWN_TYPE)
+		yyparser_error("Cannot print uninitialized value");
+	add_instruction(str, -1);
+}
