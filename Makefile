@@ -5,6 +5,8 @@ YFLAGS = -Wcounterexamples -v -d
 
 # 
 SRC_DIR = src
+AUX_FUNCT_DIR = ${SRC_DIR}/auxiliary_functions
+OPERATIONS_DIR = ${SRC_DIR}/operations
 INPUT_DIR = tests_input
 INCLUDE = include
 LEXER_DIR = lexer
@@ -12,9 +14,15 @@ YACC_DIR = bison
 SYMTAB_DIR = symtab
 
 # Source Files
-SRC_FILE = ${SRC_DIR}/main.c ${SRC_DIR}/helper_functions.c \
-			${SRC_DIR}/arithmetic_operations.c ${SRC_DIR}/id_functions.c \
-			${SRC_DIR}/boolean_operations.c 
+AUX_FUNCT	=	${AUX_FUNCT_DIR}/helper_functions.c ${AUX_FUNCT_DIR}/yyfunctions.c \
+				${AUX_FUNCT_DIR}/str_functions.c
+
+OPERATIONS	=	${OPERATIONS_DIR}/arithmetic_operations.c ${OPERATIONS_DIR}/boolean_operations.c \
+				${OPERATIONS_DIR}/str_operations.c
+
+MAIN_FILES	=	${SRC_DIR}/main.c ${SRC_DIR}/compiler_flags.c
+
+SRC_FILES	=	${AUX_FUNCT} ${OPERATIONS} ${MAIN_FILES}
 
 # Flex
 LEX = flex
@@ -33,14 +41,13 @@ SYMTAB = ${SYMTAB_DIR}/symtab.c
 #
 BIN = compiler_program
 TEST = ${INPUT_DIR}/exe_input
-VERBOSE = 
 EXE_OUTPUT = result
 
 OTHER = input.output
 
 #
 all: symtab.o lex yacc
-	@$(CC) $(CFLAGS) $(SRC_FILE) symtab.o $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN) -lm
+	@$(CC) $(CFLAGS) $(SRC_FILES) symtab.o $(LEXER_DIR)/$(LEX_OUTPUT) ${YACC_DIR}/$(YACC_OUTPUT_C) -I $(INCLUDE) -o $(BIN) -lm
 	@echo "Compilation completed!"
 
 symtab.o: ${SYMTAB}
@@ -54,14 +61,6 @@ yacc:
 	@$(YACC) $(YFLAGS) $(SRC_YACC) -H${YACC_OUTPUT_H} -o ${YACC_OUTPUT_C}
 	@mv ${YACC_OUTPUT_C} ${YACC_DIR}
 	@mv ${YACC_OUTPUT_H} ${INCLUDE}
-
-test_lexer:
-	ARG1 = $(shell echo $$(($(VERBOSE) + 1)))
-	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
-
-test_parser:
-	ARG1 = $(shell echo $$(($(VERBOSE) + 2)))
-	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
 
 clean:
 	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${INCLUDE}/${YACC_OUTPUT_H} symtab.o ${OTHER}

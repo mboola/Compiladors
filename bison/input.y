@@ -1,26 +1,29 @@
 %{
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "helper_functions.h"
+	#include "parser_operations.h"
+	#include "yyfunctions.h"
+	#include "compiler_flags.h"
+	#include "helper_functions.h"
+
+	extern int yylex();
 
 %}
 
 %code requires {
-  /* Les definicions que s'utilitzen al %union han d'estar aqui */
-  #include "data_types.h"
+	/* Les definicions que s'utilitzen al %union han d'estar aqui */
+	#include "data_types.h"
 }
 
 %union{
-    int *integer;
-    float *real;
-    char *boolean;
-    char *string;
-    t_id id;
-    t_expression expression_type;
-    t_oprel oprel;
-    t_assignment assignment_type;
-    void *no_value;
+	int *integer;
+	float *real;
+	char *boolean;
+	char *string;
+	t_id id;
+	t_expression expression_type;
+	t_oprel oprel;
+	t_assignment assignment_type;
+	void *no_value;
 }
 
 %token <integer> INTEGER_TKN
@@ -95,12 +98,24 @@ exp2 :
   | SUBSTR exp3 exp3 exp3 { my_substr(&$$, $2, $3, $4); }
   | exp3 {$$.type = $1.type; $$.value = $1.value; }
 
+
 exp3 :
-  OPENPAR exp CLOSEDPAR { $$.type = $2.type; $$.value = $2.value; }
-  | INTEGER_TKN { $$.type = INT_TYPE; $$.value = $1; }
-  | FLOAT_TKN { $$.type = FLOAT_TYPE; $$.value = $1; }
-  | STRING_TKN { $$.type = STRING_TYPE; $$.value = $1; }
-  | ID_TKN { get_id(&$1); assign_expression(&($$), $1.type, $1.value); }
+	OPENPAR exp CLOSEDPAR {
+		assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
+	}
+	| INTEGER_TKN {
+		assign_expression(&($$), INT_TYPE, $1, 0, NULL);
+	}
+	| FLOAT_TKN {
+		assign_expression(&($$), FLOAT_TYPE, $1, 0, NULL);
+	}
+	| STRING_TKN {
+		assign_expression(&($$), STRING_TYPE, $1, 0, NULL);
+	}
+	| ID_TKN {
+		get_id(&$1);
+		assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
+	}
 
 boolean_expression :
   bexp { $$.type = $1.type; $$.value = $1.value; }

@@ -2,43 +2,44 @@
 /* TODO : put here a cool header */
 /*								 */
 
-#include "helper_functions.h"
-char	lexer_verbose;
-char	parser_verbose;
-representation_mode repmode;
+#include "compiler_flags.h"
+#include "yyfunctions.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+extern int	yylex();
+extern int	yyparse();
+extern FILE *yyin;
 
 /*
- *	Recieves three arguments:
- *	First: Verbose mode.
- *	Second: Mode of execution.
- *	Third: Input file.
- *	Fourth: Output file.
+ *	Recieves five arguments:
+ *	First: Lexer verbose mode.
+ *	Second: Parser verbose mode.
+ *	Third: Mode of execution: execute only lexer or parser and lexer.
+ *	Fourth: Input file.
+ *	Fifth: Output file.
  */
 int	main(int argc, char **argv)
 {
 	char	execution_mode;
 	char	*input_file;
-	char	*output_file;
+	char	*verbose_result;
 
 	if (argc != 6)
-	{
-		dprintf(2, "ERROR: number of arguments inputed not correct.\n");
-		return (0);
-	}
+		yyfatal_error("ERROR: number of arguments inputed not correct.\n");
+
 	repmode = DEC_MODE;
 	lexer_verbose = atoi(argv[1]);
 	parser_verbose = atoi(argv[2]);
 	execution_mode = atoi(argv[3]);
 	input_file = argv[4];
-	output_file = argv[5];
+	verbose_result = argv[5];
 
 	yyin = fopen(input_file, "r");
 	if (yyin == NULL)
-	{
-		dprintf(2, "ERROR: input file could not be oppened.\n");
-		return (0);
-	}
-	if (execution_mode == '1')
+		yyfatal_error("ERROR: input file could not be opened.\n");
+
+	if (execution_mode)
 	{
 		dprintf(1, "Lexer started:\n");
 		while (yylex());
@@ -46,16 +47,14 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		yyout = fopen(output_file,"r");
-		if (yyout == NULL)
-		{
-			dprintf(2, "ERROR: parser output file could not be oppened.\n");
-			return (0);
-		}
+		output_verbose = fopen(verbose_result, "w");
+		if (output_verbose == NULL)
+			yyfatal_error("ERROR: verbose result could not be opened.\n");
+
 		dprintf(1, "Parser started:\n");
 		yyparse();
 		dprintf(1, "Parser ended.\n");
-		fclose(yyout);
+		fclose(output_verbose);
 	}
 	fclose(yyin);
 	return (0);

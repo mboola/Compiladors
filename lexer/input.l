@@ -1,5 +1,8 @@
 %{
+	#include "const_definitions.h"
+	#include "yyfunctions.h"
 	#include "helper_functions.h"
+	#include "str_functions.h"
 	#include "input.tab.h"
 %}
 
@@ -22,180 +25,180 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 %%
 
 {INTEGER}	{
-	if (lexer_verbose) printf("Integer: %s\n", yytext);
+	yylexer_output("Integer: %s", yytext);
 	yylval.integer = yymalloc(sizeof(int));
 	*(yylval.integer) = atoi(yytext);
 	return INTEGER_TKN;
 }
 {FLOAT}		{
-	if (lexer_verbose) printf("Float: %s\n", yytext);
+	yylexer_output("Float: %s", yytext);
 	yylval.real = yymalloc(sizeof(float));
 	*(yylval.real) = atof(yytext);
 	return FLOAT_TKN;
 }
 "True"		{
-	if (lexer_verbose) printf("Boolean: %s\n", yytext);
+	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 1;
 	return TRUE;
 }
 "False"		{
-	if (lexer_verbose) printf("Boolean: %s\n", yytext);
+	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 0;
 	return FALSE;
 }
 "not"	{
-	if (lexer_verbose) printf("NOT detected\n");
+	yylexer_output("NOT detected");
 	return NOT;
 }
 "and"	{
-	if (lexer_verbose) printf("AND detected\n");
+	yylexer_output("AND detected");
 	return AND;
 }
 "or"	{
-	if (lexer_verbose) printf("OR detected\n");
+	yylexer_output("OR detected");
 	return OR;
 }
 "sin"	{
-	if (lexer_verbose) printf("SIN detected\n");
+	yylexer_output("SIN detected");
 	return SIN;
 }
 "cos"	{
-	if (lexer_verbose) printf("COS detected\n");
+	yylexer_output("COS detected");
 	return COS;
 }
 "tan"	{
-	if (lexer_verbose) printf("TAN detected\n");
+	yylexer_output("TAN detected");
 	return TAN;
 }
 "LEN"	{
-	if (lexer_verbose) printf("LEN detected\n");
+	yylexer_output("LEN detected");
 	return LEN;
 }
 "SUBSTR"	{
-	if (lexer_verbose) printf("SUBSTR detected\n");
+	yylexer_output("SUBSTR detected");
 	return SUBSTR;
 }
 "PI"	{
-	if (lexer_verbose) printf("PI detected\n");
+	yylexer_output("PI detected");
 	yylval.real = yymalloc(sizeof(float));
 	*(yylval.real) = PI_CONST;
 	return FLOAT_TKN;
 }
 "E"	{
-	if (lexer_verbose) printf("E detected\n");
+	yylexer_output("E detected");
 	yylval.real = yymalloc(sizeof(float));
 	*(yylval.real) = E_CONST;
 	return FLOAT_TKN;
 }
 "OCT"	{
-	if (lexer_verbose) printf("OCT detected\n");
+	yylexer_output("OCT detected");
 	return OCT;
 }
 "BIN"	{
-	if (lexer_verbose) printf("BIN detected\n");
+	yylexer_output("BIN detected");
 	return BIN;
 }
 "HEX"	{
-	if (lexer_verbose) printf("HEX detected\n");
+	yylexer_output("HEX detected");
 	return HEX;
 }
 "DEC"	{
-	if (lexer_verbose) printf("DEC detected\n");
+	yylexer_output("DEC detected");
 	return DEC;
 }
 {ID}		{
-	if (lexer_verbose) printf("ID: %s\n", yytext);
+	yylexer_output("ID: %s", yytext);
 	initialize_id(&yylval.id, yytext);
 	return ID_TKN;
 }
 {COMENT}{NEWLINE}	{
-	if (lexer_verbose) printf("COMENTARI: %s", yytext);
+	yylexer_output("COMENTARI: %s", yytext);
 }
 {COMENT_MULT}{NEWLINE} {
-	if (lexer_verbose) printf("COMENTARI_MULT: %s", yytext);
+	yylexer_output("COMENTARI_MULT: %s", yytext);
 }
 {STRING}	{
-	if (lexer_verbose) printf("Cadena: %s\n", yytext);
+	yylexer_output("Cadena: %s", yytext);
 	yylval.string = str_convert(yytext);
 	return STRING_TKN;
 }
 {WHITESPACE} { /* Ignorem espais en blanc */ }
 
 {NEWLINE}	{
-	if (lexer_verbose) printf("Newline detected.\n");
+	yylexer_output("NEWLINE_TKN detected");
 	return NEWLINE_TKN;
 }
 ":="	{
-	if (lexer_verbose) printf("Assignation detected.\n");
+	yylexer_output("ASSIGN detected");
 	return ASSIGN;
 }
 "("		{
-	if (lexer_verbose) printf("Open parenthesis detected.\n");
+	yylexer_output("OPENPAR detected");
 	return OPENPAR;
 }
 ")"		{
-	if (lexer_verbose) printf("Closed parenthesis detected.\n");
+	yylexer_output("CLOSEDPAR detected");
 	return CLOSEDPAR;
 }
 "+"		{
-	if (lexer_verbose) printf("ADDITION detected\n");
+	yylexer_output("ADDITION detected");
 	return ADDITION;
 }
 "-"		{
-	if (lexer_verbose) printf("SUBSTRACTION detected\n");
+	yylexer_output("SUBSTRACTION detected");
 	return SUBSTRACTION;
 }
 "**"	{
-	if (lexer_verbose) printf("POWER detected\n");
+	yylexer_output("POWER detected");
 	return POWER;
-	}
+}
 "*"		{
-	if (lexer_verbose) printf("MULTIPLICATION detected\n");
+	yylexer_output("MULTIPLICATION detected");
 	return MULTIPLICATION;
 }
 "/"		{
-	if (lexer_verbose) printf("DIVISION detected\n");
+	yylexer_output("DIVISION detected");
 	return DIVISION;
 }
 "%"		{
-	if (lexer_verbose) printf("MOD detected\n");
+	yylexer_output("MOD detected");
 	return MOD;
 }
 "<="	{
-	if (lexer_verbose) printf("LESEQ detected\n");
+	yylexer_output("LESEQ detected");
 	yylval.oprel.type = LESEQ;
 	return OPREL;
 }
 ">="	{
-	if (lexer_verbose) printf("BIGEQ detected\n");
+	yylexer_output("BIGEQ detected");
 	yylval.oprel.type = BIGEQ;
 	return OPREL;
 }
 "<>"	{
-	if (lexer_verbose) printf("NOTEQ detected\n");
+	yylexer_output("NOTEQ detected");
 	yylval.oprel.type = NOTEQ;
 	return OPREL;
 }
 "<"		{
-	if (lexer_verbose) printf("LESSER detected\n");
+	yylexer_output("LESSER detected");
 	yylval.oprel.type = LESSER;
 	return OPREL;
 }
 ">"		{
-	if (lexer_verbose) printf("BIGGER detected\n");
+	yylexer_output("BIGGER detected");
 	yylval.oprel.type = BIGGER;
 	return OPREL;
 }
 "="		{
-	if (lexer_verbose) printf("EQUAL detected\n");
+	yylexer_output("EQUAL detected");
 	yylval.oprel.type = EQUAL;
 	return OPREL;
 }
 
-.				{ if (lexer_verbose) printf("What is this: %s\n", yytext); }
+.		{ yylexer_error(strjoin("Token not recognized: ", yytext)); }
 
-<<EOF>>			{ return 0; }
+<<EOF>>	{ return 0; }
 
 %%
