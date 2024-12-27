@@ -4,3 +4,6 @@ char	lexer_verbose;
 char	parser_verbose;
 representation_mode repmode;
 FILE *output_verbose;
+
+int yycol;
+

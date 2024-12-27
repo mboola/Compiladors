@@ -6,9 +6,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
 #include "compiler_flags.h"
 
 extern int yylineno;
+extern char *yytext;
+extern FILE *yyin;
 
 void	yyfatal_error(char *explanation)
 {
@@ -32,10 +35,32 @@ void	yyerror(char *explanation)
 	exit(0);
 }
 
-void	yylexer_error(char *explanation)
+/*
+ *	Only called when an error in the lexer is found and I want to
+ *	display all the line. Will get called when program ends.
+ */
+static char	*get_current_line(FILE *file)
 {
-	fprintf(stderr, "Lexer error: ");
-	yyerror(explanation);
+	static char	line_buffer[1024];
+	int			current_line;
+
+	current_line = 1;
+	fseek(file, 0, SEEK_SET);
+	while (fgets(line_buffer, sizeof(line_buffer), file))
+	{
+		if (current_line == yylineno)
+			break;
+		current_line++;
+	}
+	return line_buffer;
+}
+
+void	yylexer_error()
+{
+	fprintf(stderr, "Lexer error: in line %d:%d -> ", yylineno, yycol);
+	fprintf(stderr, "Unidentified token '%s'.\n", yytext),
+	fprintf(stderr, "%s", get_current_line(yyin));
+	exit(0);
 }
 
 void	yyparser_error(char *explanation)
@@ -44,10 +69,16 @@ void	yyparser_error(char *explanation)
 	yyerror(explanation);
 }
 
+void	update_yycol()
+{
+	yycol += strlen(yytext);
+}
+
 void	yylexer_output(const char *str, ...)
 {
 	va_list args;
 
+	update_yycol();
 	if (lexer_verbose)
 	{
 		va_start(args, str);

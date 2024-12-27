@@ -16,4 +16,6 @@ extern char	parser_verbose;
 extern representation_mode repmode;
 extern FILE *output_verbose;
 
+extern int yycol;
+
 #endif

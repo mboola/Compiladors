@@ -54,8 +54,10 @@ if [ ! -f "$compiler" ]; then
 	make > /dev/null
 fi
 
-echo "Input file test:"
+echo "###Printing input file test###"
 cat ${test_file}
+echo ""
+echo "###Enended printing file###"
 echo ""
 
 ./${compiler} "${lexer_verbose}" "${parser_verbose}" "${exe_only_lexer}" "${test_file}" "${result}"

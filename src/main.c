@@ -35,9 +35,18 @@ int	main(int argc, char **argv)
 	input_file = argv[4];
 	verbose_result = argv[5];
 
+	yycol = 0;
+	
 	yyin = fopen(input_file, "r");
 	if (yyin == NULL)
 		yyfatal_error("ERROR: input file could not be opened.\n");
+
+	output_verbose = fopen(verbose_result, "w");
+	if (output_verbose == NULL)
+	{
+		fclose(yyin);
+		yyfatal_error("ERROR: verbose result could not be opened.\n");
+	}
 
 	if (execution_mode)
 	{
@@ -47,15 +56,11 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		output_verbose = fopen(verbose_result, "w");
-		if (output_verbose == NULL)
-			yyfatal_error("ERROR: verbose result could not be opened.\n");
-
 		dprintf(1, "Parser started:\n");
 		yyparse();
 		dprintf(1, "Parser ended.\n");
-		fclose(output_verbose);
 	}
+	fclose(output_verbose);
 	fclose(yyin);
 	return (0);
 }

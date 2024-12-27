@@ -4,6 +4,7 @@
 	#include "helper_functions.h"
 	#include "str_functions.h"
 	#include "input.tab.h"
+	#include "compiler_flags.h"
 %}
 
 %option yylineno
@@ -128,6 +129,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 
 {NEWLINE}	{
 	yylexer_output("NEWLINE_TKN detected");
+	yycol = 0;
 	return NEWLINE_TKN;
 }
 ":="	{
@@ -197,7 +199,9 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	return OPREL;
 }
 
-.		{ yylexer_error(strjoin("Token not recognized: ", yytext)); }
+.		{
+	yylexer_error();
+}
 
 <<EOF>>	{ return 0; }
 
