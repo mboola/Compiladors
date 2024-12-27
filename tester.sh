@@ -6,7 +6,8 @@
 #	P: parser verbose option
 #	test_name: test to run
 
-result=tester_result.txt
+verbose_result=verbose_result.txt
+calculator_result=calc_result.txt
 compiler=compiler_program
 
 lexer_verbose=0
@@ -46,8 +47,12 @@ if [ ! -f "$test_file" ]; then
 	exit 1
 fi
 
-if [ ! -f "$result" ]; then
-	touch $result 
+if [ ! -f "$verbose_result" ]; then
+	touch $verbose_result 
+fi
+
+if [ ! -f "$calculator_result" ]; then
+	touch $calculator_result 
 fi
 
 if [ ! -f "$compiler" ]; then
@@ -57,8 +62,8 @@ fi
 echo "###Printing input file test###"
 cat ${test_file}
 echo ""
-echo "###Enended printing file###"
+echo "###Ended printing file###"
 echo ""
 
-./${compiler} "${lexer_verbose}" "${parser_verbose}" "${exe_only_lexer}" "${test_file}" "${result}"
+./${compiler} "${lexer_verbose}" "${parser_verbose}" "${exe_only_lexer}" "${test_file}" "${verbose_result}" "${calculator_result}"
 make clean

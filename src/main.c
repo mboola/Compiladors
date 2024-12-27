@@ -18,14 +18,16 @@ extern FILE *yyin;
  *	Third: Mode of execution: execute only lexer or parser and lexer.
  *	Fourth: Input file.
  *	Fifth: Output file.
+ *	Sixth: Calculator result file.
  */
 int	main(int argc, char **argv)
 {
 	char	execution_mode;
 	char	*input_file;
 	char	*verbose_result;
+	char	*calc_result;
 
-	if (argc != 6)
+	if (argc != 7)
 		yyfatal_error("ERROR: number of arguments inputed not correct.\n");
 
 	repmode = DEC_MODE;
@@ -34,6 +36,7 @@ int	main(int argc, char **argv)
 	execution_mode = atoi(argv[3]);
 	input_file = argv[4];
 	verbose_result = argv[5];
+	calc_result = argv[6];
 
 	yycol = 0;
 	
@@ -46,6 +49,14 @@ int	main(int argc, char **argv)
 	{
 		fclose(yyin);
 		yyfatal_error("ERROR: verbose result could not be opened.\n");
+	}
+
+	output_result = fopen(calc_result, "w");
+	if (output_result == NULL)
+	{
+		fclose(yyin);
+		fclose(output_verbose);
+		yyfatal_error("ERROR: calculator result could not be opened.\n");
 	}
 
 	if (execution_mode)

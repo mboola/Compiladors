@@ -14,8 +14,9 @@ typedef enum {
 extern char	lexer_verbose;
 extern char	parser_verbose;
 extern representation_mode repmode;
-extern FILE *output_verbose;
+extern FILE	*output_verbose;
+extern FILE	*output_result;
 
-extern int yycol;
+extern int	yycol;
 
 #endif
