@@ -203,6 +203,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	yylexer_error();
 }
 
+
 <<EOF>>	{ return 0; }
 
 %%

@@ -23,3 +23,5 @@ pow := i ** j
 // Mixed
 mix1 := i + j / 2
 mix2 := 2 ** 2
+// Power two times
+pow2 := 2**2**4

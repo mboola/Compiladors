@@ -115,6 +115,19 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 	}
 }
 
+void	negate(t_expression *result, t_expression exp)
+{
+	// Check if value can be negated
+
+	if (exp.type == INT_TYPE)
+		*(int *)result->value = *(int *)exp.value * -1;
+	else if (exp.type == FLOAT_TYPE)
+		*(float *)result->value = *(float *)exp.value * -1;
+	else
+		yyerror("Cannot negate expression.");
+	result->type = exp.type;
+}
+
 void	multiplication(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
 	switch (first_exp.type)

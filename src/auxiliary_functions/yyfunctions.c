@@ -60,7 +60,7 @@ void	yylexer_error()
 	fprintf(stderr, "Lexer error: in line %d:%d -> ", yylineno, yycol);
 	fprintf(stderr, "Unidentified token '%s'.\n", yytext),
 	fprintf(stderr, "%s", get_current_line(yyin));
-	exit(0);
+	exit(1);
 }
 
 void	yyparser_error(char *explanation)

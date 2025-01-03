@@ -79,9 +79,9 @@ arithmetic_expression :
 exp :
   exp1 ADDITION exp { addition(&$$, $1, $3); }
   | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
-  | SUBSTRACTION exp1 { printf("new unarian exp bc of substraction\n"); }
-  | ADDITION exp1 { printf("new unarian exp bc of addition\n"); }
-  | exp1 {$$.type = $1.type; $$.value = $1.value;}
+  | SUBSTRACTION exp1 { negate(&$$, $2); }
+  | ADDITION exp1 { $$.type = $2.type; $$.value = $2.value; }
+  | exp1 { $$.type = $1.type; $$.value = $1.value; }
 
 exp1 :
   exp2 MULTIPLICATION exp1 { multiplication(&$$, $1, $3); }
