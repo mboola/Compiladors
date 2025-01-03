@@ -118,11 +118,16 @@ void	substraction(t_expression *result, t_expression first_exp, t_expression sec
 void	negate(t_expression *result, t_expression exp)
 {
 	// Check if value can be negated
-
 	if (exp.type == INT_TYPE)
-		*(int *)result->value = *(int *)exp.value * -1;
+	{
+		result->value = yymalloc(sizeof(int));
+		*((int *)(result->value)) = *((int *)(exp.value)) * -1;
+	}
 	else if (exp.type == FLOAT_TYPE)
-		*(float *)result->value = *(float *)exp.value * -1;
+	{
+		result->value = yymalloc(sizeof(float));
+		*((float *)(result->value)) = *((float *)(exp.value)) * -1;
+	}
 	else
 		yyerror("Cannot negate expression.");
 	result->type = exp.type;

@@ -59,14 +59,11 @@ rep_mode :
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
-  if (parser_verbose) printf("assignment detected \n");
-  if ($1.type == UNKNOWN_TYPE || $1.type == $3.type)
-  {
-    $1.type = $3.type;
-    $1.value = $3.value;
-  }
   if ($1.type != UNKNOWN_TYPE && $1.type != $3.type)
     yyerror("Different type assignation.\n");
+  
+  $1.type = $3.type;
+  $1.value = $3.value;
   update_id(&$1);
 }
 

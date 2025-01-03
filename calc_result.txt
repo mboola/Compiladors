@@ -1,0 +1,4 @@
+Printing id i: (Int type-> 10).
+Printing id j: (Int type-> -10).
+Printing id k: (Int type-> 10).
+Printing id l: (Int type-> 0).
