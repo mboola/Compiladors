@@ -1,4 +1,8 @@
-Printing id i: (Int type-> 10).
-Printing id j: (Int type-> -10).
-Printing id k: (Int type-> 10).
-Printing id l: (Int type-> 0).
+Printing expression: (Float type-> 3.141600).
+Printing expression: (Float type-> -0.000000).
+Printing expression: (Float type-> -0.314150).
+Printing expression: (Float type-> -0.112310).
+Printing expression: (Float type-> 0.000000).
+Printing expression: (Float type-> 0.010000).
+Printing expression: (Float type-> 0.000050).
+Printing expression: (Float type-> 1234.500000).

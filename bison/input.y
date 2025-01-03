@@ -1,5 +1,6 @@
 %{
 
+  #include <stdlib.h>
 	#include "parser_operations.h"
 	#include "yyfunctions.h"
 	#include "compiler_flags.h"
@@ -26,6 +27,8 @@
 	void *no_value;
 }
 
+%define parse.error verbose
+
 %token <integer> INTEGER_TKN
 %token <real> FLOAT_TKN
 %token <string> STRING_TKN
@@ -50,6 +53,7 @@ sentence :
   boolean_expression NEWLINE_TKN { print_expression($1); }
   | assignment { print_assignment($1); }
   | rep_mode NEWLINE_TKN
+  | NEWLINE_TKN
 
 rep_mode :
   BIN { repmode = BIN_MODE; }

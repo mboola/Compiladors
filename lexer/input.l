@@ -116,16 +116,18 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {COMENT}{NEWLINE}	{
 	yylexer_output("COMENTARI: %s", yytext);
+	yycol = 0;
 }
 {COMENT_MULT}{NEWLINE} {
 	yylexer_output("COMENTARI_MULT: %s", yytext);
+	yycol = 0;
 }
 {STRING}	{
 	yylexer_output("Cadena: %s", yytext);
 	yylval.string = str_convert(yytext);
 	return STRING_TKN;
 }
-{WHITESPACE} { /* Ignorem espais en blanc */ }
+{WHITESPACE} { update_yycol(); /* Ignorem espais en blanc */ }
 
 {NEWLINE}	{
 	yylexer_output("NEWLINE_TKN detected");

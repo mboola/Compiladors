@@ -31,7 +31,7 @@ void	*yymalloc(size_t size)
 
 void	yyerror(char *explanation)
 {
-	fprintf(stderr, "%s, in line %d.\n", explanation, yylineno);
+	fprintf(stderr, "%s, in line %d:%d.\n", explanation, yylineno, yycol);
 	exit(0);
 }
 
@@ -59,7 +59,7 @@ void	yylexer_error()
 {
 	fprintf(stderr, "Lexer error: in line %d:%d -> ", yylineno, yycol);
 	fprintf(stderr, "Unidentified token '%s'.\n", yytext),
-	fprintf(stderr, "%s", get_current_line(yyin));
+	fprintf(stderr, "Line: %s", get_current_line(yyin));
 	exit(1);
 }
 
