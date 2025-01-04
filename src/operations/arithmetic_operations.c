@@ -189,7 +189,7 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				*(int *)(result->value) = *(int *)first_exp.value / *(float *)second_exp.value;
+				*(float *)(result->value) = (float) *(int *)first_exp.value / *(float *)second_exp.value;
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
@@ -202,7 +202,7 @@ void	division(t_expression *result, t_expression first_exp, t_expression second_
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot divide FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				*(float *)(result->value) = *(float *)first_exp.value / *(int *)second_exp.value;
+				*(float *)(result->value) = *(float *)first_exp.value / (float) *(int *)second_exp.value;
 			result->type = first_exp.type;
 			break;
 		case STRING_TYPE:

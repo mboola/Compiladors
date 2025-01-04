@@ -37,8 +37,8 @@
 %token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC
 %token <oprel> OPREL
 
-%type <no_value> program sentence rep_mode
-%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3
+%type <no_value> program sentence representation_mode
+%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3 bexp4
 %type <assignment_type> assignment
 
 %start program
@@ -50,12 +50,12 @@ program :
   | sentence
 
 sentence :
-  boolean_expression NEWLINE_TKN { print_expression($1); }
+  expression NEWLINE_TKN { print_expression($1); }
   | assignment { print_assignment($1); }
-  | rep_mode NEWLINE_TKN
+  | representation_mode NEWLINE_TKN
   | NEWLINE_TKN
 
-rep_mode :
+representation_mode :
   BIN { repmode = BIN_MODE; }
   | OCT { repmode = OCT_MODE; }
   | DEC { repmode = DEC_MODE; }
@@ -78,10 +78,10 @@ arithmetic_expression :
   exp { $$.type = $1.type; $$.value = $1.value; }
 
 exp :
-  exp1 ADDITION exp { addition(&$$, $1, $3); }
+  SUBSTRACTION exp { negate(&$$, $2); }
+  | ADDITION exp { $$.type = $2.type; $$.value = $2.value; }
+  | exp1 ADDITION exp { addition(&$$, $1, $3); }
   | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
-  | SUBSTRACTION exp1 { negate(&$$, $2); }
-  | ADDITION exp1 { $$.type = $2.type; $$.value = $2.value; }
   | exp1 { $$.type = $1.type; $$.value = $1.value; }
 
 exp1 :
@@ -101,7 +101,7 @@ exp2 :
 
 
 exp3 :
-	OPENPAR exp CLOSEDPAR {
+	OPENPAR expression CLOSEDPAR {
 		assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
 	}
 	| INTEGER_TKN {
@@ -117,6 +117,7 @@ exp3 :
 		get_id(&$1);
 		assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
 	}
+  
 
 boolean_expression :
   bexp { $$.type = $1.type; $$.value = $1.value; }
@@ -134,9 +135,12 @@ bexp2 :
   | bexp3 { $$.type = $1.type; $$.value = $1.value; }
 
 bexp3 :
-  arithmetic_expression OPREL arithmetic_expression { compare(&$$, $1, $2, $3); }
+  bexp4 OPREL bexp3 { compare(&$$, $1, $2, $3); }
+  | bexp4 { $$.type = $1.type; $$.value = $1.value; }
+
+bexp4 :
+  arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
   | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
   | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
-  | arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
 
 %%

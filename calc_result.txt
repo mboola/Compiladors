@@ -1,8 +1,14 @@
-Printing expression: (Float type-> 3.141600).
-Printing expression: (Float type-> -0.000000).
-Printing expression: (Float type-> -0.314150).
-Printing expression: (Float type-> -0.112310).
-Printing expression: (Float type-> 0.000000).
-Printing expression: (Float type-> 0.010000).
-Printing expression: (Float type-> 0.000050).
-Printing expression: (Float type-> 1234.500000).
+Printing id x: (Float type-> 1.500000).
+Printing id i: (Int type-> 5).
+Printing id z: (Float type-> 31.250000).
+Printing id s: (String type-> Hola).
+Printing id b: (Bool type-> 1).
+Printing expression: (Float type-> 1.500000).
+Printing expression: (Int type-> 5).
+Printing expression: (Float type-> 31.250000).
+Printing expression: (String type-> Hola).
+Printing expression: (Bool type-> 1).
+Printing expression: (Int type-> 15).
+Printing expression: (Float type-> -6.500000).
+Printing expression: (String type-> HolaHola5aa1.500000).
+Printing expression: (Bool type-> 1).

@@ -37,13 +37,13 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	*(yylval.real) = atof(yytext);
 	return FLOAT_TKN;
 }
-"True"		{
+"true"		{
 	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 1;
 	return TRUE;
 }
-"False"		{
+"false"		{
 	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 0;

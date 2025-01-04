@@ -60,13 +60,15 @@ void	yylexer_error()
 	fprintf(stderr, "Lexer error: in line %d:%d -> ", yylineno, yycol);
 	fprintf(stderr, "Unidentified token '%s'.\n", yytext),
 	fprintf(stderr, "Line: %s", get_current_line(yyin));
-	exit(1);
+	exit(0);
 }
 
 void	yyparser_error(char *explanation)
 {
-	fprintf(stderr, "Parser error: ");
-	yyerror(explanation);
+	fprintf(stderr, "Parser error: in line %d:%d -> ", yylineno, yycol);
+	fprintf(stderr, "%s\n", explanation);
+	fprintf(stderr, "Line: %s", get_current_line(yyin));
+	exit(0);
 }
 
 void	update_yycol()
