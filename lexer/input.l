@@ -20,7 +20,7 @@ COMENT_MULT		"/*"([^*]|\*+[^*/])*"*/"
 NEWLINE			"\n"
 STRING			"\""{ID}*"\""
 DIGIT			[0-9]+
-INTEGER			\-?{DIGIT}
+INTEGER			{DIGIT}
 FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 
 %%
