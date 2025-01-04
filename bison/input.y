@@ -38,7 +38,7 @@
 %token <oprel> OPREL
 
 %type <no_value> program sentence representation_mode
-%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 bexp bexp1 bexp2 bexp3 bexp4
+%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 exp4 bexp bexp1 bexp2 bexp3 bexp4
 %type <assignment_type> assignment
 
 %start program
@@ -78,29 +78,32 @@ arithmetic_expression :
   exp { $$.type = $1.type; $$.value = $1.value; }
 
 exp :
-  SUBSTRACTION exp { negate(&$$, $2); }
-  | ADDITION exp { $$.type = $2.type; $$.value = $2.value; }
-  | exp1 ADDITION exp { addition(&$$, $1, $3); }
+  exp1 ADDITION exp { addition(&$$, $1, $3); }
   | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
   | exp1 { $$.type = $1.type; $$.value = $1.value; }
 
 exp1 :
-  exp2 MULTIPLICATION exp1 { multiplication(&$$, $1, $3); }
-  | exp2 DIVISION exp1 { division(&$$, $1, $3); }
-  | exp2 MOD exp1 { modulation(&$$, $1, $3); }
-  | exp2 {$$.type = $1.type; $$.value = $1.value;}
+  SUBSTRACTION exp2 { negate(&$$, $2); }
+  | ADDITION exp2 { $$.type = $2.type; $$.value = $2.value; }
+  | exp2 { $$.type = $1.type; $$.value = $1.value; }
 
 exp2 :
-  exp3 POWER exp2 { power(&$$, $1, $3); }
-  | SIN exp3 { sin_funct(&$$, $2); }
-  | COS exp3 { cos_funct(&$$, $2); }
-  | TAN exp3 { tan_funct(&$$, $2); }
-  | LEN exp3 { my_strlen(&$$, $2); }
-  | SUBSTR exp3 exp3 exp3 { my_substr(&$$, $2, $3, $4); }
-  | exp3 {$$.type = $1.type; $$.value = $1.value; }
-
+  exp3 MULTIPLICATION exp2 { multiplication(&$$, $1, $3); }
+  | exp3 DIVISION exp2 { division(&$$, $1, $3); }
+  | exp3 MOD exp2 { modulation(&$$, $1, $3); }
+  | exp3 {$$.type = $1.type; $$.value = $1.value;}
 
 exp3 :
+  exp4 POWER exp3 { power(&$$, $1, $3); }
+  | SIN exp4 { sin_funct(&$$, $2); }
+  | COS exp4 { cos_funct(&$$, $2); }
+  | TAN exp4 { tan_funct(&$$, $2); }
+  | LEN exp4 { my_strlen(&$$, $2); }
+  | SUBSTR exp4 exp4 exp4 { my_substr(&$$, $2, $3, $4); }
+  | exp4 {$$.type = $1.type; $$.value = $1.value; }
+
+
+exp4 :
 	OPENPAR expression CLOSEDPAR {
 		assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
 	}
