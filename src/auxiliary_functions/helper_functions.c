@@ -3,6 +3,8 @@
 #include "str_functions.h"
 #include "yyfunctions.h"
 #include "symtab.h"
+#include "base_converters.h"
+#include <stdint.h>
 
 /*
  *	Only called in input.l when ID_TKN found.
@@ -62,63 +64,75 @@ static void	print_value(data_type type, void *value)
 	switch (type)
 	{
 		case UNKNOWN_TYPE:
-			fprintf(output_verbose, "Unknown type."); // TODO : whatehell
+			fprintf(output_result, "Unknown type.");
 			break;
 		case INT_TYPE:
+			fprintf(output_result, "(Int type-> ");
 			switch (repmode)
 			{
 				case BIN_MODE:
-					fprintf(output_verbose, "(Int type-> %d).", *(int *)value);
+					itoa_base(*(int *)value, "01", output_result);
+					fprintf(output_result, ").");
 					break;
 				case OCT_MODE:
-					fprintf(output_verbose, "(Int type-> %o).", *(int *)value);
+					fprintf(output_result, "%o).", *(int *)value);
 					break;
 				case DEC_MODE:
-					fprintf(output_verbose, "(Int type-> %d).", *(int *)value);
+					fprintf(output_result, "%d).", *(int *)value);
 					break;
 				case HEX_MODE:
-					fprintf(output_verbose, "(Int type-> %x).", *(int *)value);
+					fprintf(output_result, "%x).", *(int *)value);
+					break;
+				case RICARDO_MODE:
+					itoa_base(*(int *)value, "Ricardo", output_result);
+					fprintf(output_result, ").");
 					break;
 			}
 			break;
-		case FLOAT_TYPE: // TODO : create functions to represent different types of floats
+		case FLOAT_TYPE:
+			fprintf(output_result, "(Float type-> ");
 			switch (repmode)
 			{
 				case BIN_MODE:
-					fprintf(output_verbose, "(Float type-> %f).", *(float *)value);
+					ftoa_base(*(float *)value, "01", output_result);
+					fprintf(output_result, ").");
 					break;
 				case OCT_MODE:
-					fprintf(output_verbose, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%o).", *((uint32_t *)((float *)value)));
 					break;
 				case DEC_MODE:
-					fprintf(output_verbose, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%f).", *(float *)value);
 					break;
 				case HEX_MODE:
-					fprintf(output_verbose, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%a).", *(float *)value);
+					break;
+				case RICARDO_MODE:
+					ftoa_base(*(float *)value, "Ricardo", output_result);
+					fprintf(output_result, ").");
 					break;
 			}
 			break;
 		case STRING_TYPE:
-			fprintf(output_verbose, "(String type-> %s).", (char *)value);
+			fprintf(output_result, "(String type-> %s).", (char *)value);
 			break;
 		case BOOLEAN_TYPE:
-			fprintf(output_verbose, "(Bool type-> %d).", *(char *)value);
+			fprintf(output_result, "(Bool type-> %d).", *(char *)value);
 			break;
 	}
 }
 
 void	print_id(t_id *id)
 {
-	fprintf(output_verbose, "Printing id %s: ", id->lexema);
+	fprintf(output_result, "Printing id %s: ", id->lexema);
 	print_value(id->type, id->value);
-	fprintf(output_verbose, "\n");
+	fprintf(output_result, "\n");
 }
 
 void	print_expression(t_expression exp)
 {
-	fprintf(output_verbose, "Printing expression: ");
+	fprintf(output_result, "Printing expression: ");
 	print_value(exp.type, exp.value);
-	fprintf(output_verbose, "\n");
+	fprintf(output_result, "\n");
 }
 
 void	print_assignment(t_assignment assign)

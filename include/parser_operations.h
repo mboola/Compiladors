@@ -6,6 +6,7 @@
 // Arithmetic operations
 void	addition(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	substraction(t_expression *result, t_expression first_exp, t_expression second_exp);
+void	negate(t_expression *result, t_expression exp);
 void	multiplication(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	division(t_expression *result, t_expression first_exp, t_expression second_exp);
 void	modulation(t_expression *result, t_expression first_exp, t_expression second_exp);

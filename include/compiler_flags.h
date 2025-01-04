@@ -8,12 +8,16 @@ typedef enum {
 	BIN_MODE,
 	OCT_MODE,
 	DEC_MODE,
-	HEX_MODE
+	HEX_MODE,
+	RICARDO_MODE
 }	representation_mode;
 
 extern char	lexer_verbose;
 extern char	parser_verbose;
 extern representation_mode repmode;
-extern FILE *output_verbose;
+extern FILE	*output_verbose;
+extern FILE	*output_result;
+
+extern int	yycol;
 
 #endif

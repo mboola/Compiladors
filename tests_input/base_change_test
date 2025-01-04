@@ -1,6 +1,22 @@
 // Test to test the correct change of base
+DEC
 i := 10
 HEX
 i := 10
 OCT
 i := 10
+BIN
+i := 10
+RICARDO
+i := 10
+
+DEC
+j := 10.5
+HEX
+j := 10.5
+OCT
+j := 10.5
+BIN
+j := 10.56
+RICARDO
+j := 10.56

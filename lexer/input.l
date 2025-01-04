@@ -4,6 +4,7 @@
 	#include "helper_functions.h"
 	#include "str_functions.h"
 	#include "input.tab.h"
+	#include "compiler_flags.h"
 %}
 
 %option yylineno
@@ -19,7 +20,7 @@ COMENT_MULT		"/*"([^*]|\*+[^*/])*"*/"
 NEWLINE			"\n"
 STRING			"\""{ID}*"\""
 DIGIT			[0-9]+
-INTEGER			\-?{DIGIT}
+INTEGER			{DIGIT}
 FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 
 %%
@@ -36,13 +37,13 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	*(yylval.real) = atof(yytext);
 	return FLOAT_TKN;
 }
-"True"		{
+"true"		{
 	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 1;
 	return TRUE;
 }
-"False"		{
+"false"		{
 	yylexer_output("Boolean: %s", yytext);
 	yylval.boolean = yymalloc(sizeof(char));
 	*(yylval.boolean) = 0;
@@ -120,6 +121,10 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	yylexer_output("DEC detected");
 	return DEC;
 }
+"RICARDO"	{
+	yylexer_output("RICARDO detected");
+	return RIC;
+}
 {ID}		{
 	yylexer_output("ID: %s", yytext);
 	initialize_id(&yylval.id, yytext);
@@ -127,19 +132,22 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {COMENT}{NEWLINE}	{
 	yylexer_output("COMENTARI: %s", yytext);
+	yycol = 0;
 }
 {COMENT_MULT}{NEWLINE} {
 	yylexer_output("COMENTARI_MULT: %s", yytext);
+	yycol = 0;
 }
 {STRING}	{
 	yylexer_output("Cadena: %s", yytext);
 	yylval.string = str_convert(yytext);
 	return STRING_TKN;
 }
-{WHITESPACE} { /* Ignorem espais en blanc */ }
+{WHITESPACE} { update_yycol(); /* Ignorem espais en blanc */ }
 
 {NEWLINE}	{
 	yylexer_output("NEWLINE_TKN detected");
+	yycol = 0;
 	return NEWLINE_TKN;
 }
 ":="	{
@@ -165,7 +173,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 "**"	{
 	yylexer_output("POWER detected");
 	return POWER;
-	}
+}
 "*"		{
 	yylexer_output("MULTIPLICATION detected");
 	return MULTIPLICATION;
@@ -209,8 +217,11 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	return OPREL;
 }
 
-.				{ yylexer_error(strjoin("Token not recognized: ", yytext)); }
+.		{
+	yylexer_error();
+}
 
-<<EOF>>			{ return 0; }
+
+<<EOF>>	{ return 0; }
 
 %%

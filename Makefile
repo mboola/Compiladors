@@ -16,11 +16,12 @@ SYMTAB_DIR = symtab
 
 # Source Files
 AUX_FUNCT	=	${AUX_FUNCT_DIR}/helper_functions.c ${AUX_FUNCT_DIR}/yyfunctions.c \
-				${AUX_FUNCT_DIR}/linked_list.c ${AUX_FUNCT_DIR}/str_functions.c \
+				${AUX_FUNCT_DIR}/str_functions.c ${AUX_FUNCT_DIR}/base_converters.c \
+				${AUX_FUNCT_DIR}/linked_list.c
 
 OPERATIONS	=	${OPERATIONS_DIR}/arithmetic_operations.c ${OPERATIONS_DIR}/boolean_operations.c \
 				${OPERATIONS_DIR}/repeat_operations.c ${OPERATIONS_DIR}/str_operations.c
-
+	
 COMP_INST	=	${COMP_INST_DIR}/compile_instructions.c
 
 MAIN_FILES	=	${SRC_DIR}/main.c ${SRC_DIR}/compiler.c ${SRC_DIR}/compiler_flags.c
@@ -44,7 +45,6 @@ SYMTAB = ${SYMTAB_DIR}/symtab.c
 #
 BIN = compiler_program
 TEST = ${INPUT_DIR}/exe_input
-VERBOSE = 
 EXE_OUTPUT = result
 
 OTHER = input.output
@@ -65,14 +65,6 @@ yacc:
 	@$(YACC) $(YFLAGS) $(SRC_YACC) -H${YACC_OUTPUT_H} -o ${YACC_OUTPUT_C}
 	@mv ${YACC_OUTPUT_C} ${YACC_DIR}
 	@mv ${YACC_OUTPUT_H} ${INCLUDE}
-
-test_lexer:
-	ARG1 = $(shell echo $$(($(VERBOSE) + 1)))
-	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
-
-test_parser:
-	ARG1 = $(shell echo $$(($(VERBOSE) + 2)))
-	@./${BIN} ${ARG1} ${TEST} ${EXE_OUTPUT}
 
 clean:
 	@rm -rf $(BIN) ${LEXER_DIR}/${LEX_OUTPUT} ${YACC_DIR}/${YACC_OUTPUT_C} ${INCLUDE}/${YACC_OUTPUT_H} symtab.o ${OTHER}
