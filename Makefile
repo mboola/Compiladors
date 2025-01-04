@@ -15,7 +15,7 @@ SYMTAB_DIR = symtab
 
 # Source Files
 AUX_FUNCT	=	${AUX_FUNCT_DIR}/helper_functions.c ${AUX_FUNCT_DIR}/yyfunctions.c \
-				${AUX_FUNCT_DIR}/str_functions.c
+				${AUX_FUNCT_DIR}/str_functions.c ${AUX_FUNCT_DIR}/base_converters.c 
 
 OPERATIONS	=	${OPERATIONS_DIR}/arithmetic_operations.c ${OPERATIONS_DIR}/boolean_operations.c \
 				${OPERATIONS_DIR}/str_operations.c

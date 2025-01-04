@@ -2,3 +2,9 @@ Printing id i: (Int type-> 10).
 Printing id i: (Int type-> a).
 Printing id i: (Int type-> 12).
 Printing id i: (Int type-> 1010).
+Printing id i: (Int type-> ia).
+Printing id j: (Float type-> 10.500000).
+Printing id j: (Float type-> 0x1.5p+3).
+Printing id j: (Float type-> 10112000000).
+Printing id j: (Float type-> 1010.10001111).
+Printing id j: (Float type-> ia.aoaRaoac).

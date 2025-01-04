@@ -109,6 +109,10 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	yylexer_output("DEC detected");
 	return DEC;
 }
+"RICARDO"	{
+	yylexer_output("RICARDO detected");
+	return RIC;
+}
 {ID}		{
 	yylexer_output("ID: %s", yytext);
 	initialize_id(&yylval.id, yytext);

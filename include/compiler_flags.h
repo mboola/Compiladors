@@ -8,7 +8,8 @@ typedef enum {
 	BIN_MODE,
 	OCT_MODE,
 	DEC_MODE,
-	HEX_MODE
+	HEX_MODE,
+	RICARDO_MODE
 }	representation_mode;
 
 extern char	lexer_verbose;

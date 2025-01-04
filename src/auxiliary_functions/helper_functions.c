@@ -3,6 +3,8 @@
 #include "str_functions.h"
 #include "yyfunctions.h"
 #include "symtab.h"
+#include "base_converters.h"
+#include <stdint.h>
 
 /*
  *	Only called in input.l when ID_TKN found.
@@ -56,69 +58,57 @@ char	*str_convert(char *yytext)
 	return strdup(++yytext);
 }
 
-static void	recursive_print(int num, const char *base, int len)
-{
-	if (num / len < 1)
-		fprintf(output_result, "%c", base[num]);
-	else
-	{
-		recursive_print(num / len, base, len);
-		fprintf(output_result, "%c", base[num % len]);
-	}
-}
-
-static void	itoa_base(int num, const char *base)
-{
-	if (num < 0)
-	{
-		fprintf(output_result, "-");
-		recursive_print(num * -1, base, strlen(base));
-	}
-	else
-		recursive_print(num, base, strlen(base));
-}
-
 // used to print a value inside the output_verbose file
 static void	print_value(data_type type, void *value)
 {
 	switch (type)
 	{
 		case UNKNOWN_TYPE:
-			fprintf(output_result, "Unknown type."); // TODO : whatehell
+			fprintf(output_result, "Unknown type.");
 			break;
 		case INT_TYPE:
+			fprintf(output_result, "(Int type-> ");
 			switch (repmode)
 			{
 				case BIN_MODE:
-					fprintf(output_result, "(Int type-> ");
-					itoa_base(*(int *)value, "01");
+					itoa_base(*(int *)value, "01", output_result);
 					fprintf(output_result, ").");
 					break;
 				case OCT_MODE:
-					fprintf(output_result, "(Int type-> %o).", *(int *)value);
+					fprintf(output_result, "%o).", *(int *)value);
 					break;
 				case DEC_MODE:
-					fprintf(output_result, "(Int type-> %d).", *(int *)value);
+					fprintf(output_result, "%d).", *(int *)value);
 					break;
 				case HEX_MODE:
-					fprintf(output_result, "(Int type-> %x).", *(int *)value);
+					fprintf(output_result, "%x).", *(int *)value);
+					break;
+				case RICARDO_MODE:
+					itoa_base(*(int *)value, "Ricardo", output_result);
+					fprintf(output_result, ").");
 					break;
 			}
 			break;
-		case FLOAT_TYPE: // TODO : create functions to represent different types of floats
+		case FLOAT_TYPE:
+			fprintf(output_result, "(Float type-> ");
 			switch (repmode)
 			{
 				case BIN_MODE:
-					fprintf(output_result, "(Float type-> %f).", *(float *)value);
+					ftoa_base(*(float *)value, "01", output_result);
+					fprintf(output_result, ").");
 					break;
 				case OCT_MODE:
-					fprintf(output_result, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%o).", *((uint32_t *)((float *)value)));
 					break;
 				case DEC_MODE:
-					fprintf(output_result, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%f).", *(float *)value);
 					break;
 				case HEX_MODE:
-					fprintf(output_result, "(Float type-> %f).", *(float *)value);
+					fprintf(output_result, "%a).", *(float *)value);
+					break;
+				case RICARDO_MODE:
+					ftoa_base(*(float *)value, "Ricardo", output_result);
+					fprintf(output_result, ").");
 					break;
 			}
 			break;

@@ -34,7 +34,7 @@
 %token <string> STRING_TKN
 %token <boolean> TRUE FALSE
 %token <id> ID_TKN
-%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC
+%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC RIC
 %token <oprel> OPREL
 
 %type <no_value> program sentence representation_mode
@@ -60,6 +60,7 @@ representation_mode :
   | OCT { repmode = OCT_MODE; }
   | DEC { repmode = DEC_MODE; }
   | HEX { repmode = HEX_MODE; }
+  | RIC { repmode = RICARDO_MODE; }
 
 assignment : ID_TKN ASSIGN expression NEWLINE_TKN
 {
