@@ -4,5 +4,5 @@ len := LEN i
 // result 5
 len2 := LEN "test2"
 // momento de la verdad
-// res debe ser "es"
+// res debe ser "est"
 res := SUBSTR i 1 3
