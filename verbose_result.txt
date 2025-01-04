@@ -4,7 +4,7 @@ Lexer: Float: 5.9
 Lexer: NEWLINE_TKN detected
 Lexer: ID: j
 Lexer: ASSIGN detected
-Lexer: Float: 2.0
+Lexer: Integer: 2
 Lexer: NEWLINE_TKN detected
 Lexer: ID: k
 Lexer: ASSIGN detected

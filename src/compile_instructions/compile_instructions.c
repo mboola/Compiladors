@@ -124,9 +124,9 @@ void	compile_power(t_expression first_exp, t_expression second_exp, t_expression
 	str = strjoin(get_curr_reg(), " := ");
 	str = strjoin(str, get_reg(&first_exp));
 	if (int_type)
-		str = strjoin(str, " MULTI ");
+		str = strjoin(str, " MULI ");
 	else
-		str = strjoin(str, " MULTF ");
+		str = strjoin(str, " MULF ");
 	str = strjoin(str, get_reg(&first_exp));
 	add_instruction(str, -1);
 
@@ -136,9 +136,9 @@ void	compile_power(t_expression first_exp, t_expression second_exp, t_expression
 		str = strjoin(str, get_register(last_reg));
 		last_reg++;
 		if (int_type)
-			str = strjoin(str, " MULTI ");
+			str = strjoin(str, " MULI ");
 		else
-			str = strjoin(str, " MULTF ");
+			str = strjoin(str, " MULF ");
 		str = strjoin(str, get_reg(&first_exp));
 		add_instruction(str, -1);
 	}
