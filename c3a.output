@@ -1,29 +1,8 @@
-1:	i := 2
-2:	$t01 := i MULI 40
-3:	$t02 := 2 MULI i
-4:	$t03 := 30 SUBI $t02
-5:	$t04 := $t01 ADDI $t03
-6:	$t05 := 1 ADDI $t04
-7:	test := $t5
-8:	$t01 := I2F i
-9:	$t02 := 3.000000e+00 ADDF $t01
-10:	a := $t2
-11:	PARAM i
-12:	CALL PUTI, 1
-13:	$t01 := 2 SUBI 1
-14:	$t02 := i ADDI $t01
-15:	$t01 := $t02
-16:	$t02 := 0
-17:	$t03 := 1 ADDI i
-18:	j := $t3
-19:	$t03 := j SUBI 1
-20:	$t04 := 0
-21:	$t05 := 2 MULI 3
-22:	$t06 := 1 ADDI $t05
-23:	k := $t6
-24:	$t04 := $t04 ADDI 1
-25:	IF $t04 LTI $t03 GOTO 21
-26:	b := 5
-27:	$t02 := $t02 ADDI 1
-28:	IF $t02 LTI $t01 GOTO 17
-29:	HALT
+1:	i := 5.900000e+00
+2:	j := 2.000000e+00
+3:	$t01 := j MULTF j
+4:	$t02 := $t1 MULTF j
+5:	$t03 := $t2 MULTF j
+6:	$t04 := $t3 MULTF j
+7:	k := $t4
+8:	HALT
