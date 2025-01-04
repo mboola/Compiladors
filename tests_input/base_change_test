@@ -4,3 +4,5 @@ HEX
 i := 10
 OCT
 i := 10
+BIN
+i := 10

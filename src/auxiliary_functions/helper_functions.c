@@ -56,6 +56,28 @@ char	*str_convert(char *yytext)
 	return strdup(++yytext);
 }
 
+static void	recursive_print(int num, const char *base, int len)
+{
+	if (num / len < 1)
+		fprintf(output_result, "%c", base[num]);
+	else
+	{
+		recursive_print(num / len, base, len);
+		fprintf(output_result, "%c", base[num % len]);
+	}
+}
+
+static void	itoa_base(int num, const char *base)
+{
+	if (num < 0)
+	{
+		fprintf(output_result, "-");
+		recursive_print(num * -1, base, strlen(base));
+	}
+	else
+		recursive_print(num, base, strlen(base));
+}
+
 // used to print a value inside the output_verbose file
 static void	print_value(data_type type, void *value)
 {
@@ -68,7 +90,9 @@ static void	print_value(data_type type, void *value)
 			switch (repmode)
 			{
 				case BIN_MODE:
-					fprintf(output_result, "(Int type-> %d).", *(int *)value);
+					fprintf(output_result, "(Int type-> ");
+					itoa_base(*(int *)value, "01");
+					fprintf(output_result, ").");
 					break;
 				case OCT_MODE:
 					fprintf(output_result, "(Int type-> %o).", *(int *)value);
