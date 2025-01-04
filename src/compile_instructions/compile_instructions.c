@@ -42,7 +42,7 @@ static char *convert_value(data_type type, void *value)
 
 static char	*get_register(int reg)
 {
-	return (strjoin("$t", convert_int_to_str(reg)));
+	return (strjoin("$t0", convert_int_to_str(reg)));
 }
 
 /*
