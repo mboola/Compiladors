@@ -2,5 +2,8 @@ total := 1000.0
 
 while total < 1000.1 and total > 500.0 or 1 < 2 do
 	i := 0
+	while i < 10 do
+		i := i + 1
+	done
 	j := 1 + i
 done
