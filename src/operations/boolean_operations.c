@@ -1,9 +1,14 @@
 #include "yyfunctions.h"
 #include "data_types.h"
 #include "compile_instructions.h"
+#include "compiler.h"
 
-void	or(t_expression *result, t_expression first_exp, t_expression second_exp)
+void	or(t_expression *result, t_expression first_exp, int curr_line, t_expression second_exp)
 {
+	fill_list(first_exp.false_list, curr_line); // TODO : NOT SURE if to use instructions_inputed
+	result->true_list = join_list(&(first_exp.true_list), second_exp.true_list);
+	result->false_list = second_exp.false_list;
+
 	result->value = yymalloc(sizeof(char *));
 	if (*((char *)first_exp.value) == 1)
 		*((char *)result->value) = 1;
@@ -13,8 +18,12 @@ void	or(t_expression *result, t_expression first_exp, t_expression second_exp)
 		*((char *)result->value) = 0;
 }
 
-void	and(t_expression *result, t_expression first_exp, t_expression second_exp)
+void	and(t_expression *result, t_expression first_exp, int curr_line, t_expression second_exp)
 {
+	fill_list(first_exp.true_list, curr_line); // TODO : NOT SURE if to use instructions_inputed
+	result->true_list = join_list(&(first_exp.false_list), second_exp.false_list);
+	result->true_list = second_exp.true_list;
+
 	result->value = yymalloc(sizeof(char *));
 	if (*(char *)first_exp.value == 0)
 		*((char *)result->value) = 0;
@@ -26,6 +35,9 @@ void	and(t_expression *result, t_expression first_exp, t_expression second_exp)
 
 void	not(t_expression *result, t_expression exp)
 {
+	result->false_list = exp.true_list;
+	result->true_list = exp.false_list;
+
 	result->type = exp.type;
 	result->value = yymalloc(sizeof(char *));
 	*((char *)result->value) = !*(char *)exp.value;

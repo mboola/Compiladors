@@ -22,6 +22,7 @@
     float *real;
     char *boolean;
     char *string;
+    int m_val;
     t_id id;
     t_expression expression_type;
     t_oprel oprel;
@@ -54,6 +55,8 @@
 /* Other */
 %token <no_value> OPENPAR CLOSEDPAR ASSIGN NEWLINE_TKN
 %token <oprel> OPREL
+
+%type <m_val> M
 
 %type <no_value> program sentence representation_mode sentence_list
 %type <expression_type> expression arithmetic_expression exp exp1 exp2 exp3 exp4
@@ -241,6 +244,10 @@ exp4 :
 		assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
 	}
   
+M:
+  {
+    $$ = instructions_inputed;
+  }
 
 boolean_expression :
   bexp {
@@ -248,15 +255,15 @@ boolean_expression :
   }
 
 bexp :
-  bexp1 OR bexp {
-    or(&$$, $1, $3);
+  bexp1 OR M bexp {
+    or(&$$, $1, $3, $4);
   }
   | bexp1 {
     assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 bexp1 :
-  bexp2 AND bexp1 { and(&$$, $1, $3); }
+  bexp2 AND M bexp1 { and(&$$, $1, $3, $4); }
   | bexp2 {
     assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
