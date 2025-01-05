@@ -20,11 +20,8 @@
 %union{
     int *integer;
     float *real;
-    char *boolean;
-    char *string;
     t_id id;
     t_expression expression_type;
-    t_oprel oprel;
     t_assignment assignment_type;
     t_repeat repeat_type;
     void *no_value;
@@ -34,14 +31,11 @@
 
 %token <integer> INTEGER_TKN
 %token <real> FLOAT_TKN
-%token <string> STRING_TKN
-%token <boolean> TRUE FALSE
 %token <id> ID_TKN
-%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC RIC REPEAT DONE DO
-%token <oprel> OPREL
+%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD SIN COS TAN OCT BIN HEX DEC RIC REPEAT DONE DO
 
 %type <no_value> program sentence representation_mode sentence_list repeat_end
-%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 exp4 bexp bexp1 bexp2 bexp3 bexp4
+%type <expression_type> expression arithmetic_expression exp exp1 exp2 exp3 exp4
 %type <assignment_type> assignment
 %type <repeat_type> repeat_start
 
@@ -93,7 +87,7 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN {
     compile_assignation($1, $3);
   }
 
-expression : boolean_expression { $$.type = $1.type; $$.value = $1.value; }
+expression : arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
 
 arithmetic_expression :
   exp { 
@@ -143,18 +137,12 @@ exp3 :
   | TAN exp4 {
     tan_funct(&$$, $2);
   }
-  | LEN exp4 {
-    my_strlen(&$$, $2);
-  }
-  | SUBSTR exp4 exp4 exp4 {
-    my_substr(&$$, $2, $3, $4);
-  }
   | exp4 {
     assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 exp4 :
-  OPENPAR expression CLOSEDPAR {
+  OPENPAR exp CLOSEDPAR {
 		assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
 	}
 	| INTEGER_TKN {
@@ -163,47 +151,9 @@ exp4 :
 	| FLOAT_TKN {
 		assign_expression(&($$), FLOAT_TYPE, $1, 0, NULL);
 	}
-	| STRING_TKN {
-		assign_expression(&($$), STRING_TYPE, $1, 0, NULL);
-	}
 	| ID_TKN {
 		get_id(&$1);
 		assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
 	}
-  
-
-boolean_expression :
-  bexp {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
-  }
-
-bexp :
-  bexp1 OR bexp {
-    or(&$$, $1, $3);
-  }
-  | bexp1 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
-  }
-
-bexp1 :
-  bexp2 AND bexp1 { and(&$$, $1, $3); }
-  | bexp2 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
-  }
-
-bexp2 :
-  NOT bexp3 { not(&$$, $2); }
-  | bexp3 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
-  }
-
-bexp3 :
-  bexp4 OPREL bexp3 { compare(&$$, $1, $2, $3); }
-  | bexp4 { $$.type = $1.type; $$.value = $1.value; }
-
-bexp4 :
-  arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
-  | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
-  | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
 
 %%

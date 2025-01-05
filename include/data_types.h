@@ -4,19 +4,8 @@
 typedef enum {
 	UNKNOWN_TYPE,
 	INT_TYPE,
-	FLOAT_TYPE,
-	STRING_TYPE,
-	BOOLEAN_TYPE
+	FLOAT_TYPE
 }	data_type;
-
-typedef enum {
-	LESEQ,
-	BIGEQ,
-	NOTEQ,
-	LESSER,
-	BIGGER,
-	EQUAL
-}	oprel_type;
 
 // Struct used to store the possible values
 // of an id.
@@ -37,11 +26,6 @@ typedef struct {
 	char *lexema;
 	int reg;
 }	t_expression;
-
-// Struct that defines a relational operation
-typedef struct {
-	oprel_type type;
-}	t_oprel;
 
 // Struct that defines the data used in an assigments
 // TODO : Im pretty sure it wont be used
