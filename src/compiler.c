@@ -74,7 +74,7 @@ void	end_compilation()
 
 char	open_output_file(char *file)
 {
-	c3a_output = fopen(file,"w");
+	c3a_output = fopen(file, "w");
 	instructions = NULL;
 	line = 1;
 	current_reg = 1;
