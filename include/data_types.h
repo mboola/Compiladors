@@ -63,6 +63,7 @@ typedef struct {
 	t_list *instructions;
 	t_expression expression;
 	int	true_section_line;
+	int	offset;
 }	t_if;
 
 #endif

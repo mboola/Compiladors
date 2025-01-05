@@ -14,7 +14,13 @@ void	initialize_if(t_if *if_start, t_expression boolean_expression)
 	if_start->expression = boolean_expression;
 
 	// true goto is current line + boolean conditionals
-	if_start->true_section_line = line + lstsize(if_start->instructions); // TODO : change for nested ifs
+	if_start->true_section_line = instructions_inputed; // TODO : change for nested ifs
+	
+	if_start->offset = lstsize(if_start->instructions);
+
+	/*
+	printf("Start true block: %d\n", if_start->true_section_line);
+	printf("Instruction size: %d\n", lstsize(if_start->instructions));*/
 }
 
 void	end_if(t_if if_start)
@@ -29,7 +35,6 @@ void	end_if(t_if if_start)
 
 	// goto true is current_line in file + offset gotos
 	fill_list(if_start.expression.true_list, if_start.true_section_line);
-	
 	// goto false is current_line in file + offset gotos + len(instrucions)
 	fill_list(if_start.expression.false_list, false_section_line);
 }

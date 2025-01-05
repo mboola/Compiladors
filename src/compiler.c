@@ -56,14 +56,14 @@ static void	modify_instruction(int pos, char *modification)
 	t_list	*lst;
 
 	lst = instructions;
-	//printf("Position %d\n", position);
-	//printf("Line %d\n", line);
+	//printf("Position %d\n", pos);
 	i = line; //last position
 	while (i < pos && lst->next)
 	{
 		lst = lst->next;
 		i++;
 	}
+	//printf("Line %d\n", i);
 	instruction = (char *)(lst->content);
 	instruction = strjoin(instruction, modification);
 	lst->content = instruction;
@@ -138,12 +138,19 @@ static char	*convert_int_to_str(int i)
 
 void	fill_list(t_list *lst, int goto_position)
 {
+	int	instructions_len;
 	int	position;
 
+	instructions_len = lstsize(instructions);
 	while (lst)
 	{
 		position = *(int *)(lst->content);
-		modify_instruction(position, convert_int_to_str(goto_position));
+		if (instructions_len + 1 == instructions_inputed) // can access with absolute position
+			modify_instruction(position, convert_int_to_str(goto_position));
+		else
+		{
+			modify_instruction(position - (instructions_inputed - instructions_len) + 1, convert_int_to_str(goto_position));
+		}
 		lst = lst->next;
 	}
 }
