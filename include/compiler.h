@@ -17,6 +17,7 @@ extern FILE *c3a_output;
 
 // Number of lines the compiled has. Used when printing instructions
 extern int line;
+extern int instructions_inputed;
 
 extern int current_reg;
 extern int regs_reserved;

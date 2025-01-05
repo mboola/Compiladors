@@ -201,6 +201,11 @@ void	compile_expression(t_expression exp)
 	add_instruction(str, -1);
 }
 
+static int	get_current_position()
+{
+	return instructions_inputed;
+}
+
 void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp)
 {
 	char	*instruction;
@@ -231,7 +236,7 @@ void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel
 	instruction = strjoin(instruction, get_reg(&second_exp));
 	instruction = strjoin(instruction, " GOTO ");
 
-	int pos = 0; // TODO : get correctly the position.
+	int pos = get_current_position();
 
 	result->true_list = create_list(pos);
 	result->false_list = create_list(pos + 1);

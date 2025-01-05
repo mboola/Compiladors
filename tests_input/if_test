@@ -5,9 +5,9 @@ if total > 666.6 then
     i := 111
 fi
 
-//if total > 666.6 or total == 500.0 then
-//    i := 111
-//fi
+if total > 666.6 or total = 500.0 then
+    i := 111
+fi
 
 //if i > 100 then
 //    j := i + 1000

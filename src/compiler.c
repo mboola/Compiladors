@@ -8,6 +8,7 @@
 t_list	*instructions;
 FILE	*c3a_output;
 int		line;	// written in file
+int		instructions_inputed;
 int		current_reg;
 int		regs_reserved;
 
@@ -55,9 +56,14 @@ static void	modify_instruction(int pos, char *modification)
 	t_list	*lst;
 
 	lst = instructions;
+	//printf("Position %d\n", position);
+	//printf("Line %d\n", line);
 	i = line; //last position
 	while (i < pos && lst->next)
+	{
 		lst = lst->next;
+		i++;
+	}
 	instruction = (char *)(lst->content);
 	instruction = strjoin(instruction, modification);
 	lst->content = instruction;
@@ -71,6 +77,7 @@ void	add_instruction(char *instruction, int position)
 	t_list	*lst;
 	int		i;
 
+	instructions_inputed++;
 	node = lstnew(instruction);
 	if (position == -1)
 	{
@@ -94,6 +101,7 @@ char	open_output_file(char *file)
 {
 	c3a_output = fopen(file, "w");
 	instructions = NULL;
+	instructions_inputed = 1;
 	line = 1;
 	current_reg = 1;
 	regs_reserved = 0;
@@ -132,7 +140,7 @@ void	fill_list(t_list *lst, int goto_position)
 {
 	int	position;
 
-	while (lst->next)
+	while (lst)
 	{
 		position = *(int *)(lst->content);
 		modify_instruction(position, convert_int_to_str(goto_position));
