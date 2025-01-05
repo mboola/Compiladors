@@ -1,0 +1,6 @@
+total := 1000.0
+
+while total < 1000.1 and total > 500.0 or 1 < 2 do
+	i := 0
+	j := 1 + i
+done

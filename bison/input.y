@@ -29,6 +29,7 @@
     t_assignment assignment_type;
     t_repeat repeat_type;
     t_if if_type;
+    t_while while_type;
     void *no_value;
 }
 
@@ -66,7 +67,7 @@
 %type <repeat_type> repeat_start
 %type <no_value> repeat_end
 /* While */
-%type <no_value> while_start
+%type <while_type> while_start while_before_bool
 %type <no_value> while_end
 /* Do until */
 %type <no_value> do_until_start
@@ -91,14 +92,19 @@ repeat_end :
     handle_repeat_loop($1);
   }
 
+while_before_bool :
+  WHILE {
+    initialize_while(&$$);
+  }
+
 while_start :
-  WHILE boolean_expression DO NEWLINE_TKN {
-    
+  while_before_bool boolean_expression DO NEWLINE_TKN {
+    update_while(&$$, $1, $2);
   }
 
 while_end :
   while_start sentence_list DONE NEWLINE_TKN {
-    
+    end_while($1);
   }
 
 do_until_start :

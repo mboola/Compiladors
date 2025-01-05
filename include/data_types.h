@@ -59,11 +59,21 @@ typedef struct {
 	char *jump;
 }	t_repeat;
 
+
+// TODO: convert these two into one
 typedef struct {
 	t_list *instructions;
 	t_expression expression;
 	int	true_section_line;
-	int	offset;
+	int	false_section_line;
 }	t_if;
+
+typedef struct {
+	t_list *instructions;
+	t_expression expression;
+	int	true_section_line;
+	int	false_section_line;
+	int current_instructions;
+}	t_while;
 
 #endif

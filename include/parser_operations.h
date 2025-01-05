@@ -34,4 +34,9 @@ void	handle_repeat_loop(t_repeat repstart);
 void	initialize_if(t_if *if_start, t_expression boolean_expression);
 void	end_if(t_if if_start);
 
+// While operations
+void	initialize_while(t_while *while_start);
+void	update_while(t_while *while_to_update, t_while while_start, t_expression boolean_expression);
+void	end_while(t_while while_start);
+
 #endif
