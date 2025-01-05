@@ -1,3 +1,0 @@
-Printing id i: (Float type-> 5.900000).
-Printing id j: (Int type-> 2).
-Printing id k: (Float type-> 59.714115).

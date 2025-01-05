@@ -1,14 +1,3 @@
 Lexer: ID: i
 Lexer: ASSIGN detected
-Lexer: Float: 5.9
-Lexer: NEWLINE_TKN detected
-Lexer: ID: j
-Lexer: ASSIGN detected
-Lexer: Integer: 2
-Lexer: NEWLINE_TKN detected
-Lexer: ID: k
-Lexer: ASSIGN detected
-Lexer: ID: j
-Lexer: POWER detected
-Lexer: ID: i
-Lexer: NEWLINE_TKN detected
+Lexer: Cadena: "testing"

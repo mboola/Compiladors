@@ -9,6 +9,7 @@ void	*yymalloc(size_t size);
 void	yyerror(const char *explanation);
 void	update_yycol();
 void	yylexer_error();
+void	yylexer_p2_error();
 void	yyparser_error(char *explanation);
 void	yylexer_output(const char *str, ...);
 void	yyparser_output(const char *str, ...);
