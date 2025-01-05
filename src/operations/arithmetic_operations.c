@@ -307,7 +307,10 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 	{
 		case INT_TYPE:
 			if (second_exp.type == INT_TYPE)
-				*(int *)(result->value) = powf((float)*(int *)first_exp.value, (float)*(int *)second_exp.value);
+			{
+				compile_power(first_exp, second_exp, result);
+				*(int *)(result->value) = powf((float) *(int *)first_exp.value, (float) *(int *)second_exp.value);
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot pow INT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -315,12 +318,18 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot pow INT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == FLOAT_TYPE)
-				*(float *)(result->value) = powf((float)*(int *)first_exp.value, *(float *)second_exp.value);
+			{
+				compile_power(first_exp, second_exp, result);
+				*(float *)(result->value) = powf((float) *(int *)first_exp.value, *(float *)second_exp.value);
+			}
 			result->type = second_exp.type;
 			break;
 		case FLOAT_TYPE:
 			if (second_exp.type == FLOAT_TYPE)
+			{
+				compile_power(first_exp, second_exp, result);
 				*(float *)(result->value) = powf(*(float *)first_exp.value, *(float *)second_exp.value);
+			}
 			else if (second_exp.type == STRING_TYPE)
 				yyerror("Cannot pow FLOAT_TYPE with STRING_TYPE.");
 			else if (second_exp.type == UNKNOWN_TYPE)
@@ -328,7 +337,10 @@ void	power(t_expression *result, t_expression first_exp, t_expression second_exp
 			else if (second_exp.type == BOOLEAN_TYPE)
 				yyerror("Cannot pow FLOAT_TYPE with BOOLEAN_TYPE.");
 			else if (second_exp.type == INT_TYPE)
-				*(float *)(result->value) = powf(*(float *)first_exp.value, *(float *)second_exp.value);
+			{
+				compile_power(first_exp, second_exp, result);
+				*(float *)(result->value) = powf(*(float *)first_exp.value, (float) *(int *)second_exp.value);
+			}
 			result->type = second_exp.type;
 			break;
 		case STRING_TYPE:

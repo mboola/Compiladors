@@ -42,7 +42,7 @@ static char *convert_value(data_type type, void *value)
 
 static char	*get_register(int reg)
 {
-	return (strjoin("$t", convert_int_to_str(reg)));
+	return (strjoin("$t0", convert_int_to_str(reg)));
 }
 
 /*
@@ -101,6 +101,51 @@ void	compile_int_to_float(t_expression *exp)
 	add_instruction(str, -1);
 }
 
+void	compile_power(t_expression first_exp, t_expression second_exp, t_expression *res)
+{
+	int	exponent;
+	char int_type = 1;
+	int last_reg;
+	char	*str;
+
+	// If base is float we must convert it to int.
+	if (first_exp.type != INT_TYPE)
+		int_type = 0;
+
+	if (second_exp.type == INT_TYPE)
+		exponent = *(int *)second_exp.value;
+	else
+		exponent = (int) *(float *)second_exp.value; //round exponent
+
+	// first iteration
+	// $0xx = first_exp->lex MULTX first_exp->lex
+	// last_reg = $0xx
+	last_reg = current_reg;
+	str = strjoin(get_curr_reg(), " := ");
+	str = strjoin(str, get_reg(&first_exp));
+	if (int_type)
+		str = strjoin(str, " MULI ");
+	else
+		str = strjoin(str, " MULF ");
+	str = strjoin(str, get_reg(&first_exp));
+	add_instruction(str, -1);
+
+	for (int i = 2; i < exponent; i++)
+	{
+		str = strjoin(get_curr_reg(), " := ");
+		str = strjoin(str, get_register(last_reg));
+		last_reg++;
+		if (int_type)
+			str = strjoin(str, " MULI ");
+		else
+			str = strjoin(str, " MULF ");
+		str = strjoin(str, get_reg(&first_exp));
+		add_instruction(str, -1);
+	}
+	// add last reg to result->reg
+	res->reg = last_reg;
+}
+
 void	compile_arithmetic_expression(t_expression first_exp, t_expression second_exp, char *operation, t_expression *res)
 {
 	char	*str;
@@ -113,7 +158,7 @@ void	compile_arithmetic_expression(t_expression first_exp, t_expression second_e
 		else
 			compile_int_to_float(&second_exp);
 		reg = current_reg;
-		str = strjoin(get_curr_reg(), " := ");
+		str = strjoin(get_curr_reg(), " := "); // result reg
 		str = strjoin(str, get_reg(&first_exp));
 		str = strjoin(str, " ");
 		str = strjoin(str, operation);
