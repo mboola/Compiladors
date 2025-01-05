@@ -112,12 +112,6 @@ static void	print_value(data_type type, void *value)
 					break;
 			}
 			break;
-		case STRING_TYPE:
-			fprintf(output_result, "(String type-> %s).", (char *)value);
-			break;
-		case BOOLEAN_TYPE:
-			fprintf(output_result, "(Bool type-> %d).", *(char *)value);
-			break;
 	}
 }
 
@@ -158,13 +152,6 @@ void	assign_expression(t_expression *exp, int type, void *value, int reg, char *
 		case FLOAT_TYPE:
 			exp->value = yymalloc(sizeof(float));
 			*((float *)exp->value) = *(float *)value;
-			break;
-		case STRING_TYPE:
-			exp->value = strdup((char *)value);
-			break;
-		case BOOLEAN_TYPE:
-			exp->value = yymalloc(sizeof(char));
-			*((char *)exp->value) = *(char *)value;
 			break;
 	}
 	exp->type = type;

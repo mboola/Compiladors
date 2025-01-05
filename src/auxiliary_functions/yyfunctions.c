@@ -63,6 +63,14 @@ void	yylexer_error()
 	exit(0);
 }
 
+void	yylexer_p2_error()
+{
+	fprintf(stderr, "Lexer error: in line %d:%d -> ", yylineno, yycol);
+	fprintf(stderr, "Token '%s' must not be used in p2!.\n", yytext),
+	fprintf(stderr, "Line: %s", get_current_line(yyin));
+	exit(0);
+}
+
 void	yyparser_error(char *explanation)
 {
 	fprintf(stderr, "Parser error: in line %d:%d -> ", yylineno, yycol);

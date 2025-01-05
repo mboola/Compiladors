@@ -39,27 +39,23 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 "true"		{
 	yylexer_output("Boolean: %s", yytext);
-	yylval.boolean = yymalloc(sizeof(char));
-	*(yylval.boolean) = 1;
-	return TRUE;
+	yylexer_p2_error();
 }
 "false"		{
 	yylexer_output("Boolean: %s", yytext);
-	yylval.boolean = yymalloc(sizeof(char));
-	*(yylval.boolean) = 0;
-	return FALSE;
+	yylexer_p2_error();
 }
 "not"	{
 	yylexer_output("NOT detected");
-	return NOT;
+	yylexer_p2_error();
 }
 "and"	{
 	yylexer_output("AND detected");
-	return AND;
+	yylexer_p2_error();
 }
 "or"	{
 	yylexer_output("OR detected");
-	return OR;
+	yylexer_p2_error();
 }
 "sin"	{
 	yylexer_output("SIN detected");
@@ -75,11 +71,11 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 "LEN"	{
 	yylexer_output("LEN detected");
-	return LEN;
+	yylexer_p2_error();
 }
 "SUBSTR"	{
 	yylexer_output("SUBSTR detected");
-	return SUBSTR;
+	yylexer_p2_error();
 }
 "repeat"	{
 	yylexer_output("REPEAT detected");
@@ -140,8 +136,7 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 {STRING}	{
 	yylexer_output("Cadena: %s", yytext);
-	yylval.string = str_convert(yytext);
-	return STRING_TKN;
+	yylexer_p2_error();
 }
 {WHITESPACE} { update_yycol(); /* Ignorem espais en blanc */ }
 
@@ -188,33 +183,27 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 }
 "<="	{
 	yylexer_output("LESEQ detected");
-	yylval.oprel.type = LESEQ;
-	return OPREL;
+	yylexer_p2_error();
 }
 ">="	{
 	yylexer_output("BIGEQ detected");
-	yylval.oprel.type = BIGEQ;
-	return OPREL;
+	yylexer_p2_error();
 }
 "<>"	{
 	yylexer_output("NOTEQ detected");
-	yylval.oprel.type = NOTEQ;
-	return OPREL;
+	yylexer_p2_error();
 }
 "<"		{
 	yylexer_output("LESSER detected");
-	yylval.oprel.type = LESSER;
-	return OPREL;
+	yylexer_p2_error();
 }
 ">"		{
 	yylexer_output("BIGGER detected");
-	yylval.oprel.type = BIGGER;
-	return OPREL;
+	yylexer_p2_error();
 }
 "="		{
 	yylexer_output("EQUAL detected");
-	yylval.oprel.type = EQUAL;
-	return OPREL;
+	yylexer_p2_error();
 }
 
 .		{

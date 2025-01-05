@@ -19,25 +19,13 @@ static char	*convert_float_to_str(float f)
 	return (strdup(num));
 }
 
-static char	*convert_bool_to_str(int b)
-{
-	char num[2];
-
-	sprintf(num, "%d", b);
-	return (strdup(num));
-}
-
 static char *convert_value(data_type type, void *value)
 {
 	if (type == UNKNOWN_TYPE)
 		yyerror("Cannot convert an unknown value");
 	if (type == INT_TYPE)
 		return(convert_int_to_str(*(int *)value));
-	if (type == FLOAT_TYPE)
-		return (convert_float_to_str(*(float *)value));
-	if (type == STRING_TYPE)
-		return (strdup((char *)value)); // not sure if duplication is needed.
-	return (convert_bool_to_str(*(int *)value));
+	return (convert_float_to_str(*(float *)value));
 }
 
 static char	*get_register(int reg)
@@ -194,8 +182,6 @@ void	compile_expression(t_expression exp)
 		str = strdup("CALL PUTI, 1");
 	else if (exp.type == FLOAT_TYPE)
 		str = strdup("CALL PUTF, 1");
-	else if (exp.type == STRING_TYPE)
-		str = strdup("CALL PUTS, 1");
 	else if (exp.type == UNKNOWN_TYPE)
 		yyparser_error("Cannot print uninitialized value");
 	add_instruction(str, -1);
