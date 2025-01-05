@@ -1,6 +1,8 @@
 #ifndef DATA_TYPES_H
 # define DATA_TYPES_H
 
+# include "linked_list.h"
+
 typedef enum {
 	UNKNOWN_TYPE,
 	INT_TYPE,
@@ -36,6 +38,8 @@ typedef struct {
 	void *value;
 	char *lexema;
 	int reg;
+	t_list *true_list; // stores list of lines to fill gotos
+	t_list *false_list; // same as above
 }	t_expression;
 
 // Struct that defines a relational operation
@@ -54,5 +58,11 @@ typedef struct {
 	char *update;
 	char *jump;
 }	t_repeat;
+
+typedef struct {
+	t_list *instructions;
+	t_expression expression;
+	int	true_section_line;
+}	t_if;
 
 #endif

@@ -6,4 +6,7 @@ void	compile_arithmetic_expression(t_expression first_exp, t_expression second_e
 void	compile_expression(t_expression exp);
 
 void	compile_power(t_expression first_exp, t_expression second_exp, t_expression *res);
+
+void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp);
+
 #endif

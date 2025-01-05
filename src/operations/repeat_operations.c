@@ -19,7 +19,7 @@ void	handle_repeat_start(t_repeat *rep, t_expression exp)
 	if (exp.type != INT_TYPE)
 		yyerror("Type of expresion to repeat not correct. Must be INT_TYPE.");
 	if (*(int *)exp.value < 0)
-		yyerror("Iteration negative not possible");
+		yyerror("Iteration negative not possible"); //TODO : do not insert all the compiled instructions
 	if (exp.reg > (2 * regs_reserved + 1))
 	{
 		// get last reg of exp

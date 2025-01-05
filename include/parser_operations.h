@@ -30,4 +30,8 @@ void	my_substr(t_expression *result, t_expression exp1, t_expression exp2, t_exp
 void	handle_repeat_start(t_repeat *rep, t_expression exp);
 void	handle_repeat_loop(t_repeat repstart);
 
+// Conditional operations
+void	initialize_if(t_if *if_start, t_expression boolean_expression);
+void	end_if(t_if if_start);
+
 #endif

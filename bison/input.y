@@ -27,6 +27,7 @@
     t_oprel oprel;
     t_assignment assignment_type;
     t_repeat repeat_type;
+    t_if if_type;
     void *no_value;
 }
 
@@ -37,13 +38,39 @@
 %token <string> STRING_TKN
 %token <boolean> TRUE FALSE
 %token <id> ID_TKN
-%token <no_value> NEWLINE_TKN ASSIGN OPENPAR CLOSEDPAR ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD NOT AND OR SIN COS TAN LEN SUBSTR OCT BIN HEX DEC RIC REPEAT DONE DO
+
+/* Arithmetic operations */
+%token <no_value> ADDITION SUBSTRACTION POWER MULTIPLICATION DIVISION MOD SIN COS TAN
+/* Representation modes */
+%token <no_value> OCT BIN HEX DEC RIC
+/* Boolean operations */
+%token <no_value> NOT AND OR
+/* String operations */
+%token <no_value> LEN SUBSTR
+/* Conditional tokens */
+%token <no_value> IF THEN FI ELSE SWITCH FSWITCH CASE BREAK
+/* Iterative tokens */
+%token <no_value> REPEAT DONE DO WHILE UNTIL FOR IN RANGE
+/* Other */
+%token <no_value> OPENPAR CLOSEDPAR ASSIGN NEWLINE_TKN
 %token <oprel> OPREL
 
-%type <no_value> program sentence representation_mode sentence_list repeat_end
-%type <expression_type> expression arithmetic_expression boolean_expression exp exp1 exp2 exp3 exp4 bexp bexp1 bexp2 bexp3 bexp4
+%type <no_value> program sentence representation_mode sentence_list
+%type <expression_type> expression arithmetic_expression exp exp1 exp2 exp3 exp4
+%type <expression_type> boolean_expression bexp bexp1 bexp2 bexp3 bexp4
 %type <assignment_type> assignment
+/* Repeat */
 %type <repeat_type> repeat_start
+%type <no_value> repeat_end
+/* While */
+%type <no_value> while_start
+%type <no_value> while_end
+/* Do until */
+%type <no_value> do_until_start
+%type <no_value> do_until_end
+/* If */
+%type <if_type> if_start
+%type <no_value> if_end if_else_end
 
 %start program
 
@@ -61,11 +88,49 @@ repeat_end :
     handle_repeat_loop($1);
   }
 
+while_start :
+  WHILE boolean_expression DO NEWLINE_TKN {
+    
+  }
+
+while_end :
+  while_start sentence_list DONE NEWLINE_TKN {
+    
+  }
+
+do_until_start :
+  DO NEWLINE_TKN sentence_list {
+
+  }
+
+do_until_end :
+  do_until_start UNTIL boolean_expression NEWLINE_TKN {
+
+  }
+
+if_start :
+  IF boolean_expression THEN NEWLINE_TKN {
+    initialize_if(&$$, $2);
+  }
+
+if_end :
+  if_start sentence_list FI NEWLINE_TKN {
+    end_if($1);
+  }
+
+if_else :
+  if_start sentence_list ELSE NEWLINE_TKN {
+
+  }
+
+if_else_end :
+  if_else sentence_list FI NEWLINE_TKN {
+
+  }
+
 sentence_list :
   sentence_list sentence
   | sentence
-  | repeat_end
-  | sentence_list repeat_end
 
 sentence :
   expression NEWLINE_TKN {
@@ -75,6 +140,11 @@ sentence :
   | assignment { print_assignment($1); }
   | representation_mode NEWLINE_TKN
   | NEWLINE_TKN
+  | repeat_end
+  | if_end
+  | if_else_end
+  | while_end
+  | do_until_end
 
 representation_mode :
   BIN { repmode = BIN_MODE; }
@@ -174,7 +244,7 @@ exp4 :
 
 boolean_expression :
   bexp {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 bexp :
@@ -182,24 +252,26 @@ bexp :
     or(&$$, $1, $3);
   }
   | bexp1 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 bexp1 :
   bexp2 AND bexp1 { and(&$$, $1, $3); }
   | bexp2 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 bexp2 :
   NOT bexp3 { not(&$$, $2); }
   | bexp3 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
   }
 
 bexp3 :
   bexp4 OPREL bexp3 { compare(&$$, $1, $2, $3); }
-  | bexp4 { $$.type = $1.type; $$.value = $1.value; }
+  | bexp4 {
+    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+   }
 
 bexp4 :
   arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }

@@ -1,10 +1,13 @@
 #include "compiler.h"
+#include "yyfunctions.h"
+#include "str_functions.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 t_list	*instructions;
 FILE	*c3a_output;
-int		line;
+int		line;	// written in file
 int		current_reg;
 int		regs_reserved;
 
@@ -43,6 +46,21 @@ void	print_all_instructions()
 	// Here we reset the lst
 	lstclear(&instructions, clear_instruction);
 	instructions = NULL;
+}
+
+static void	modify_instruction(int pos, char *modification)
+{
+	int i;
+	char	*instruction;
+	t_list	*lst;
+
+	lst = instructions;
+	i = line; //last position
+	while (i < pos && lst->next)
+		lst = lst->next;
+	instruction = (char *)(lst->content);
+	instruction = strjoin(instruction, modification);
+	lst->content = instruction;
 }
 
 // Adds a new instruction into the linked list with a specified position
@@ -85,4 +103,39 @@ char	open_output_file(char *file)
 void	close_output_file()
 {
 	fclose(c3a_output);
+}
+
+t_list	*create_list(int position)
+{
+	int		*content;
+
+	content = yymalloc(sizeof(int));
+	*content = position;
+	return (lstnew(content));
+}
+
+t_list	*join_list(t_list **first, t_list *second)
+{
+	lstadd_back(first, second);
+	return *first;
+}
+
+static char	*convert_int_to_str(int i)
+{
+	char num[12]; //MAX NEGATIVE INT 11 chars + '\0'
+
+	sprintf(num, "%d", i);
+	return (strdup(num));
+}
+
+void	fill_list(t_list *lst, int goto_position)
+{
+	int	position;
+
+	while (lst->next)
+	{
+		position = *(int *)(lst->content);
+		modify_instruction(position, convert_int_to_str(goto_position));
+		lst = lst->next;
+	}
 }

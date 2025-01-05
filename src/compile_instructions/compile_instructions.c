@@ -200,3 +200,42 @@ void	compile_expression(t_expression exp)
 		yyparser_error("Cannot print uninitialized value");
 	add_instruction(str, -1);
 }
+
+void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp)
+{
+	char	*instruction;
+
+	instruction = strjoin("IF ", get_reg(&first_exp));
+
+	switch (oprel.type)
+	{
+		case LESEQ:
+			instruction = strjoin(instruction, " LEQ ");
+			break;
+		case BIGEQ:
+			instruction = strjoin(instruction, " BEQ ");
+			break;
+		case NOTEQ:
+			instruction = strjoin(instruction, " NEQ ");
+			break;
+		case LESSER:
+			instruction = strjoin(instruction, " LT ");
+			break;
+		case BIGGER:
+			instruction = strjoin(instruction, " BG ");
+			break;
+		case EQUAL:
+			instruction = strjoin(instruction, " EQ ");
+			break;
+	}
+	instruction = strjoin(instruction, get_reg(&second_exp));
+	instruction = strjoin(instruction, " GOTO ");
+
+	int pos = 0; // TODO : get correctly the position.
+
+	result->true_list = create_list(pos);
+	result->false_list = create_list(pos + 1);
+
+	add_instruction(instruction, -1);
+	add_instruction(strdup("GOTO "), -1);
+}

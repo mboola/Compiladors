@@ -20,7 +20,8 @@ AUX_FUNCT	=	${AUX_FUNCT_DIR}/helper_functions.c ${AUX_FUNCT_DIR}/yyfunctions.c \
 				${AUX_FUNCT_DIR}/linked_list.c
 
 OPERATIONS	=	${OPERATIONS_DIR}/arithmetic_operations.c ${OPERATIONS_DIR}/boolean_operations.c \
-				${OPERATIONS_DIR}/repeat_operations.c ${OPERATIONS_DIR}/str_operations.c
+				${OPERATIONS_DIR}/repeat_operations.c ${OPERATIONS_DIR}/str_operations.c \
+				${OPERATIONS_DIR}/conditional_operations.c
 	
 COMP_INST	=	${COMP_INST_DIR}/compile_instructions.c
 

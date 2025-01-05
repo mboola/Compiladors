@@ -16,5 +16,5 @@ void	print_expression(t_expression exp);
 void	print_assignment(t_assignment assign);
 
 void	assign_expression(t_expression *exp, int type, void *value, int reg, char *lexema);
-
+void	assign_boolean_expression(t_expression *exp, int type, void *value, int reg, char *lexema);
 #endif

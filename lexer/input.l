@@ -81,6 +81,38 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 	yylexer_output("SUBSTR detected");
 	return SUBSTR;
 }
+"if"		{
+	yylexer_output("IF detected");
+	return IF;
+}
+"then"		{
+	yylexer_output("THEN detected");
+	return THEN;
+}
+"fi"		{
+	yylexer_output("FI detected");
+	return FI;
+}
+"else"		{
+	yylexer_output("ELSE detected");
+	return ELSE;
+}
+"switch"	{
+	yylexer_output("SWITCH detected");
+	return SWITCH;
+}
+"case"		{
+	yylexer_output("CASE detected");
+	return CASE;
+}
+"break"		{
+	yylexer_output("BREAK detected");
+	return BREAK;
+}
+"fswitch"	{
+	yylexer_output("FSWITCH detected");
+	return FSWITCH;
+}
 "repeat"	{
 	yylexer_output("REPEAT detected");
 	return REPEAT;
@@ -92,6 +124,26 @@ FLOAT			({INTEGER}\.{DIGIT})(e{INTEGER})?
 "done"		{
 	yylexer_output("DONE detected");
 	return DONE;
+}
+"while"		{
+	yylexer_output("WHILE detected");
+	return WHILE;
+}
+"until"		{
+	yylexer_output("UNTIL detected");
+	return UNTIL;
+}
+"for"		{
+	yylexer_output("FOR detected");
+	return FOR;
+}
+"in"		{
+	yylexer_output("IN detected");
+	return IN;
+}
+".."		{
+	yylexer_output("RANGE detected");
+	return RANGE;
 }
 "PI"	{
 	yylexer_output("PI detected");

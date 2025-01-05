@@ -171,3 +171,30 @@ void	assign_expression(t_expression *exp, int type, void *value, int reg, char *
 	exp->reg = reg;
 	exp->lexema = lexema;
 }
+
+void	assign_boolean_expression(t_expression *exp, int type, void *value, int reg, char *lexema)
+{
+	switch (type)
+	{
+		case UNKNOWN_TYPE:
+			break;
+		case INT_TYPE:
+			exp->value = yymalloc(sizeof(int));
+			*((int *)exp->value) = *(int *)value;
+			break;
+		case FLOAT_TYPE:
+			exp->value = yymalloc(sizeof(float));
+			*((float *)exp->value) = *(float *)value;
+			break;
+		case STRING_TYPE:
+			exp->value = strdup((char *)value);
+			break;
+		case BOOLEAN_TYPE:
+			exp->value = yymalloc(sizeof(char));
+			*((char *)exp->value) = *(char *)value;
+			break;
+	}
+	exp->type = type;
+	exp->reg = reg;
+	exp->lexema = lexema;
+}

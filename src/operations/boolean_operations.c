@@ -1,5 +1,6 @@
 #include "yyfunctions.h"
 #include "data_types.h"
+#include "compile_instructions.h"
 
 void	or(t_expression *result, t_expression first_exp, t_expression second_exp)
 {
@@ -45,6 +46,7 @@ void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expr
 	both_ints = 0;
 	if (first_exp.type == INT_TYPE && second_exp.type == INT_TYPE)
 		both_ints = 1;
+	// TODO : convert to same type instruction I2F or F2I...
 	else if (first_exp.type == INT_TYPE && second_exp.type == FLOAT_TYPE)
 		value = *(int *)first_exp.value;
 	else if (second_exp.type == INT_TYPE && first_exp.type == FLOAT_TYPE)
@@ -116,4 +118,5 @@ void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expr
 				*((char *)result->value)  = (*(float *)first_exp.value == *(float *)second_exp.value);
 			break;
 	}
+	compile_compare(result, first_exp, oprel, second_exp);
 }

@@ -1,0 +1,18 @@
+total := 1000.0
+i := 0
+
+if total > 666.6 then
+    i := 111
+fi
+
+//if total > 666.6 or total == 500.0 then
+//    i := 111
+//fi
+
+//if i > 100 then
+//    j := i + 1000
+//    if i < 200 then
+//        j := 5000
+//    fi
+//    d := 30
+//fi

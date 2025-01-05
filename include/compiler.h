@@ -30,4 +30,8 @@ void	close_output_file();
 
 void	end_compilation();
 
+t_list	*create_list(int position);
+t_list	*join_list(t_list **first, t_list *second);
+void	fill_list(t_list *list, int goto_position);
+
 #endif
