@@ -1,0 +1,74 @@
+P1:
+L'us del compilador es realitza a traves de l'script "tester.sh".
+Aquest script compila el projecte i executa el compilador amb un fitxer passat per parametre.
+Un exemple d'us es:
+./tester.sh tests_input/moodle_test
+
+Ens mostrara per terminal el fitxer introduit i a continuacio
+creara un fitxer 'calc_result.txt' amb la sortida de la calculadora.
+
+Aquest script accepta tres flags:
+    -L : mode verbose del lexer. Mostra en el fitxer 'verbose_result.txt'
+        els tokens generats.
+    -P : mode verbose del parser. Mostra en el fitxer 'verbose_result.txt'
+        les produccions gramaticals.
+    -l : executa el compilador tan sols amb la part de generacio de tokens.
+        IMPORTANT : s'ha d'indicar tambe l'opcio -L, sino s'executa el lexer sense generar output.
+    
+Exemples d'us amb les flags son:
+./tester.sh -LP tests_input/base_change_test
+    ->Executa el lexer i el parser.
+./tester.sh -lL tests_input/floats_test
+    ->Executa el lexer tan sols.
+
+Els errors generats son sempre mostrats per terminal indicant si son errors del lexer o de sintaxi.
+Tambe s'indica la linea i la columna.
+Per als errors lexics es mostra el token que no ha pogut ser identificat i la linea completa.
+
+Aquest compilador te diverses restriccions del seu us:
+1. El boolea cert tan sols per escrit com a true i el de fals com a false. Qualsevol altra forma
+    sera interpretada com a un identificador.
+2. Les strings tan sols admeten caracters [a-zA-Z0-9].
+
+Finalment, aquest compilador te un metode de representacio numerica addicional,
+la qual utilitza la base "Ricardo" per representar els numeros.
+
+
+
+P2:
+En aquesta segona part, es mostren errors quan s'intenten utilitzar tokens de la p1 no disponibles
+per a la p2.
+
+El programa s'executa igual que en la practica 1, pero aquest cop es crea un nou fitxer
+"c3a.output" amb el C3A compilat del fitxer de test.
+Es a dir, si executem:
+    ./tester.sh -LP tests_input/arithmetic_exp_test
+Se'ns generara a c3a.output el codi compilat de "tests_input/arithmetic_exp_test".
+
+Com a decisions de disseny d'aquesta part, reiniciem el nombre dels registres utilitzats
+cada cop que s'acaba de generar el C3A d'una instruccio.
+Es a dir, per l'instruccio:
+    a := a + b + 1
+el codi generat seria:
+    $t01 := b ADDI 1
+	$t02 := a ADDI $t01
+	a := $t02
+I per una proxima instruccio enlloc d'utilitzar el registre $t03, tornaria a utilitzar
+el registre $t01 ja que aquest esta disponible.
+
+A mes a mes, al generar sentencies iteratives es reserven dos registres per l'us del bucle, les quals no tornaran
+a utilitzar-se fins acabar la generacio del bucle.
+
+Aixo es pot observar executant:
+    ./tester.sh -LP tests_inputs/loop_test
+on veiem que $t01 i $t02 s'utilitzen pel primer repeat
+i $t03 i $t04 per al segon, utilitzant registres superiors quan s'han
+de realitzar operacions aritmetiques.
+
+No s'ha implementat el tipus de taules unidimensionals.
+
+
+
+P3:
+En aquesta tercera part s'han implementat totes les noves sentencies excepte el switch.
+Totes les sentencies implementades permeten nesting.

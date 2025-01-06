@@ -219,24 +219,28 @@ void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel
 	switch (oprel.type)
 	{
 		case LESEQ:
-			instruction = strjoin(instruction, " LE ");
+			instruction = strjoin(instruction, " LE");
 			break;
 		case BIGEQ:
-			instruction = strjoin(instruction, " GE ");
+			instruction = strjoin(instruction, " GE");
 			break;
 		case NOTEQ:
-			instruction = strjoin(instruction, " NE ");
+			instruction = strjoin(instruction, " NE");
 			break;
 		case LESSER:
-			instruction = strjoin(instruction, " LT ");
+			instruction = strjoin(instruction, " LT");
 			break;
 		case BIGGER:
-			instruction = strjoin(instruction, " GT ");
+			instruction = strjoin(instruction, " GT");
 			break;
 		case EQUAL:
-			instruction = strjoin(instruction, " EQ ");
+			instruction = strjoin(instruction, " EQ");
 			break;
 	}
+	if (first_exp.type == INT_TYPE)
+		instruction = strjoin(instruction, "I ");
+	else
+		instruction = strjoin(instruction, "F ");
 	instruction = strjoin(instruction, get_reg(&second_exp));
 	instruction = strjoin(instruction, " GOTO ");
 

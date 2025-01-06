@@ -20,9 +20,18 @@ void	handle_repeat_start(t_repeat *rep, t_expression exp)
 		yyerror("Type of expresion to repeat not correct. Must be INT_TYPE.");
 	if (*(int *)exp.value < 0)
 		yyerror("Iteration negative not possible"); //TODO : do not insert all the compiled instructions
+	
+	if (exp.reg == 0) // solid value, not an id
+	{
+		str = convert_int_to_str(*(int *)exp.value);
+		str = strjoin(" := ", str);
+		str = strjoin(convert_int_to_str(1 + 2 * regs_reserved), str);
+		str = strjoin("$t0", str);
+		add_instruction(str, -1);
+		current_reg = 1 + 2 * (regs_reserved + 1);
+	}
 	if (exp.reg > (2 * regs_reserved + 1))
 	{
-		// get last reg of exp
 		str = strjoin("$t0", convert_int_to_str(exp.reg));
 		str = strjoin(" := ", str);
 		str = strjoin(convert_int_to_str(1 + 2 * regs_reserved), str);
@@ -30,6 +39,7 @@ void	handle_repeat_start(t_repeat *rep, t_expression exp)
 		add_instruction(str, -1);
 		current_reg = 1 + 2 * (regs_reserved + 1);
 	}
+	
 	// Initialize $t(1 + regs_reserved * 2 + 1) to 0
 	str = strjoin("$t0", convert_int_to_str(1 + regs_reserved * 2 + 1));
 	str = strjoin(str, " := 0");

@@ -121,8 +121,8 @@ void	initialize_do(t_do *do_start)
 
 void	end_do(t_do do_start, t_expression exp)
 {
-	fill_list(exp.true_list, do_start.current_line);
-	fill_list(exp.false_list, instructions_inputed);
+	fill_list(exp.true_list, instructions_inputed);
+	fill_list(exp.false_list, do_start.current_line);
 }
 
 void	initialize_for_range(t_for_range *for_range, t_id id, t_expression exp1, t_expression exp2)

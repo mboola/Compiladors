@@ -4,4 +4,8 @@ do
 	i := 0
 	total := total + 1
 	j := 1 + i
+	do
+		total := total + 1.0
+	until total > 410.0
+	total := 400.0
 until total < 1000.1 and total > 500.0 or 1 > 2
