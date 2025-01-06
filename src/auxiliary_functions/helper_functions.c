@@ -145,7 +145,7 @@ void	print_assignment(t_assignment assign)
 		print_id(id_to_search);
 }
 
-void	assign_expression(t_expression *exp, int type, void *value, int reg, char *lexema)
+void	initialize_expression(t_expression *exp, int type, void *value, int reg, char *lexema)
 {
 	switch (type)
 	{
@@ -172,29 +172,12 @@ void	assign_expression(t_expression *exp, int type, void *value, int reg, char *
 	exp->lexema = lexema;
 }
 
-void	assign_boolean_expression(t_expression *exp, int type, void *value, int reg, char *lexema)
+void	assign_expression(t_expression *res, t_expression exp)
 {
-	switch (type)
-	{
-		case UNKNOWN_TYPE:
-			break;
-		case INT_TYPE:
-			exp->value = yymalloc(sizeof(int));
-			*((int *)exp->value) = *(int *)value;
-			break;
-		case FLOAT_TYPE:
-			exp->value = yymalloc(sizeof(float));
-			*((float *)exp->value) = *(float *)value;
-			break;
-		case STRING_TYPE:
-			exp->value = strdup((char *)value);
-			break;
-		case BOOLEAN_TYPE:
-			exp->value = yymalloc(sizeof(char));
-			*((char *)exp->value) = *(char *)value;
-			break;
-	}
-	exp->type = type;
-	exp->reg = reg;
-	exp->lexema = lexema;
+	res->type = exp.type;
+	res->reg = exp.reg;
+	res->lexema = exp.lexema;
+	res->value = exp.value;
+	res->true_list = exp.true_list;
+	res->false_list = exp.false_list;
 }

@@ -1,5 +1,9 @@
-total := 1000.0
+total := 1000.002
 i := 0
+
+if (total > 666.6) then
+    i := 111
+fi
 
 if total > 666.6 then
     i := 111
@@ -20,3 +24,5 @@ if i > 100 then
     fi
     d := 30
 fi
+
+i := 0

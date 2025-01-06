@@ -173,27 +173,36 @@ assignment : ID_TKN ASSIGN expression NEWLINE_TKN {
     compile_assignation($1, $3);
   }
 
-expression : boolean_expression { $$.type = $1.type; $$.value = $1.value; }
+expression :
+  boolean_expression {
+    assign_expression(&($$), $1);
+  }
 
 arithmetic_expression :
-  exp { 
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+  exp {
+    assign_expression(&($$), $1);
   }
 
 exp :
   exp1 ADDITION exp {
     addition(&$$, $1, $3);
   }
-  | exp1 SUBSTRACTION exp { substraction(&$$, $1, $3); }
-  | exp1 { $$.type = $1.type; $$.value = $1.value; }
+  | exp1 SUBSTRACTION exp {
+    substraction(&$$, $1, $3);
+  }
+  | exp1 {
+    assign_expression(&($$), $1);
+  }
 
 exp1 :
   SUBSTRACTION exp2 {
     negate(&$$, $2);
   }
-  | ADDITION exp2 { $$.type = $2.type; $$.value = $2.value; }
+  | ADDITION exp2 {
+    assign_expression(&($$), $2);
+  }
   | exp2 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 exp2 :
@@ -207,7 +216,7 @@ exp2 :
     modulation(&$$, $1, $3);
   }
   | exp3 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 exp3 :
@@ -230,25 +239,25 @@ exp3 :
     my_substr(&$$, $2, $3, $4);
   }
   | exp4 {
-    assign_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 exp4 :
   OPENPAR expression CLOSEDPAR {
-		assign_expression(&($$), $2.type, $2.value, $2.reg, $2.lexema);
+		assign_expression(&($$), $2);
 	}
 	| INTEGER_TKN {
-		assign_expression(&($$), INT_TYPE, $1, 0, NULL);
+		initialize_expression(&($$), INT_TYPE, $1, 0, NULL);
 	}
 	| FLOAT_TKN {
-		assign_expression(&($$), FLOAT_TYPE, $1, 0, NULL);
+		initialize_expression(&($$), FLOAT_TYPE, $1, 0, NULL);
 	}
 	| STRING_TKN {
-		assign_expression(&($$), STRING_TYPE, $1, 0, NULL);
+		initialize_expression(&($$), STRING_TYPE, $1, 0, NULL);
 	}
 	| ID_TKN {
 		get_id(&$1);
-		assign_expression(&($$), $1.type, $1.value, 0, $1.lexema);
+		initialize_expression(&($$), $1.type, $1.value, 0, $1.lexema);
 	}
   
 M:
@@ -258,7 +267,7 @@ M:
 
 boolean_expression :
   bexp {
-    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 bexp :
@@ -266,30 +275,42 @@ bexp :
     or(&$$, $1, $3, $4);
   }
   | bexp1 {
-    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 bexp1 :
-  bexp2 AND M bexp1 { and(&$$, $1, $3, $4); }
+  bexp2 AND M bexp1 {
+    and(&$$, $1, $3, $4);
+  }
   | bexp2 {
-    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 bexp2 :
-  NOT bexp3 { not(&$$, $2); }
+  NOT bexp3 {
+    not(&$$, $2);
+  }
   | bexp3 {
-    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
+    assign_expression(&($$), $1);
   }
 
 bexp3 :
-  bexp4 OPREL bexp3 { compare(&$$, $1, $2, $3); }
+  bexp4 OPREL bexp3 {
+    compare(&$$, $1, $2, $3);
+  }
   | bexp4 {
-    assign_boolean_expression(&($$), $1.type, $1.value, $1.reg, $1.lexema);
-   }
+    assign_expression(&($$), $1);
+  }
 
 bexp4 :
-  arithmetic_expression { $$.type = $1.type; $$.value = $1.value; }
-  | TRUE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
-  | FALSE { $$.type = BOOLEAN_TYPE; $$.value = $1; }
+  arithmetic_expression {
+    assign_expression(&($$), $1);
+  }
+  | TRUE {
+    $$.type = BOOLEAN_TYPE; $$.value = $1;
+  }
+  | FALSE {
+    $$.type = BOOLEAN_TYPE; $$.value = $1;
+  }
 
 %%

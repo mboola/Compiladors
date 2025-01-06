@@ -15,7 +15,7 @@ static char	*convert_float_to_str(float f)
 {
 	char num[15]; //MAX FLOAT 14 chars + '\0'
 
-	sprintf(num, "%e", f);
+	sprintf(num, "%.1f", f);
 	return (strdup(num));
 }
 

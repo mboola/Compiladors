@@ -2,8 +2,8 @@
 # define HELPER_FUNCTIONS_H
 
 /*
- *	Funtions used in lexer and parser.
- */
+*	Funtions used in lexer and parser.
+*/
 
 # include "data_types.h"
 
@@ -15,6 +15,7 @@ void	print_id(t_id *id);
 void	print_expression(t_expression exp);
 void	print_assignment(t_assignment assign);
 
-void	assign_expression(t_expression *exp, int type, void *value, int reg, char *lexema);
-void	assign_boolean_expression(t_expression *exp, int type, void *value, int reg, char *lexema);
+void	initialize_expression(t_expression *exp, int type, void *value, int reg, char *lexema);
+void	assign_expression(t_expression *res, t_expression exp);
+
 #endif
