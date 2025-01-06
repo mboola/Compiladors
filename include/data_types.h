@@ -76,4 +76,8 @@ typedef struct {
 	int current_instructions;
 }	t_while;
 
+typedef struct {
+	int current_line;
+}	t_do;
+
 #endif

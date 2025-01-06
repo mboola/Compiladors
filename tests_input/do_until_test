@@ -1,0 +1,7 @@
+total := 400.0
+
+do
+	i := 0
+	total := total + 1
+	j := 1 + i
+until total < 1000.1 and total > 500.0 or 1 > 2

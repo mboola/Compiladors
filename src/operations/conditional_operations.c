@@ -88,3 +88,14 @@ void	end_while(t_while while_start)
 	final_jump_instruction = strjoin("GOTO ", convert_int_to_str(while_start.true_section_line - while_start.current_instructions));
 	add_instruction(final_jump_instruction, -1);
 }
+
+void	initialize_do(t_do *do_start)
+{
+	do_start->current_line = instructions_inputed;
+}
+
+void	end_do(t_do do_start, t_expression exp)
+{
+	fill_list(exp.true_list, do_start.current_line);
+	fill_list(exp.false_list, instructions_inputed);
+}

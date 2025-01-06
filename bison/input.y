@@ -30,6 +30,7 @@
     t_repeat repeat_type;
     t_if if_type;
     t_while while_type;
+    t_do do_type;
     void *no_value;
 }
 
@@ -70,7 +71,7 @@
 %type <while_type> while_start while_before_bool
 %type <no_value> while_end
 /* Do until */
-%type <no_value> do_until_start
+%type <do_type> do_until_start
 %type <no_value> do_until_end
 /* If */
 %type <if_type> if_start
@@ -108,13 +109,13 @@ while_end :
   }
 
 do_until_start :
-  DO NEWLINE_TKN sentence_list {
-
+  DO NEWLINE_TKN {
+    initialize_do(&$$);
   }
 
 do_until_end :
-  do_until_start UNTIL boolean_expression NEWLINE_TKN {
-
+  do_until_start sentence_list UNTIL boolean_expression NEWLINE_TKN {
+    end_do($1, $4);
   }
 
 if_start :

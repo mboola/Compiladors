@@ -39,4 +39,8 @@ void	initialize_while(t_while *while_start);
 void	update_while(t_while *while_to_update, t_while while_start, t_expression boolean_expression);
 void	end_while(t_while while_start);
 
+// Do until operations
+void	initialize_do(t_do *do_start);
+void	end_do(t_do do_start, t_expression exp);
+
 #endif
