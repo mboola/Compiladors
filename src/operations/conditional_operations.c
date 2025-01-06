@@ -2,6 +2,9 @@
 #include "data_types.h"
 #include "string.h"
 #include "str_functions.h"
+#include "yyfunctions.h"
+#include "compile_instructions.h"
+#include "helper_functions.h"
 
 static char	*convert_int_to_str(int i)
 {
@@ -120,4 +123,90 @@ void	end_do(t_do do_start, t_expression exp)
 {
 	fill_list(exp.true_list, do_start.current_line);
 	fill_list(exp.false_list, instructions_inputed);
+}
+
+void	initialize_for_range(t_for_range *for_range, t_id id, t_expression exp1, t_expression exp2)
+{
+	char	*str;
+	char	*iter_reg;
+
+	// Check if type of exp1 == type of exp2
+	if (exp1.type != exp2.type)
+		yyparser_error("Cannot do a for each with expressions of different type!");
+
+	if (exp1.type != INT_TYPE)
+		yyparser_error("Cannot do a for each with non integer expressions!");
+	
+	// store to if_start all the instructions before this
+	for_range->instructions = instructions;
+
+	// reset instructions
+	instructions = NULL;
+
+	// Check if value of exp1 < value of exp2
+	for_range->initial_value = *(int *)exp1.value;
+	for_range->final_value = *(int *)exp2.value;
+
+	// Initialize id
+	for_range->id = id;
+	id.type = INT_TYPE;
+	id.value = exp1.value;
+	update_id(&id);
+
+	if (for_range->initial_value >= for_range->final_value)
+		return ;
+
+	// Create assignation to id = val1
+	compile_assignation(id, exp1);
+
+	// Create assignation $t0(regs_reserved) = last $t0x
+	regs_reserved++;
+	iter_reg = strjoin("$0", convert_int_to_str(regs_reserved));
+	str = strjoin(iter_reg, " := ");
+	str = strjoin(str, get_exp_register(exp2));
+	add_instruction(str, -1);
+
+	for_range->true_section_line = instructions_inputed;
+
+	// Create comparation id < val2 goto nex_line
+	str = strjoin("IF ", id.lexema);
+	str = strjoin(str, " LTI ");
+	str = strjoin(str, iter_reg);
+	str = strjoin(str, " GOTO ");
+	str = strjoin(str, convert_int_to_str(instructions_inputed + 2));
+	add_instruction(str, -1);
+
+	// create goto false_section_line
+	for_range->end_goto = create_list(instructions_inputed);
+	add_instruction(strdup("GOTO "), -1);
+}
+
+void	end_for_range(t_for_range for_range)
+{
+	char	*str;
+
+	if (for_range.initial_value >= for_range.final_value)
+	{
+		// we erase instructions inside for range in bc it will never enter
+		instructions = for_range.instructions;
+		return ;
+	}
+
+	// recover instructions before if
+	lstadd_back(&for_range.instructions, instructions);
+	instructions = for_range.instructions;
+
+	// Create id := id + 1
+	str = strjoin(for_range.id.lexema, " := ");
+	str = strjoin(str, for_range.id.lexema);
+	str = strjoin(str, " ADDI 1");
+	add_instruction(str, -1);
+
+	// Create goto true_section_line
+	add_instruction(strjoin("GOTO ", convert_int_to_str(for_range.true_section_line)), -1);
+
+	// Fill false_section_line
+	fill_list(for_range.end_goto, instructions_inputed);
+
+	regs_reserved--;
 }

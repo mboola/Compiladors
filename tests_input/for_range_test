@@ -1,0 +1,9 @@
+
+i := 30
+
+for total in i .. (i + 2) + 3 + 4 do
+	j := 10
+	k := total + i * 30
+	a := i ** 5
+done
+

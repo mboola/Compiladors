@@ -81,4 +81,14 @@ typedef struct {
 	int current_line;
 }	t_do;
 
+typedef struct {
+	t_list *instructions;
+	int	initial_value;
+	int final_value;
+	int	true_section_line;
+	int	false_section_line;
+	t_list *end_goto;
+	t_id id;
+}	t_for_range;
+
 #endif

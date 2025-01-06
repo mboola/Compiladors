@@ -45,4 +45,8 @@ void	end_while(t_while while_start);
 void	initialize_do(t_do *do_start);
 void	end_do(t_do do_start, t_expression exp);
 
+// For range operations
+void	initialize_for_range(t_for_range *for_range, t_id id, t_expression exp1, t_expression exp2);
+void	end_for_range(t_for_range for_range);
+
 #endif

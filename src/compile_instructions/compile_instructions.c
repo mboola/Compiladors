@@ -45,6 +45,13 @@ static char	*get_register(int reg)
 	return (strjoin("$t0", convert_int_to_str(reg)));
 }
 
+char	*get_exp_register(t_expression exp)
+{
+	if (exp.reg == 0)
+		return convert_value(exp.type, exp.value);
+	return get_register(exp.reg);
+}
+
 /*
  *	Converts an assignation into an instruction in c3a
  */
@@ -53,10 +60,7 @@ void	compile_assignation(t_id id, t_expression exp)
 	char	*str;
 
 	str = strjoin(id.lexema, " := ");
-	if (exp.reg == 0)
-		str = strjoin(str, convert_value(exp.type, exp.value));
-	else
-		str = strjoin(str, get_register(exp.reg));
+	str = strjoin(str, get_exp_register(exp));
 	add_instruction(str, -1);
 	current_reg = 1 + 2 * regs_reserved;
 }
@@ -215,19 +219,19 @@ void	compile_compare(t_expression *result, t_expression first_exp, t_oprel oprel
 	switch (oprel.type)
 	{
 		case LESEQ:
-			instruction = strjoin(instruction, " LEQ ");
+			instruction = strjoin(instruction, " LE ");
 			break;
 		case BIGEQ:
-			instruction = strjoin(instruction, " BEQ ");
+			instruction = strjoin(instruction, " GE ");
 			break;
 		case NOTEQ:
-			instruction = strjoin(instruction, " NEQ ");
+			instruction = strjoin(instruction, " NE ");
 			break;
 		case LESSER:
 			instruction = strjoin(instruction, " LT ");
 			break;
 		case BIGGER:
-			instruction = strjoin(instruction, " BG ");
+			instruction = strjoin(instruction, " GT ");
 			break;
 		case EQUAL:
 			instruction = strjoin(instruction, " EQ ");

@@ -31,6 +31,7 @@
     t_if if_type;
     t_while while_type;
     t_do do_type;
+    t_for_range for_range_type;
     void *no_value;
 }
 
@@ -76,6 +77,9 @@
 /* If */
 %type <if_type> if_start if_else
 %type <no_value> if_end if_else_end
+/* For range */
+%type <for_range_type> for_range_start
+%type <no_value> for_range_end
 
 %start program
 
@@ -138,6 +142,16 @@ if_else_end :
     end_else($1);
   }
 
+for_range_start :
+  FOR ID_TKN IN arithmetic_expression RANGE arithmetic_expression DO NEWLINE_TKN {
+    initialize_for_range(&$$, $2, $4, $6);
+  }
+
+for_range_end :
+  for_range_start sentence_list DONE NEWLINE_TKN {
+    end_for_range($1);
+  }
+
 sentence_list :
   sentence_list sentence
   | sentence
@@ -155,6 +169,7 @@ sentence :
   | if_else_end
   | while_end
   | do_until_end
+  | for_range_end
 
 representation_mode :
   BIN { repmode = BIN_MODE; }
