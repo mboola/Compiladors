@@ -71,4 +71,4 @@ No s'ha implementat el tipus de taules unidimensionals.
 
 P3:
 En aquesta tercera part s'han implementat totes les noves sentencies excepte el switch.
-Totes les sentencies implementades permeten nesting.
+Totes les sentencies implementades permeten nesting entre elles.

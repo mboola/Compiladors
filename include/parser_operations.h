@@ -20,6 +20,8 @@ void	tan_funct(t_expression *result, t_expression exp);
 void	or(t_expression *result, t_expression first_exp, int curr_line, t_expression second_exp);
 void	and(t_expression *result, t_expression first_exp, int curr_line, t_expression second_exp);
 void	not(t_expression *result, t_expression exp);
+void	set_true(t_expression *result);
+void	set_false(t_expression *result);
 void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp);
 
 // String operations

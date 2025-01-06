@@ -2,6 +2,7 @@
 #include "data_types.h"
 #include "compile_instructions.h"
 #include "compiler.h"
+#include "str_functions.h"
 
 void	or(t_expression *result, t_expression first_exp, int curr_line, t_expression second_exp)
 {
@@ -41,6 +42,18 @@ void	not(t_expression *result, t_expression exp)
 	result->type = exp.type;
 	result->value = yymalloc(sizeof(char *));
 	*((char *)result->value) = !*(char *)exp.value;
+}
+
+void	set_true(t_expression *result)
+{
+	result->true_list = create_list(instructions_inputed);
+	add_instruction(strdup("GOTO "), -1);
+}
+
+void	set_false(t_expression *result)
+{
+	result->false_list = create_list(instructions_inputed);
+	add_instruction(strdup("GOTO "), -1);
 }
 
 void	compare(t_expression *result, t_expression first_exp, t_oprel oprel, t_expression second_exp)

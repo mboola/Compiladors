@@ -1,6 +1,22 @@
 total := 1000.002
 i := 0
 
+if (true) then
+    i := 1
+fi
+
+if false then
+    i :=100
+fi
+
+if total >= 0.0 or true then
+    j := 5
+fi
+
+if total >= 0.0 and false then
+    j := 6
+fi
+
 if (total > 666.6) then
     i := 111
 fi

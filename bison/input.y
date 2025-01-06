@@ -323,9 +323,11 @@ bexp4 :
   }
   | TRUE {
     $$.type = BOOLEAN_TYPE; $$.value = $1;
+    set_true(&$$);
   }
   | FALSE {
     $$.type = BOOLEAN_TYPE; $$.value = $1;
+    set_false(&$$);
   }
 
 %%
