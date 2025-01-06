@@ -1,0 +1,14 @@
+total := 1000.0
+i := 0
+
+if total > 666.6 then
+    i := 111
+else
+    if i < 10 and i > 20 then
+        b := 30.0
+    else
+        b := 20.0
+        total := b + 0.2
+    fi
+    j := 10
+fi

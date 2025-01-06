@@ -33,6 +33,8 @@ void	handle_repeat_loop(t_repeat repstart);
 // Conditional operations
 void	initialize_if(t_if *if_start, t_expression boolean_expression);
 void	end_if(t_if if_start);
+void	initialize_else(t_if *if_else, t_if if_start);
+void	end_else(t_if if_else);
 
 // While operations
 void	initialize_while(t_while *while_start);

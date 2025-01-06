@@ -74,7 +74,7 @@
 %type <do_type> do_until_start
 %type <no_value> do_until_end
 /* If */
-%type <if_type> if_start
+%type <if_type> if_start if_else
 %type <no_value> if_end if_else_end
 
 %start program
@@ -130,12 +130,12 @@ if_end :
 
 if_else :
   if_start sentence_list ELSE NEWLINE_TKN {
-
+    initialize_else(&$$, $1);
   }
 
 if_else_end :
   if_else sentence_list FI NEWLINE_TKN {
-
+    end_else($1);
   }
 
 sentence_list :

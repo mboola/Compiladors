@@ -24,7 +24,7 @@ void	initialize_if(t_if *if_start, t_expression boolean_expression)
 	if_start->expression = boolean_expression;
 
 	// true goto is current line + boolean conditionals
-	if_start->true_section_line = instructions_inputed; // TODO : change for nested ifs
+	if_start->true_section_line = instructions_inputed;
 }
 
 void	end_if(t_if if_start)
@@ -41,6 +41,28 @@ void	end_if(t_if if_start)
 	fill_list(if_start.expression.true_list, if_start.true_section_line);
 	// goto false is current_line in file + offset gotos + len(instrucions)
 	fill_list(if_start.expression.false_list, false_section_line);
+}
+
+void	initialize_else(t_if *if_else, t_if if_start)
+{
+	if_else->node_goto = create_list(instructions_inputed);
+	add_instruction(strdup("GOTO "), -1);
+	
+	if_else->false_section_line = instructions_inputed;
+	if_else->instructions = if_start.instructions;
+	if_else->expression = if_start.expression;
+}
+
+void	end_else(t_if if_else)
+{
+	// recover instructions before if
+	lstadd_back(&if_else.instructions, instructions);
+	instructions = if_else.instructions;
+
+	fill_list(if_else.expression.true_list, if_else.true_section_line);
+	fill_list(if_else.expression.false_list, if_else.false_section_line);
+
+	fill_list(if_else.node_goto, instructions_inputed);
 }
 
 void	initialize_while(t_while *while_start)

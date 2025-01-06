@@ -64,6 +64,7 @@ typedef struct {
 typedef struct {
 	t_list *instructions;
 	t_expression expression;
+	t_list *node_goto;
 	int	true_section_line;
 	int	false_section_line;
 }	t_if;
